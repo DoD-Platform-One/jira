@@ -1,0 +1,111 @@
+---
+# Source: jira-software/templates/pvc-home.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jira-jira-software-home
+  labels:
+    helm.sh/chart: jira-software-0.2.3
+    app.kubernetes.io/name: jira-software
+    app.kubernetes.io/instance: jira
+    app.kubernetes.io/version: "8.9.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"
+---
+# Source: jira-software/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jira-jira-software
+  labels:
+    helm.sh/chart: jira-software-0.2.3
+    app.kubernetes.io/name: jira-software
+    app.kubernetes.io/instance: jira
+    app.kubernetes.io/version: "8.9.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: jira-software
+    app.kubernetes.io/instance: jira
+---
+# Source: jira-software/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jira-jira-software
+  labels:
+    helm.sh/chart: jira-software-0.2.3
+    app.kubernetes.io/name: jira-software
+    app.kubernetes.io/instance: jira
+    app.kubernetes.io/version: "8.9.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jira-software
+      app.kubernetes.io/instance: jira
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: jira-software
+        app.kubernetes.io/instance: jira
+    spec:
+      serviceAccountName: default
+      securityContext:
+        fsGroup: 2001
+      containers:
+        - name: jira-software
+          image: "atlassian/jira-software:8.9.0"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ATL_JDBC_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: PGUSER
+            - name: ATL_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: PGPASSWORD
+            - name: ATL_JDBC_URL
+              value: "jdbc:postgresql://server:5432/dbname"
+            - name: ATL_DB_DRIVER
+              value: "org.postgresql.Driver"
+            - name: ATL_DB_TYPE
+              value: "postgres72"
+            - name: ATL_DB_SCHEMA_NAME
+              value: "public"
+            - name: JVM_MAXIMUM_MEMORY
+              value: "2048m"
+            - name: JVM_MINIMUM_MEMORY
+              value: "2048m"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/atlassian/application-data/jira
+              name: jira-jira-software-home
+          resources:
+            limits:
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 2Gi
+      volumes:
+        - name: jira-jira-software-home
+          persistentVolumeClaim:
+            claimName: jira-jira-software-home
