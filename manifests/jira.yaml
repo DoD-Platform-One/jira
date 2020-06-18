@@ -67,7 +67,7 @@ spec:
         fsGroup: 2001
       containers:
         - name: jira-software
-          image: "atlassian/jira-software:8.9.0"
+          image: "registry.dsop.io/platform-one/apps/jira/jira-software:8.9.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: ATL_JDBC_USER
