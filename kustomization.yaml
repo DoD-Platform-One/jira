@@ -1,0 +1,5 @@
+namespace: jira
+
+resources:
+  - namespace.yaml
+  - manifests/jira.yaml
