@@ -32,6 +32,8 @@ spec:
       labels:
         app: jira
     spec:
+      securityContext:
+        fsGroup: 2001
       initContainers:
         - name: jirasharedperms
           image: busybox
@@ -43,6 +45,9 @@ spec:
         - name: jira
           image: atlassian/jira-software:8.10.0
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 2001
+            runAsGroup: 2001
           resources:
             requests:
               cpu: 500m
@@ -115,6 +120,8 @@ spec:
             - name: JVM_SUPPORT_RECOMMENDED_ARGS
               value: "-Djira.websudo.disable=true"
           volumeMounts:
+            - name: "jira-persistent-storage"
+              mountPath: /var/atlassian/application-data/jira/
             - name: jira-shared
               mountPath: "/var/atlassian/application-data/jira-shared"
             - name: "server-xml-j2"
@@ -138,3 +145,12 @@ spec:
             name: server-xml-j2
             defaultMode: 0744
 
+  volumeClaimTemplates:
+  - metadata:
+      name: jira-persistent-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "21Gi"
+      storageClassName: "ebs"
