@@ -113,7 +113,7 @@ spec:
             - name: EHCACHE_OBJECT_PORT
               value: "40011"
             - name: JVM_SUPPORT_RECOMMENDED_ARGS
-              value: '-Djira.websudo.disable=true -Dhttp.nonProxyHosts="192.168.*|localhost|*.dsop.io|*cluster.local" -Dhttps.proxyHost=confluence.t-rex.dsop.io -Dhttps.proxyPort=443'
+              value: "-Djira.websudo.disable=true"
           volumeMounts:
             - name: jira-shared
               mountPath: "/var/atlassian/application-data/jira-shared"
