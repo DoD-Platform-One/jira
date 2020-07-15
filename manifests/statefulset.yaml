@@ -1,0 +1,140 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jira
+  labels:
+    app: jira
+spec:
+  selector:
+    app: jira
+  ports:
+    - name: http
+      port: 8080
+    - name: http2
+      port: 8081
+    - name: ehcache
+      port: 40001
+    - name: ehcache-object
+      port: 40011
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jira
+spec:
+  selector:
+    matchLabels:
+      app: jira
+  serviceName: jira
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jira
+    spec:
+      initContainers:
+        - name: jirasharedperms
+          image: busybox
+          command: ["chown", "2001:2001", "-R", "/var/atlassian/application-data/jira-shared"]
+          volumeMounts:
+            - mountPath: "/var/atlassian/application-data/jira-shared"
+              name: jira-shared
+      containers:
+        - name: jira
+          image: atlassian/jira-software:8.10.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 4
+              memory: 8Gi
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: http2
+              containerPort: 8081
+              protocol: TCP
+            - name: ehcache
+              containerPort: 40001
+              protocol: TCP
+            - name: ehcache-object
+              containerPort: 40011
+              protocol: TCP
+          env:
+            - name: JVM_MINIMUM_MEMORY
+              value: "1024m"
+            - name: JVM_MAXIMUM_MEMORY
+              value: "8092m"
+            - name: ATL_PROXY_NAME
+              value: "jira.t-rex.dsop.io"
+            - name: ATL_PROXY_PORT
+              value: "443"
+            - name: ATL_TOMCAT_PORT
+              value: "8080"
+            - name: ATL_TOMCAT_SCHEME
+              value: "https"
+            - name: ATL_TOMCAT_SECURE
+              value: "true"
+            - name: ATL_JDBC_URL
+              value: "jdbc:postgresql://postgres.postgres.svc.cluster.local:5432/jira"
+            - name: ATL_JDBC_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: PGUSER
+            - name: ATL_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: PGPASSWORD
+            - name: ATL_DB_DRIVER
+              value: "org.postgresql.Driver"
+            - name: ATL_DB_TYPE
+              value: "postgres72"
+            - name: ATL_DB_SCHEMA_NAME
+              value: "public"
+            - name: CLUSTERED
+              value: "true"
+            - name: JIRA_NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: JIRA_SHARED_HOME
+              value: "/var/atlassian/application-data/jira-shared"
+            - name: EHCACHE_LISTENER_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: EHCACHE_LISTENER_PORT
+              value: "40001"
+            - name: EHCACHE_OBJECT_PORT
+              value: "40011"
+            - name: JVM_SUPPORT_RECOMMENDED_ARGS
+              value: '-Djira.websudo.disable=true -Dhttp.nonProxyHosts="192.168.*|localhost|*.dsop.io|*cluster.local" -Dhttps.proxyHost=confluence.t-rex.dsop.io -Dhttps.proxyPort=443'
+          volumeMounts:
+            - name: jira-shared
+              mountPath: "/var/atlassian/application-data/jira-shared"
+            - name: "server-xml-j2"
+              mountPath: /opt/atlassian/etc/server.xml.j2
+              subPath: server.xml.j2
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        - name: jira-shared
+          persistentVolumeClaim:
+            claimName: jira-shared
+        - name: server-xml-j2
+          configMap:
+            name: server-xml-j2
+            defaultMode: 0744
+
