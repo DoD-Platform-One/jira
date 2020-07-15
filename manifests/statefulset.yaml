@@ -127,6 +127,9 @@ spec:
             - name: "server-xml-j2"
               mountPath: /opt/atlassian/etc/server.xml.j2
               subPath: server.xml.j2
+            - name: "server-xml"
+              mountPath: /opt/atlassian/jira/conf/server.xml
+              subPath: server.xml
           readinessProbe:
             httpGet:
               path: /status
@@ -143,6 +146,10 @@ spec:
         - name: server-xml-j2
           configMap:
             name: server-xml-j2
+            defaultMode: 0744
+        - name: server-xml
+          configMap:
+            name: server-xml
             defaultMode: 0744
 
   volumeClaimTemplates:
