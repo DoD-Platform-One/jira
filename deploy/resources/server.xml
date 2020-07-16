@@ -24,7 +24,7 @@
                acceptCount="10"
                secure="true"
                scheme="https"
-               proxyName="jira.t-rex.dsop.io"
+               proxyName="jira.dev.dsop.io"
                proxyPort="443"
 
                relaxedPathChars="[]|"
