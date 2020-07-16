@@ -35,9 +35,9 @@ spec:
       securityContext:
         fsGroup: 2001
       initContainers:
-        - name: jirasharedperms
+        - name: configure
           image: busybox
-          command: ["chown", "2001:2001", "-R", "/var/atlassian/application-data/jira-shared"]
+          command: ["sh", "-c", "chown 2001:2001 -R /var/atlassian/application-data/jira-shared"]
           volumeMounts:
             - mountPath: "/var/atlassian/application-data/jira-shared"
               name: jira-shared
@@ -74,7 +74,7 @@ spec:
             - name: JVM_MAXIMUM_MEMORY
               value: "8092m"
             - name: ATL_PROXY_NAME
-              value: "jira.t-rex.dsop.io"
+              value: "jira.dev.dsop.io"
             - name: ATL_PROXY_PORT
               value: "443"
             - name: ATL_TOMCAT_PORT
@@ -118,7 +118,7 @@ spec:
             - name: EHCACHE_OBJECT_PORT
               value: "40011"
             - name: JVM_SUPPORT_RECOMMENDED_ARGS
-              value: "-Djira.websudo.disable=true"
+              value: "-Djira.websudo.is.disabled=true"
           volumeMounts:
             - name: "jira-persistent-storage"
               mountPath: /var/atlassian/application-data/jira/

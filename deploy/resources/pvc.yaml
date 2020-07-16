@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: jira-shared
 spec:
+  storageClassName: efs-sc
   accessModes:
     - ReadWriteMany
   resources:

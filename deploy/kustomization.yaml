@@ -2,8 +2,8 @@ namespace: jira
 
 resources:
   - namespace.yaml
-  - manifests/pvc.yaml
-  - manifests/statefulset.yaml
+  - resources/pvc.yaml
+  - resources/statefulset.yaml
 
 configMapGenerator:
   - name: server-xml-j2
