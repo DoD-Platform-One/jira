@@ -110,9 +110,7 @@ spec:
             - name: JIRA_SHARED_HOME
               value: "/var/atlassian/application-data/jira-shared"
             - name: EHCACHE_LISTENER_HOSTNAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
+              value: "$(JIRA_NODE_ID).jira.jira.svc.cluster.local"
             - name: EHCACHE_LISTENER_PORT
               value: "40001"
             - name: EHCACHE_OBJECT_PORT
