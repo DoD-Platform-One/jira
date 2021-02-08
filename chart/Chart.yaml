@@ -1,0 +1,23 @@
+apiVersion: v2
+name: jira
+description: Helm chart for Atlassian Jira Software.
+type: application
+version: 4.0.2-bb.0
+appVersion: 8.14.0
+keywords:
+  - jira
+  - atlassian
+  - agile
+  - project
+  - management
+home: https://www.atlassian.com/software/jira
+icon: https://wac-cdn.atlassian.com/dam/jcr:b544631f-b225-441b-9e05-57b7fd0d495b/Jira%20Software@2x-icon-blue.png
+sources:
+  - https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
+  - https://hub.docker.com/r/atlassian/jira-software/
+maintainers:
+  - name: stevehipwell
+    email: steve.hipwell@gmail.com
+annotations:
+  artifacthub.io/changes: |
+    - Added dynamic probe configuration
