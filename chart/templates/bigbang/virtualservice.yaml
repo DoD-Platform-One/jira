@@ -1,0 +1,26 @@
+{{- if .Values.istio.enabled -}}
+{{- $serviceName := include "jira.fullname" . -}}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ template "jira.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: jira
+spec:
+  gateways:
+    - istio-system/main
+  hosts:
+    - "jira.{{ .Values.hostname }}"
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: {{ $serviceName}}
+        port:
+          number: {{ .Values.service.port }}
+{{- end }}
