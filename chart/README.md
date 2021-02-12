@@ -1,82 +1,81 @@
-# Jira Software
+# jira
 
-[Atlassian Jira Software](https://www.atlassian.com/software/jira) built for every member of your software team to plan, track, and release great software.
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.13.0-jdk11](https://img.shields.io/badge/AppVersion-8.13.0--jdk11-informational?style=flat-square)
 
-## Installing the Chart
+A chart for installing Jira DC on Kubernetes
 
-Before you can install the chart you will need to add the `stevehipwell` repo to [Helm](https://helm.sh/).
+**Homepage:** <https://github.com/atlassian-labs/data-center-helm-charts>
 
-```shell
-helm repo add stevehipwell https://stevehipwell.github.io/helm-charts/
-```
+## Source Code
 
-After you've installed the repo you can install the chart.
+* <https://github.com/atlassian-labs/data-center-helm-charts>
 
-```shell
-helm upgrade --install --namespace default --values ./my-values.yaml my-release stevehipwell/jira-software
-```
+## Requirements
 
-## Configuration
+Kubernetes: `>=1.17.x-0`
 
-The following table lists the configurable parameters of the _Jira Software_ chart and their default values.
+## Values
 
-| Parameter                            | Description                                                                                                                      | Default                                                 |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| `image.repository`                   | Image repository.                                                                                                                | `atlassian/jira-software`                               |
-| `image.tag`                          | Image tag.                                                                                                                       | `.Chart.AppVersion`                                     |
-| `image.pullPolicy`                   | Image pull policy.                                                                                                               | `IfNotPresent`                                          |
-| `image.pullSecrets`                  | Image pull secrets.                                                                                                              | `[]`                                                    |
-| `nameOverride`                       | Override the name of the chart.                                                                                                  | `nil`                                                   |
-| `fullnameOverride`                   | Override the fullname of the chart.                                                                                              | `nil`                                                   |
-| `serviceAccount.create`              | If `true`, create a new service account.                                                                                         | `true`                                                  |
-| `serviceAccount.annotations`         | Annotations to add to the service account.                                                                                       | `{}`                                                    |
-| `serviceAccount.name`                | Service account to be used. If not set and `serviceAccount.create` is `true`, a name is generated using the _fullname_ template. | `nil`                                                   |
-| `podAnnotations`                     | Annotations to add to the pod.                                                                                                   | `{}`                                                    |
-| `podSecurityContext`                 | Security context for the pod.                                                                                                    | `{}`                                                    |
-| `securityContext`                    | Security context for the _jira_ container.                                                                                       | `{}`                                                    |
-| `priorityClassName`                  | Priority class name to use.                                                                                                      | `""`                                                    |
-| `livenessProbe`                      | The liveness probe.                                                                                                              | See _values.yaml_                                       |
-| `readinessProbe`                     | The readiness probe.                                                                                                             | See _values.yaml_                                       |
-| `service.type`                       | Service type.                                                                                                                    | `ClusterIP`                                             |
-| `service.annotations`                | Annotations to add to the service.                                                                                               | `{}`                                                    |
-| `service.port`                       | Service port.                                                                                                                    | `8080`                                                  |
-| `ingress.enabled`                    | If `true`, create an ingress object.                                                                                             | `false`                                                 |
-| `ingress.annotations`                | Ingress annotations.                                                                                                             | `{}`                                                    |
-| `ingress.path`                       | Ingress path.                                                                                                                    | `/`                                                     |
-| `ingress.hosts`                      | Ingress hosts.                                                                                                                   | `[]`                                                    |
-| `ingress.tls`                        | Ingress TLS configuration                                                                                                        | `[]`                                                    |
-| `persistence.enabled`                | If `true`, create a PVC.                                                                                                         | `false`                                                 |
-| `persistence.annotations`            | Annotations to add to the PVC.                                                                                                   | `{}`                                                    |
-| `persistence.existingClaim`          | Use an existing PVC to persist data.                                                                                             | `nil`                                                   |
-| `persistence.accessMode`             | Persistence access mode.                                                                                                         | `ReadWriteOnce`                                         |
-| `persistence.storageClass`           | PVC storage class (use `-` for default).                                                                                         | `standard`                                              |
-| `persistence.size`                   | Size of PVC to create.                                                                                                           | `8Gi`                                                   |
-| `resources`                          | Resource requests and limits for the primary container.                                                                          | `{}`                                                    |
-| `nodeSelector`                       | Node labels for pod assignment.                                                                                                  | `{}`                                                    |
-| `tolerations`                        | Toleration labels for pod assignment.                                                                                            | `[]`                                                    |
-| `affinity`                           | Affinity settings for pod assignment.                                                                                            | `{}`                                                    |
-| `caCerts.enabled`                    | If `true`, add provided CA certificates to the JVM cacerts key store.                                                            | `false`                                                 |
-| `caCerts.secret`                     | Secret containing the additional CA certificates.                                                                                | `nil`                                                   |
-| `envVars.jvmMinHeapSize`             | JVM min heap size (should match `jvmMaxHeapSize`).                                                                               | `1024m`                                                 |
-| `envVars.jvmMaxHeapSize`             | JVM max heap size (should match `jvmMinHeapSize`).                                                                               | `1024m`                                                 |
-| `envVars.jvmAdditionalMemoryOptions` | Additional JVM memory options.                                                                                                   | `-XX:MaxMetaspaceSize=512m -XX:MaxDirectMemorySize=10m` |
-| `envVars.jvmAdditionalOptions`       | Additional JVM options.                                                                                                          | `""`                                                    |
-| `env`                                | Environment variables for all containers in the pod.                                                                             | `[]`                                                    |
-| `psql.host`                          | External _PostgreSQL_ host to use (if this is set the additional `psql` values need to be set)                                   | `nil`                                                   |
-| `psql.port`                          | External _PostgreSQL_ port                                                                                                       | `nil`                                                   |
-| `psql.database`                      | External _PostgreSQL_ database                                                                                                   | `nil`                                                   |
-| `psql.username`                      | External _PostgreSQL_ username                                                                                                   | `nil`                                                   |
-| `psql.password.secret`               | Name of the secret containing the external _PostgreSQL_ password                                                                 | `nil`                                                   |
-| `psql.password.key`                  | Key on the secret containing the external _PostgreSQL_ password                                                                  | `nil`                                                   |
-| `postgresql.enabled`                 | Enable _PostgreSQL_ sub chart, see [chart](https://hub.helm.sh/charts/bitnami/postgresql/4.2.2) for additional values.           | `false`                                                 |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| additionalContainers | list | `[]` | Additional container definitions that will be added to all Jira pods |
+| additionalInitContainers | list | `[]` | Additional initContainer definitions that will be added to all Jira pods |
+| additionalLabels | object | `{}` | Additional labels that should be applied to all resources |
+| affinity | object | `{}` | Standard Kubernetes affinities that will be applied to all Jira pods |
+| database.credentials.passwordSecretKey | string | `"password"` | The key in the Secret used to store the database login password |
+| database.credentials.secretName | string | `nil` | The name of the Kubernetes Secret that contains the database login credentials. If specified, then the credentials will be automatically populated during Jira setup. Otherwise, they will need to be provided via the browser after initial startup. |
+| database.credentials.usernameSecretKey | string | `"username"` | The key in the Secret used to store the database login username |
+| database.driver | string | `nil` | The Java class name of the JDBC driver to be used, e.g. org.postgresql.Driver If not specified, then it will need to be provided via browser during initial startup. |
+| database.type | string | `nil` | The type of database being used. Valid values include 'postgres72', 'mysql57', 'mysql8', 'oracle10g', 'mssql', 'postgresaurora96' If not specified, then it will need to be provided via browser during initial startup. |
+| database.url | string | `nil` | The JDBC URL of the database to be used by Jira, e.g. jdbc:postgresql://host:port/database If not specified, then it will need to be provided via browser during initial startup. |
+| image.pullPolicy | string | `"IfNotPresent"` |  |
+| image.repository | string | `"atlassian/jira-software"` |  |
+| image.tag | string | `""` | The docker image tag to be used. Defaults to the Chart appVersion. |
+| ingress.annotations | object | `{}` | The custom annotations that should be applied to the Ingress. |
+| ingress.create | bool | `false` | True if an Ingress should be created. |
+| ingress.host | string | `nil` | The fully-qualified hostname of the Ingress. |
+| ingress.https | bool | `true` | True if the browser communicates with the application over HTTPS. |
+| ingress.nginx | bool | `true` | True if the created Ingress is to use the Kubernetes ingress-nginx controller. This will populate the Ingress with annotations for that controller. Set to false if a different controller is to be used, in which case the annotations need to be specified. |
+| ingress.tlsSecretName | string | `nil` | Secret that contains a TLS private key and certificate. Optional if Ingress Controller is configured to use one secret for all ingresses |
+| jira.additionalBundledPlugins | list | `[]` | Specifies a list of additional Jira plugins that should be added to the Jira container. These are specified in the same manner as the additionalLibraries field, but the files will be loaded as bundled plugins rather than as libraries. |
+| jira.additionalEnvironmentVariables | list | `[]` | Defines any additional environment variables to be passed to the Jira container. See https://hub.docker.com/r/atlassian/jira-software for supported variables. |
+| jira.additionalJvmArgs | string | `nil` | Specifies a list of additional arguments that can be passed to the Jira JVM, e.g. system properties |
+| jira.additionalLibraries | list | `[]` | Specifies a list of additional Java libraries that should be added to the Jira container. Each item in the list should specify the name of the volume which contain the library, as well as the name of the library file within that volume's root directory. Optionally, a subDirectory field can be included to specify which directory in the volume contains the library file. |
+| jira.additionalVolumeMounts | list | `[]` | Defines any additional volumes mounts for the Jira container. These can refer to existing volumes, or new volumes can be defined in volumes.additional. |
+| jira.clustering.enabled | bool | `false` | Set to true if Data Center clustering should be enabled This will automatically configure cluster peer discovery between cluster nodes. |
+| jira.gid | string | `"2001"` | The GID used by the Jira docker image |
+| jira.ports.http | int | `8080` | The port on which the Jira container listens for HTTP traffic |
+| jira.readinessProbe.failureThreshold | int | `30` | The number of consecutive failures of the Jira container readiness probe before the pod fails readiness checks |
+| jira.readinessProbe.initialDelaySeconds | int | `10` | The initial delay (in seconds) for the Jira container readiness probe, after which the probe will start running |
+| jira.readinessProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container readiness robe will run |
+| jira.resources.container | object | `{}` | Specifies the standard Kubernetes resource requests and/or limits for the Jira container. It is important that if the memory resources are specified here, they must allow for the size of the Jira JVM. That means the maximum heap size, the reserved code cache size, plus other JVM overheads, must be accommodated. Allowing for (maxHeap+codeCache)*1.5 would be an example. |
+| jira.resources.jvm.maxHeap | string | `"1g"` | The maximum amount of heap memory that will be used by the Jira JVM |
+| jira.resources.jvm.minHeap | string | `"1g"` | The minimum amount of heap memory that will be used by the Jira JVM |
+| jira.resources.jvm.reservedCodeCache | string | `"512m"` | The memory reserved for the Jira JVM code cache |
+| jira.service.port | int | `80` | The port on which the Jira Kubernetes service will listen |
+| jira.service.type | string | `"ClusterIP"` | The type of Kubernetes service to use for Jira |
+| nodeSelector | object | `{}` | Standard Kubernetes node-selectors that will be applied to all Jira pods |
+| podAnnotations | object | `{}` | Specify custom annotations to be added to all Jira pods |
+| replicaCount | int | `1` | The initial number of pods that should be started at deployment of Jira. Note that because Jira requires initial manual configuration after the first pod is deployed, and before scaling up to additional pods, this should always be kept as 1. |
+| serviceAccount.create | bool | `true` | true if a ServiceAccount should be created, or false if it already exists |
+| serviceAccount.imagePullSecrets | list | `[]` | The list of image pull secrets that should be added to the created ServiceAccount |
+| serviceAccount.name | string | `nil` | Specifies the name of the ServiceAccount to be used by the pods. If not specified, but the the "serviceAccount.create" flag is set, then the ServiceAccount name will be auto-generated, otherwise the 'default' ServiceAccount will be used. |
+| tolerations | list | `[]` | Standard Kubernetes tolerations that will be applied to all Jira pods |
+| volumes.additional | list | `[]` | Defines additional volumes that should be applied to all Jira pods. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts |
+| volumes.localHome.customVolume | string | `nil` | When persistentVolumeClaim.create is false, then this value can be used to define a standard Kubernetes volume which will be used for the local-home volumes. If not defined, then defaults to an emptyDir volume. |
+| volumes.localHome.mountPath | string | `"/var/atlassian/application-data/jira"` | Specifies the path in the Jira container to which the local-home volume will be mounted. |
+| volumes.localHome.persistentVolumeClaim.create | bool | `false` | If true, then a PersistentVolumeClaim will be created for each local-home volume. |
+| volumes.localHome.persistentVolumeClaim.resources | object | `{"requests":{"storage":"1Gi"}}` | Specifies the standard Kubernetes resource requests and/or limits for the local-home volume claims. |
+| volumes.localHome.persistentVolumeClaim.storageClassName | string | `nil` | Specifies the name of the storage class that should be used for the local-home volume claim. |
+| volumes.sharedHome.customVolume | string | `nil` | When persistentVolumeClaim.create is false, then this value can be used to define a standard Kubernetes volume which will be used for the shared-home volume. If not defined, then defaults to an emptyDir (i.e. unshared) volume. |
+| volumes.sharedHome.mountPath | string | `"/var/atlassian/application-data/shared-home"` | Specifies the path in the Jira container to which the shared-home volume will be mounted. |
+| volumes.sharedHome.nfsPermissionFixer.command | string | `nil` | By default, the fixer will change the group ownership of the volume's root directory to match the Jira container's GID (2001), and then ensures the directory is group-writeable. If this is not the desired behaviour, command used can be specified here. |
+| volumes.sharedHome.nfsPermissionFixer.enabled | bool | `false` | If enabled, this will alter the shared-home volume's root directory so that Jira can write to it. This is a workaround for a Kubernetes bug affecting NFS volumes: https://github.com/kubernetes/examples/issues/260 |
+| volumes.sharedHome.nfsPermissionFixer.mountPath | string | `"/shared-home"` | The path in the initContainer where the shared-home volume will be mounted |
+| volumes.sharedHome.persistentVolumeClaim.create | bool | `false` | If true, then a PersistentVolumeClaim will be created for the shared-home volume. |
+| volumes.sharedHome.persistentVolumeClaim.resources | object | `{"requests":{"storage":"1Gi"}}` | Specifies the standard Kubernetes resource requests and/or limits for the shared-home volume claims. |
+| volumes.sharedHome.persistentVolumeClaim.storageClassName | string | `nil` | Specifies the name of the storage class that should be used for the shared-home volume claim. |
+| volumes.sharedHome.subPath | string | `nil` | Specifies the sub-directory of the shared-home volume which will be mounted in to the Jira container. |
 
-## Database
-
-By default the [atlassian/jira-software](https://hub.docker.com/r/atlassian/jira-software/) image will create a [H2](https://www.h2database.com/html/main.html) database for evaluation purposes, this should **NOT be used in production**. You can either allow this chart to create a [PostgreSQL](https://hub.docker.com/_/postgres) instance specifically for _Jira Software_ by specifying `postgresql.enabled` as `true` or you can use an external _PostgreSQL_ instance by specifying the connection details on `psql`.
-
-## Persistence
-
-The [atlassian/jira-software](https://hub.docker.com/r/atlassian/jira-software/) image stores the _Jira Software_ data and configurations at the `/var/atlassian/application-data/jira` path in the container.
-
-Persistent Volume Claims are used to keep the data across deployments. This is known to work in GCE, AWS, and minikube.
-See the [Configuration](#configuration) section to configure the PVC or to disable persistence.
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.4.0](https://github.com/norwoodj/helm-docs/releases/v1.4.0)
