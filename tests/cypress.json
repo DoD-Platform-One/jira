@@ -4,9 +4,7 @@
   "supportFile": false,
   "fixturesFolder": false,
   "env": {
-    "jira_url": "jira.bigbang.dev",
-    "jira_password": "password",
-    "jira_user": "admin"
+    "jira_url": "https://jira.bigbang.dev"
   }
 }
 

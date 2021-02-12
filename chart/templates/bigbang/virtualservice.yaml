@@ -22,5 +22,6 @@ spec:
     - destination:
         host: {{ $serviceName}}
         port:
-          number: {{ .Values.service.port }}
+          number: {{ .Values.jira.service.port }}
 {{- end }}
+

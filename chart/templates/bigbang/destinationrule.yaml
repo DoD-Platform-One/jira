@@ -1,9 +1,12 @@
+{{- if .Values.istio.enabled -}}
+{{- $serviceName := include "jira.fullname" . -}}
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: sticky-jira
+  namespace: {{ .Release.Namespace }}
 spec:
-  host: jira.jira.svc.cluster.local
+  host: {{ $serviceName }}
   trafficPolicy:
     loadBalancer:
       consistentHash:
@@ -13,3 +16,5 @@ spec:
           name: JIRACONSISTENTHASH
           path: /
           ttl: 300m
+{{- end }}
+
