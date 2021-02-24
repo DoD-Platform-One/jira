@@ -21,6 +21,10 @@ spec:
     spec:
       serviceAccountName: {{ include "jira.serviceAccountName" . }}
       terminationGracePeriodSeconds: 1
+      {{- with .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       securityContext:
         # This is intended to ensure that the shared-home volume is group-writeable by the GID used by the Jira container.
         # However, this doesn't appear to work for NFS volumes due to a K8s bug: https://github.com/kubernetes/examples/issues/260
@@ -33,6 +37,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ include "jira.image" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            runAsUser: {{ .Values.jira.gid }}
+            runAsGroup: {{ .Values.jira.gid }}
           env:
             {{ if .Values.ingress.https }}
             - name: ATL_TOMCAT_SCHEME
@@ -70,6 +77,15 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.jira.ports.http }}
+              protocol: TCP
+            - name: http2
+              containerPort: 8081
+              protocol: TCP
+            - name: ehcache
+              containerPort: 40001
+              protocol: TCP
+            - name: ehcache-object
+              containerPort: 40011
               protocol: TCP
           readinessProbe:
             httpGet:

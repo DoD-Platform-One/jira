@@ -11,5 +11,17 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: 8081
+      targetPort: 8081
+      protocol: TCP
+      name: http2
+    - port: 40001
+      targetPort: 40001
+      protocol: TCP
+      name: ehcache
+    - port: 40011
+      targetPort: 40011
+      protocol: TCP
+      name: ehcache-object
   selector:
     {{- include "jira.selectorLabels" . | nindent 4 }}
