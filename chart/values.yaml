@@ -5,6 +5,8 @@ replicaCount: 1
 
 image:
   repository: registry.dso.mil/platform-one/big-bang/apps/collaboration-tools/jira/jira-bb
+  # -- Optional image repository pull secret
+  imagePullSecrets: []
   pullPolicy: IfNotPresent
   # -- The docker image tag to be used. Defaults to the Chart appVersion.
   tag: "8.13.0-jdk11"

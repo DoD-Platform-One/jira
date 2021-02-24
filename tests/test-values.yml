@@ -5,6 +5,9 @@ replicaCount: 1
 
 image:
   repository: registry.dso.mil/platform-one/big-bang/apps/collaboration-tools/jira/jira-bb
+  # -- Optional image repository pull secret
+  imagePullSecrets: 
+    - name: private-registry-mil
   pullPolicy: IfNotPresent
   # -- The docker image tag to be used. Defaults to the Chart appVersion.
   tag: "8.13.0-jdk11"
@@ -17,7 +20,7 @@ serviceAccount:
   # -- true if a ServiceAccount should be created, or false if it already exists
   create: true
   # -- The list of image pull secrets that should be added to the created ServiceAccount
-  imagePullSecrets: [ ]
+  imagePullSecrets: []
 
 database:
   # -- The type of database being used.
