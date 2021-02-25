@@ -37,9 +37,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ include "jira.image" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          securityContext:
-            runAsUser: {{ .Values.jira.gid }}
-            runAsGroup: {{ .Values.jira.gid }}
+          #securityContext:
+          #  runAsUser: {{ .Values.jira.gid }}
+          #  runAsGroup: {{ .Values.jira.gid }}
           env:
             {{ if .Values.ingress.https }}
             - name: ATL_TOMCAT_SCHEME
