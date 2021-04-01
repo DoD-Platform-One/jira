@@ -207,6 +207,6 @@ additionalLabels: {}
 # Big Bang Additions
 hostname: bigbang.dev
 istio:
-  enabled: true
+  enabled: false
 monitoring:
   enabled: false
