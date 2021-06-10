@@ -188,6 +188,7 @@ volumeClaimTemplates:
 - name: ATL_JDBC_URL
   value: {{ . | quote }}
 {{ end }}
+{{- if .Values.database.credentials.secretName }}
 {{ with .Values.database.credentials.secretName }}
 - name: ATL_JDBC_USER
   valueFrom:
@@ -199,6 +200,7 @@ volumeClaimTemplates:
     secretKeyRef:
       name: {{ . }}
       key: {{ $.Values.database.credentials.passwordSecretKey }}
+{{ end }}
 {{ end }}
 {{ end }}
 

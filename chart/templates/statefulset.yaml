@@ -37,6 +37,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ include "jira.image" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","rm -rf /var/atlassian/application-data/jira/*"]
           securityContext:
             runAsUser: {{ .Values.jira.gid }}
             runAsGroup: {{ .Values.jira.gid }}
@@ -94,6 +98,7 @@ spec:
             initialDelaySeconds: {{ .Values.jira.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.jira.readinessProbe.periodSeconds }}
             failureThreshold: {{ .Values.jira.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.jira.readinessProbe.successThreshold }}
           {{- with .Values.jira.resources.container }}
           resources:
             {{- toYaml . | nindent 12 }}
