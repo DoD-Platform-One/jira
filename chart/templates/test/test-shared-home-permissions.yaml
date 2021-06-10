@@ -11,9 +11,11 @@ metadata:
   labels:
     {{- include "jira.labels" . | nindent 4 }}
 spec:
+  imagePullSecrets:
+  - name: private-registry
   containers:
     - name: test
-      image: debian:stable-slim
+      image: registry1.dso.mil/ironbank/redhat/ubi/ubi7:7.9
       imagePullPolicy: IfNotPresent
       securityContext:
         # Slightly dodgy; we assume that the UID and GID used by the product images are the same, which in practice they are

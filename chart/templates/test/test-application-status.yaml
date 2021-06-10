@@ -11,9 +11,11 @@ metadata:
   labels:
     {{- include "jira.labels" . | nindent 4 }}
 spec:
+  imagePullSecrets:
+  - name: private-registry
   containers:
     - name: test
-      image: alpine
+      image: registry1.dso.mil/ironbank/redhat/ubi/ubi7:7.9
       imagePullPolicy: IfNotPresent
       env:
         - name: STATUS_URL
