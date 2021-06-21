@@ -40,7 +40,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ["/bin/sh","-c","rm -rf /var/atlassian/application-data/jira/*"]
+                command: ["/bin/sh","-c","rm -rf /var/atlassian/application-data/jira/dbconfig.xml /var/atlassian/application-data/jira/.jira-home.lock /var/atlassian/application-data/jira/cluster.properties /var/atlassian/application-data/jira/dbconfig.xml /var/atlassian/application-data/jira/log /var/atlassian/application-data/jira/plugins /var/atlassian/application-data/jira/.java "]
           securityContext:
             runAsUser: {{ .Values.jira.gid }}
             runAsGroup: {{ .Values.jira.gid }}
