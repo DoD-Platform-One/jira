@@ -228,8 +228,11 @@ additionalInitContainers: []
 additionalLabels: {}
 
 # Big Bang Additions
+proxyName: jira.bigbang.dev
 hostname: bigbang.dev
 istio:
   enabled: false
+  gateways:
+  - istio-system/main
 monitoring:
   enabled: false

@@ -24,7 +24,7 @@
                acceptCount="10"
                secure="true"
                scheme="https"
-               proxyName="jira.dev.dsop.io"
+               proxyName="{{ .Values.proxyName }}"
                proxyPort="443"
 
                relaxedPathChars="[]|"

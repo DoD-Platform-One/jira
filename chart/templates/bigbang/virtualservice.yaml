@@ -11,7 +11,9 @@ metadata:
     app.kubernetes.io/part-of: jira
 spec:
   gateways:
-    - istio-system/main
+  {{- range .Values.istio.gateways }}
+    - {{ . }}
+  {{- end }}
   hosts:
     - "jira.{{ .Values.hostname }}"
   http:
