@@ -4,12 +4,13 @@
 replicaCount: 1
 
 image:
-  repository: registry.dso.mil/platform-one/big-bang/apps/third-party/jira/jira-ib
+  repository: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node
   # -- Optional image repository pull secret
-  imagePullSecrets: []
+  imagePullSecrets:
+    - name: private-registry
   pullPolicy: IfNotPresent
   # -- The docker image tag to be used. Defaults to the Chart appVersion.
-  tag: "8.13.4-rebase"
+  tag: "8.18.1"
 
 serviceAccount:
   # -- Specifies the name of the ServiceAccount to be used by the pods.

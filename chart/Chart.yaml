@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira DC on Kubernetes
 type: application
-version: 0.1.0-bb.6
-appVersion: 8.13.4
+version: 0.1.0-bb.7
+appVersion: 8.18.1
 #kubeVersion: ">=1.17.x-0"
 keywords:
   - Jira
