@@ -1,5 +1,17 @@
 image:
   imagePullSecrets: 
-    - name: private-registry-mil
-istio:
+    - name: private-registry
+
+bbtests:
   enabled: true
+  cypress:
+    artifacts: true
+    envs:
+      cypress_url: 'http://{{ include "jira.fullname" . }}:{{ .Values.jira.service.port }}'
+    resources:
+      requests:
+        cpu: "1"
+        memory: "1Gi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
