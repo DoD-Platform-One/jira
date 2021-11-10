@@ -12,6 +12,8 @@ metadata:
   labels:
     {{- include "jira.labels" . | nindent 4 }}
 spec:
+  imagePullSecrets:
+  - name: private-registry
   serviceAccountName: {{ include "jira.serviceAccountName" . }}
   containers:
     - name: test
