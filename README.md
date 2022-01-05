@@ -1,20 +1,35 @@
 # jira
 
-![Version: 0.1.0-bb.8](https://img.shields.io/badge/Version-0.1.0--bb.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.18.1](https://img.shields.io/badge/AppVersion-8.18.1-informational?style=flat-square)
+![Version: 0.1.0-bb.9](https://img.shields.io/badge/Version-0.1.0--bb.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.18.1](https://img.shields.io/badge/AppVersion-8.18.1-informational?style=flat-square)
 
 A chart for installing Jira DC on Kubernetes
 
-**Homepage:** <https://github.com/atlassian-labs/data-center-helm-charts>
-
-## Source Code
+## Upstream References
+* <https://github.com/atlassian-labs/data-center-helm-charts>
 
 * <https://github.com/atlassian-labs/data-center-helm-charts>
 
-## Requirements
+## Learn More
+* [Application Overview](docs/overview.md)
+* [Other Documentation](docs/)
 
-| Repository | Name | Version |
-|------------|------|---------|
-| oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon | gluon | 0.2.4 |
+## Pre-Requisites
+
+* Kubernetes Cluster deployed
+* Kubernetes config installed in `~/.kube/config`
+* Helm installed
+
+Install Helm
+
+https://helm.sh/docs/intro/install/
+
+## Deployment
+
+* Clone down the repository
+* cd into directory
+```bash
+helm install jira chart/
+```
 
 ## Values
 
@@ -51,7 +66,7 @@ A chart for installing Jira DC on Kubernetes
 | jira.additionalJvmArgs | string | `nil` | Specifies a list of additional arguments that can be passed to the Jira JVM, e.g. system properties |
 | jira.additionalLibraries | list | `[]` | Specifies a list of additional Java libraries that should be added to the Jira container. Each item in the list should specify the name of the volume which contain the library, as well as the name of the library file within that volume's root directory. Optionally, a subDirectory field can be included to specify which directory in the volume contains the library file. |
 | jira.additionalBundledPlugins | list | `[]` | Specifies a list of additional Jira plugins that should be added to the Jira container. These are specified in the same manner as the additionalLibraries field, but the files will be loaded as bundled plugins rather than as libraries. |
-| jira.additionalVolumeMounts | list | `[{"mountPath":"/opt/atlassian/etc/server.xml.j2","name":"server-xml-j2","subPath":"server.xml.j2"},{"mountPath":"/opt/atlassian/jira/conf/server.xml","name":"server-xml","subPath":"server.xml"}]` | Defines any additional volumes mounts for the Jira container. These can refer to existing volumes, or new volumes can be defined in volumes.additional. |
+| jira.additionalVolumeMounts | list | `[{"mountPath":"/opt/atlassian/etc/server.xml.j2","name":"server-xml-j2","subPath":"server.xml.j2"},{"mountPath":"/opt/atlassian/jira/conf/server.xml","name":"server-xml","subPath":"server.xml"},{"mountPath":"/opt/atlassian/jira/atlassian-jira/WEB-INF/classes/templates/plugins/footer/footer.vm","name":"footer-vm","subPath":"footer.vm"}]` | Defines any additional volumes mounts for the Jira container. These can refer to existing volumes, or new volumes can be defined in volumes.additional. |
 | jira.additionalEnvironmentVariables | list | `[]` | Defines any additional environment variables to be passed to the Jira container. See https://hub.docker.com/r/atlassian/jira-software for supported variables. |
 | ingress.create | bool | `false` | True if an Ingress should be created. |
 | ingress.nginx | bool | `true` | True if the created Ingress is to use the Kubernetes ingress-nginx controller. This will populate the Ingress with annotations for that controller. Set to false if a different controller is to be used, in which case the annotations need to be specified. |
@@ -77,7 +92,7 @@ A chart for installing Jira DC on Kubernetes
 | volumes.sharedHome.nfsPermissionFixer.enabled | bool | `false` | If enabled, this will alter the shared-home volume's root directory so that Jira can write to it. This is a workaround for a Kubernetes bug affecting NFS volumes: https://github.com/kubernetes/examples/issues/260 |
 | volumes.sharedHome.nfsPermissionFixer.mountPath | string | `"/shared-home"` | The path in the initContainer where the shared-home volume will be mounted |
 | volumes.sharedHome.nfsPermissionFixer.command | string | `nil` | By default, the fixer will change the group ownership of the volume's root directory to match the Jira container's GID (2001), and then ensures the directory is group-writeable. If this is not the desired behaviour, command used can be specified here. |
-| volumes.additional | list | `[{"configMap":{"defaultMode":484,"name":"server-xml-j2"},"name":"server-xml-j2"},{"configMap":{"defaultMode":484,"name":"server-xml"},"name":"server-xml"}]` | Defines additional volumes that should be applied to all Jira pods. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts |
+| volumes.additional | list | `[{"configMap":{"defaultMode":484,"name":"server-xml-j2"},"name":"server-xml-j2"},{"configMap":{"defaultMode":484,"name":"server-xml"},"name":"server-xml"},{"configMap":{"defaultMode":484,"name":"footer-vm"},"name":"footer-vm"}]` | Defines additional volumes that should be applied to all Jira pods. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts |
 | nodeSelector | object | `{}` | Standard Kubernetes node-selectors that will be applied to all Jira pods |
 | tolerations | list | `[]` | Standard Kubernetes tolerations that will be applied to all Jira pods |
 | affinity | object | `{}` | Standard Kubernetes affinities that will be applied to all Jira pods |
@@ -90,5 +105,6 @@ A chart for installing Jira DC on Kubernetes
 | istio.gateways[0] | string | `"istio-system/main"` |  |
 | monitoring.enabled | bool | `false` |  |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.5.0](https://github.com/norwoodj/helm-docs/releases/v1.5.0)
+## Contributing
+
+Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in contributing.

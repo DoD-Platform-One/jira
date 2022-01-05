@@ -123,7 +123,9 @@ jira:
     - mountPath: /opt/atlassian/jira/conf/server.xml
       name: server-xml
       subPath: server.xml
-
+    - mountPath: /opt/atlassian/jira/atlassian-jira/WEB-INF/classes/templates/plugins/footer/footer.vm
+      name: footer-vm
+      subPath: footer.vm
 
   # -- Defines any additional environment variables to be passed to the Jira container.
   # See https://hub.docker.com/r/atlassian/jira-software for supported variables.
@@ -208,6 +210,10 @@ volumes:
     - name: server-xml
       configMap:
         name: server-xml
+        defaultMode: 484
+    - name: footer-vm
+      configMap:
+        name: footer-vm
         defaultMode: 484
 
 # -- Standard Kubernetes node-selectors that will be applied to all Jira pods
