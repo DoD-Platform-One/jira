@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.1.0-bb.9] - 2022-01-05
+### Added
+- footer.vm file added to files section of the chart
+- footer configmap template created 
+- Value.yaml  file updated with footer configmap volume mount.
+
 ## [0.1.0-bb.8] - 2021-12-06
 ### Added
 - renovate.json added for image tracking with IB

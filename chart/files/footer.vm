@@ -1,0 +1,15 @@
+<ul class="atlassian-footer">
+    <li>
+        Atlassian Jira Project Management Software
+        #if ($authcontext.isLoggedInUser())
+            #set ($formattedCommitId = "")
+            #if ($string.isNotBlank("$commitId"))
+                ## shorten the Git SHA
+                #set ($formattedCommitId = "-<span title='$!{commitId}' data-commit-id='${commitId}}'>sha1:${commitId.substring(0, 7)}</span>")
+            #end
+            #set ($formattedPartnerName = "#if ($string.isNotBlank($partnerName))-$partnerName#{else}#end")
+            #set ($formattedNodeId = "#if ($string.isNotBlank($nodeId)):${nodeId}#{else}#end")
+
+        #end
+    </li>
+</ul>
