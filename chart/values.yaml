@@ -243,3 +243,18 @@ istio:
   - istio-system/main
 monitoring:
   enabled: false
+
+# Values for bigbang tests
+bbtests:
+  enabled: false
+  cypress:
+    artifacts: true
+    envs:
+      cypress_url: 'http://{{ include "jira.fullname" . }}:{{ .Values.jira.service.port }}'
+    resources:
+      requests:
+        cpu: "1"
+        memory: "1Gi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
