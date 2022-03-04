@@ -6,7 +6,7 @@
     "dependencyDashboardTitle": "Renovate: Upgrade Jira Package Dependencies",
     "draftPR": true,
     "ignorePaths": ["chart/charts/**"],
-    "labels": ["jira","Package Sustainment","kind::chore"],
+    "labels": ["jira","Package Sustainment","kind::maintenance"],
     "packageRules": [
         {
             "matchDatasources": ["docker"],
