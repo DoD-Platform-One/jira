@@ -59,6 +59,10 @@
             unpackWARs="true"
             autoDeploy="true">
 
+        <Valve className="org.apache.catalina.valves.ErrorReportValve"
+              showReport="false"
+              showServerInfo="false" />
+
         <Context path=""
                  docBase="${catalina.home}/atlassian-jira"
                  reloadable="false"
@@ -81,3 +85,4 @@
 
   </Service>
 </Server>
+
