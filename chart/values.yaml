@@ -780,3 +780,15 @@ bbtests:
       limits:
         cpu: "1"
         memory: "1Gi"
+# values to enable HPA in Jira cluster
+# Setup after your intial setup of Jira cluster and when cluster autoscaling is enabled.
+hpa:
+ enabled: false
+ maxReplicas: 3
+ cpu: 80
+ memory: 70
+# defining the behavior time for scale down. This won't allow pod to scale down immediately 
+ behavior:
+  enabled: false
+  time: 300
+ 
