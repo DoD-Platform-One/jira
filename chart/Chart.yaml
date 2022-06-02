@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.1.0-bb.2
-appVersion: 8.21.0
+version: 1.4.0-bb.0
+appVersion: 8.22.0
 kubeVersion: ">=1.19.x-0"
 keywords:
   - Jira
@@ -19,44 +19,27 @@ sources:
   - https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
 deprecated: false
 annotations:
-  artifacthub.io/containsSecurityUpdates: "true"
+  artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
     - kind: added
-      description: Add support for custom schedulerName
+      description: Make pod securityContext optional
       links:
       - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/301
+        url: https://github.com/atlassian/data-center-helm-charts/pull/389
     - kind: added
-      description: Bind EHCACHE ports as environmental variables
+      description: Support for configuring ingress proxy settings via values.yaml
       links:
       - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/308
-    - kind: added
-      description: Enable configuring ingress.class name
-      links:
-      - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/313
-    - kind: removed
-      description: Cleanup redundant (not-used) jira.terminationGracePeriodSeconds
-      links:
-      - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/306
+        url: https://github.com/atlassian/data-center-helm-charts/pull/402
     - kind: changed
-      description: Make security context more flexible
+      description: Update Jira version to 8.20.8
       links:
       - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/321
-    - kind: added
-      description: Roll Statefulset Pods if ConfigMap changes
-      links:
-      - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/315
-    - kind: changed
-      description: Jira DC updated to 8.20.1 version (LTS)
-      links:
-      - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/345
+        url: https://github.com/atlassian/data-center-helm-charts/pull/412
 dependencies:
-- name: gluon
-  version: "0.2.5"
-  repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
+  - name: common
+    version: 1.0.0
+    repository: https://atlassian.github.io/data-center-helm-charts
+  - name: gluon
+    version: "0.2.9"
+    repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"

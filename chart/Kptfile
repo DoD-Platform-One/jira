@@ -5,7 +5,7 @@ metadata:
 upstream:
   type: git
   git:
-    commit: be3f5a383ede02b17d2c65f3e0e6390dbb08ac22
+    commit: aa5a70deccaad3843a537267ac0ceb71ffedae6d
     repo: https://github.com/atlassian-labs/data-center-helm-charts
     directory: /src/main/charts/jira
-    ref: jira-1.1.0
+    ref: jira-1.4.0
