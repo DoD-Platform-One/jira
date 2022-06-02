@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ include "jira.fullname" . }}-shared-home-pv
+  name: {{ include "common.names.fullname" . }}-shared-home-pv
   labels:
   {{- include "jira.labels" . | nindent 4 }}
 spec:
@@ -14,7 +14,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: efs-sc
   claimRef:
-    name: {{ include "jira.fullname" . }}-shared-home
+    name: {{ include "common.names.fullname" . }}-shared-home
     namespace: {{ .Release.Namespace }}
   csi:
     driver: {{ .Values.volumes.sharedHome.driver }}

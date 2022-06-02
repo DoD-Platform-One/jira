@@ -1,0 +1,6 @@
+apiVersion: v2
+name: flux-jira
+description: Flux compatible Helm chart for jira
+type: application
+version: 0.1.0
+appVersion: "8.x"
