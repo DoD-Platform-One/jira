@@ -125,6 +125,15 @@ spec:
             initialDelaySeconds: {{ .Values.jira.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.jira.readinessProbe.periodSeconds }}
             failureThreshold: {{ .Values.jira.readinessProbe.failureThreshold }}
+          {{- if .Values.jira.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.jira.ports.http }}
+              path: {{ .Values.jira.service.contextPath }}/status
+            initialDelaySeconds: {{ .Values.jira.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.jira.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.jira.livenessProbe.failureThreshold }}
+          {{- end }}
           {{- with .Values.jira.containerSecurityContext}}
           securityContext:
           {{- toYaml . | nindent 12}}

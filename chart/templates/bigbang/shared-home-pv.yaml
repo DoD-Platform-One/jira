@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   name: {{ include "common.names.fullname" . }}-shared-home-pv
   labels:
-  {{- include "jira.labels" . | nindent 4 }}
+  {{- include "common.labels.commonLabels" . | nindent 4 }}
 spec:
   capacity:
     storage: {{ .Values.volumes.sharedHome.persistentVolumeClaim.resources.requests.storage }}
