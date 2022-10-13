@@ -71,6 +71,8 @@ spec:
             - name: ATL_TOMCAT_CONTEXTPATH
               value: {{ .Values.jira.service.contextPath | quote }}
             {{ end }}
+            - name: ATL_TOMCAT_PORT
+              value: {{ .Values.jira.ports.http | quote }}
             {{ if .Values.ingress.host }}
             - name: ATL_PROXY_NAME
               value: {{ .Values.ingress.host | quote }}
@@ -112,8 +114,8 @@ spec:
               containerPort: {{ .Values.jira.ports.http2 }}
               protocol: TCP
             - name: ehcache
-              containerPort: {{ .Values.jira.ports.ehcache }} 
-              protocol: TCP 
+              containerPort: {{ .Values.jira.ports.ehcache }}
+              protocol: TCP
             - name: ehcacheobject
               containerPort: {{ .Values.jira.ports.ehcacheobject }}
               protocol: TCP
