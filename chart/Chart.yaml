@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.4.1-bb.1
-appVersion: 9.0.0
+version: 1.6.0-bb.0
+appVersion: 9.2.0
 kubeVersion: ">=1.19.x-0"
 keywords:
   - Jira
@@ -22,14 +22,20 @@ annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
     - kind: changed
-      description: Update Jira version to 9.0.0
+      description: Ingress Class Name is moved under spec.
       links:
       - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/417
+        url: https://github.com/atlassian/data-center-helm-charts/pull/450
+    - kind: changed
+      description: Improved documentation
+      links:
+      - name: Github PR
+        url: https://github.com/atlassian/data-center-helm-charts/pull/448
+        url: https://github.com/atlassian/data-center-helm-charts/pull/440
 dependencies:
   - name: common
     version: 1.0.0
     repository: https://atlassian.github.io/data-center-helm-charts
   - name: gluon
-    version: "0.2.10"
+    version: "0.3.1"
     repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
