@@ -832,6 +832,8 @@ istio:
   enabled: false
   gateways:
   - istio-system/main
+  hosts:
+  - jira.{{ .Values.hostname }}
 monitoring:
   enabled: false
 
