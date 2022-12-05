@@ -15,7 +15,9 @@ spec:
     - {{ . }}
   {{- end }}
   hosts:
-    - "jira.{{ .Values.hostname }}"
+  {{- range .Values.istio.hosts }}
+    - {{ tpl . $ }}
+  {{- end }}
   http:
   - match:
     - uri:
