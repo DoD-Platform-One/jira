@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.6.0-bb.1](https://img.shields.io/badge/Version-1.6.0--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.2.0](https://img.shields.io/badge/AppVersion-9.2.0-informational?style=flat-square)
+![Version: 1.6.0-bb.2](https://img.shields.io/badge/Version-1.6.0--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.2.0](https://img.shields.io/badge/AppVersion-9.2.0-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -148,6 +148,7 @@ helm install jira chart/
 | hostname | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.gateways[0] | string | `"istio-system/main"` |  |
+| istio.hosts[0] | string | `"jira.{{ .Values.hostname }}"` |  |
 | monitoring.enabled | bool | `false` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
