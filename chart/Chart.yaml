@@ -18,6 +18,13 @@ sources:
   - https://github.com/atlassian/data-center-helm-charts
   - https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
 deprecated: false
+dependencies:
+  - name: common
+    version: 1.0.0
+    repository: https://atlassian.github.io/data-center-helm-charts
+  - name: gluon
+    version: "0.3.2"
+    repository: "oci://registry1.dso.mil/bigbang"
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
@@ -32,10 +39,11 @@ annotations:
       - name: Github PR
         url: https://github.com/atlassian/data-center-helm-charts/pull/448
         url: https://github.com/atlassian/data-center-helm-charts/pull/440
-dependencies:
-  - name: common
-    version: 1.0.0
-    repository: https://atlassian.github.io/data-center-helm-charts
-  - name: gluon
-    version: "0.3.2"
-    repository: "oci://registry1.dso.mil/bigbang"
+  bigbang.dev/applicationVersions: |
+    - Jira: 9.2.0
+  helm.sh/images: |
+    - name: jira-node
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node:9.2.0
+    - name: fluentd-kubernetes-daemonset
+      condition: fluentd.enabled
+      image: fluent/fluentd-kubernetes-daemonset:v1.11.5-debian-elasticsearch7-1.2
