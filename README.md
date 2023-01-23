@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.6.0-bb.2](https://img.shields.io/badge/Version-1.6.0--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.2.0](https://img.shields.io/badge/AppVersion-9.2.0-informational?style=flat-square)
+![Version: 1.8.1-bb.0](https://img.shields.io/badge/Version-1.8.1--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.1](https://img.shields.io/badge/AppVersion-9.4.1-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -20,7 +20,7 @@ A chart for installing Jira Data Center on Kubernetes
 * Kubernetes config installed in `~/.kube/config`
 * Helm installed
 
-Kubernetes: `>=1.19.x-0`
+Kubernetes: `>=1.21.x-0`
 
 Install Helm
 
@@ -42,7 +42,7 @@ helm install jira chart/
 | image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.tag | string | `"9.2.0"` | The docker image tag to be used - defaults to the Chart appVersion  |
+| image.tag | string | `"9.4.1"` | The docker image tag to be used - defaults to the Chart appVersion  |
 | serviceAccount.create | bool | `true` | Set to 'true' if a ServiceAccount should be created, or 'false' if it already exists.  |
 | serviceAccount.name | string | `nil` | The name of the ServiceAccount to be used by the pods. If not specified, but the "serviceAccount.create" flag is set to 'true', then the ServiceAccount name will be auto-generated, otherwise the 'default' ServiceAccount will be used. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server  |
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
@@ -69,6 +69,8 @@ helm install jira chart/
 | volumes.sharedHome.subPath | string | `nil` | Specifies the sub-directory of the shared-home volume that will be mounted in to the Jira container.  |
 | volumes.sharedHome.nfsPermissionFixer.enabled | bool | `true` | If 'true', this will alter the shared-home volume's root directory so that Jira can write to it. This is a workaround for a K8s bug affecting NFS volumes: https://github.com/kubernetes/examples/issues/260  |
 | volumes.sharedHome.nfsPermissionFixer.mountPath | string | `"/shared-home"` | The path in the K8s initContainer where the shared-home volume will be mounted  |
+| volumes.sharedHome.nfsPermissionFixer.imageRepo | string | `"alpine"` | Image repository for the permission fixer init container. Defaults to alpine  |
+| volumes.sharedHome.nfsPermissionFixer.imageTag | string | `"latest"` | Image tag for the permission fixer init container. Defaults to latest  |
 | volumes.sharedHome.nfsPermissionFixer.command | string | `nil` | By default, the fixer will change the group ownership of the volume's root directory to match the Jira container's GID (2001), and then ensures the directory is group-writeable. If this is not the desired behaviour, command used can be specified here.  |
 | volumes.additional | list | `[{"configMap":{"defaultMode":484,"name":"server-xml-j2"},"name":"server-xml-j2"},{"configMap":{"defaultMode":484,"name":"server-xml"},"name":"server-xml"},{"configMap":{"defaultMode":484,"name":"footer-vm"},"name":"footer-vm"}]` | Defines additional volumes that should be applied to all Jira pods. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts  |
 | ingress.create | bool | `false` | Set to 'true' if an Ingress Resource should be created. This depends on a pre-provisioned Ingress Controller being available.  |
@@ -115,6 +117,7 @@ helm install jira chart/
 | jira.resources.container.requests.memory | string | `"4G"` | Initial Memory request by Jira pod  |
 | jira.resources.container.limits.cpu | string | `"4"` |  |
 | jira.resources.container.limits.memory | string | `"4G"` |  |
+| jira.forceConfigUpdate | bool | `false` | The Docker entrypoint.py generates application configuration on first start; not all of these files are regenerated on subsequent starts. By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true to change this behavior.  |
 | jira.additionalJvmArgs[0] | string | `"-XX:ActiveProcessorCount=2"` | The value defined for ActiveProcessorCount should correspond to that provided for 'container.requests.cpu'. https://docs.oracle.com/en/java/javase/11/tools/java.html#GUID-3B1CE181-CD30-4178-9602-230B800D4FAE  |
 | jira.additionalJvmArgs[1] | string | `"-Dcom.redhat.fips=false"` |  |
 | jira.additionalLibraries | list | `[]` | Specifies a list of additional Java libraries that should be added to the Jira container. Each item in the list should specify the name of the volume that contains the library, as well as the name of the library file within that volume's root directory. Optionally, a subDirectory field can be included to specify which directory in the volume contains the library file. Additional details: https://atlassian.github.io/data-center-helm-charts/examples/external_libraries/EXTERNAL_LIBS/  |
@@ -125,7 +128,8 @@ helm install jira chart/
 | jira.additionalVolumeClaimTemplates | list | `[]` | Defines additional volumeClaimTemplates that should be applied to the Jira pod. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts  |
 | jira.topologySpreadConstraints | list | `[]` | Defines topology spread constraints for Jira pods. See details: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/  |
 | fluentd.enabled | bool | `false` | Set to 'true' if the Fluentd sidecar (DaemonSet) should be added to each pod  |
-| fluentd.imageName | string | `"fluent/fluentd-kubernetes-daemonset:v1.11.5-debian-elasticsearch7-1.2"` | The Fluentd sidecar image  |
+| fluentd.imageRepo | string | `"fluent/fluentd-kubernetes-daemonset"` | The Fluentd sidecar image repository  |
+| fluentd.imageTag | string | `"v1.11.5-debian-elasticsearch7-1.2"` | The Fluentd sidecar image tag  |
 | fluentd.command | string | `nil` | The command used to start Fluentd. If not supplied the default command will be used: "fluentd -c /fluentd/etc/fluent.conf -v"  Note: The custom command can be free-form, however pay particular attention to the process that should ultimately be left running in the container. This process should be invoked with 'exec' so that signals are appropriately propagated to it, for instance SIGTERM. An example of how such a command may look is: "<command 1> && <command 2> && exec <primary command>" |
 | fluentd.customConfigFile | bool | `false` | Set to 'true' if a custom config (see 'configmap-fluentd.yaml' for default) should be used for Fluentd. If enabled this config must be supplied via the 'fluentdCustomConfig' property below.  |
 | fluentd.fluentdCustomConfig | object | `{}` | Custom fluent.conf file  |

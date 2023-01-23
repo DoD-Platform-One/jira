@@ -43,7 +43,7 @@ image:
   
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.2.0"
+  tag: "9.4.1"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -271,6 +271,13 @@ volumes:
       # -- The path in the K8s initContainer where the shared-home volume will be mounted
       #
       mountPath: "/shared-home"
+
+      # -- Image repository for the permission fixer init container. Defaults to alpine
+      #
+      imageRepo: alpine
+      # -- Image tag for the permission fixer init container. Defaults to latest
+      #
+      imageTag: latest
       
       # -- By default, the fixer will change the group ownership of the volume's root directory
       # to match the Jira container's GID (2001), and then ensures the directory is
@@ -586,6 +593,12 @@ jira:
         cpu: "4"
         memory: "4G"
 
+  # -- The Docker entrypoint.py generates application configuration on
+  # first start; not all of these files are regenerated on subsequent starts.
+  # By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true
+  # to change this behavior.
+  #
+  forceConfigUpdate: false
   # Specifies a list of additional arguments that can be passed to the Jira JVM, e.g.
   # system properties.
   #
@@ -688,9 +701,12 @@ fluentd:
   #
   enabled: false
   
-  # -- The Fluentd sidecar image
+  # -- The Fluentd sidecar image repository
   #
-  imageName: fluent/fluentd-kubernetes-daemonset:v1.11.5-debian-elasticsearch7-1.2
+  imageRepo: fluent/fluentd-kubernetes-daemonset
+  # -- The Fluentd sidecar image tag
+  #
+  imageTag: v1.11.5-debian-elasticsearch7-1.2
 
   # -- The command used to start Fluentd. If not supplied the default command
   # will be used: "fluentd -c /fluentd/etc/fluent.conf -v"

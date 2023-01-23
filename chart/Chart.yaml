@@ -2,21 +2,21 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.6.0-bb.2
-appVersion: 9.2.0
-kubeVersion: ">=1.19.x-0"
+version: 1.8.1-bb.0
+appVersion: 9.4.1
+kubeVersion: ">=1.21.x-0"
 keywords:
-  - Jira
-  - Jira Software
-  - Jira Server
-  - Jira Data Center
-  - Jira DC
-  - Atlassian
+- Jira
+- Jira Software
+- Jira Server
+- Jira Data Center
+- Jira DC
+- Atlassian
 home: https://atlassian.github.io/data-center-helm-charts/
 icon: https://atlassian.github.io/data-center-helm-charts/icons/jira-software.svg
 sources:
-  - https://github.com/atlassian/data-center-helm-charts
-  - https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
+- https://github.com/atlassian/data-center-helm-charts
+- https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
 deprecated: false
 dependencies:
   - name: common
@@ -29,21 +29,12 @@ annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
     - kind: changed
-      description: Ingress Class Name is moved under spec.
-      links:
-      - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/450
-    - kind: changed
-      description: Improved documentation
-      links:
-      - name: Github PR
-        url: https://github.com/atlassian/data-center-helm-charts/pull/448
-        url: https://github.com/atlassian/data-center-helm-charts/pull/440
+      description: Fix artifacthub annotations
   bigbang.dev/applicationVersions: |
-    - Jira: 9.2.0
+    - Jira: 9.4.1
   helm.sh/images: |
     - name: jira-node
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node:9.2.0
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node:9.4.1
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
       image: fluent/fluentd-kubernetes-daemonset:v1.11.5-debian-elasticsearch7-1.2
