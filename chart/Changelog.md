@@ -1,5 +1,52 @@
 # Change Log
 
+## 1.8.1
+
+**Release date:** 2022-12-12
+
+![AppVersion: 9.4.0](https://img.shields.io/static/v1?label=AppVersion&message=9.4.0&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Fix artifacthub.io annotations
+
+## 1.8.0
+
+**Release date:** 2022-12-9
+
+![AppVersion: 9.4.0](https://img.shields.io/static/v1?label=AppVersion&message=9.4.0&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* CLIP-1644: Stop supporting 1.19-1.20 k8s (#486)
+* Use `ingress.https` flag to enable https in ingress (#487)
+* Update appVersion to 9.4.0
+
+## 1.7.1
+
+**Release date:** 2022-10-26
+
+![AppVersion: 9.0.0](https://img.shields.io/static/v1?label=AppVersion&message=9.0.0&color=success&logo=)
+![Kubernetes: >=1.19.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.19.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Patch release to fix Artifacthub metadata
+
+## 1.7.0
+
+**Release date:** 2022-10-25
+
+![AppVersion: 8.20.13](https://img.shields.io/static/v1?label=AppVersion&message=8.20.13&color=success&logo=)
+![Kubernetes: >=1.19.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.19.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Pin Python version to 3.9.14 (#468)
+* Update Bitbucket ingress testing values (#466)
+* Ingress Class Name is moved under spec field. (#451)
+* Make ATL_FORCE_CFG_UPDATE configurable in values.yaml (#454)
+* Add osquery related env vars for Terraform (#462)
+* AWS cleanup and log colletion from k8s (#461)
+
 ## 1.6.0
 
 **Release date:** 2022-10-12
@@ -12,6 +59,17 @@
 * Ingress Class Name is moved under spec. (#450)
 * Improved documentation (#448, #440)
 
+## 1.6.0
+
+**Release date:** TBD
+
+![AppVersion: 8.20.10](https://img.shields.io/static/v1?label=AppVersion&message=8.20.10&color=success&logo=)
+![Kubernetes: >=1.19.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.19.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Ingress is using `spec.ingressClassName` field instead of deprecated annotation
+
+
 ## 1.5.0
 
 **Release date:** 2022-07-14
@@ -22,6 +80,7 @@
 
 * Fix: Use the custom ports for Jira service (#419)
 * Update the default Jira version to 8.20.10 (#430)
+
 
 ## 1.4.1
 
@@ -45,6 +104,7 @@
 * Make pod securityContext optional (#389)
 * Support for configuring ingress proxy settings via values.yaml (#402)
 * Update Jira version to 8.20.8 (#412)
+
 
 ## 1.3.0
 
