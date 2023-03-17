@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.10.0-bb.0] - 2023-03-13
+### Updated
+- Updated Jira to version `9.6.0`
+
 ## [1.8.1-bb.0] - 2022-01-18
 ### Updated
 - Updated Jira to version `9.4.1`
@@ -51,7 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.1.0-bb.9] - 2022-01-05
 ### Added
 - footer.vm file added to files section of the chart
-- footer configmap template created 
+- footer configmap template created
 - Value.yaml  file updated with footer configmap volume mount.
 
 ## [0.1.0-bb.8] - 2021-12-06
@@ -64,7 +68,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [0.1.0-bb.6] - 2021-06-21
 ### Modified
-- Parameterization of vs as well as proxyName. 
+- Parameterization of vs as well as proxyName.
 - Lifecycle of pod changes.
 
 ## [0.1.0-bb.5] - 2021-06-10
