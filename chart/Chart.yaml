@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.8.1-bb.0
-appVersion: 9.4.1
+version: 1.10.0-bb.0
+appVersion: 9.6.0
 kubeVersion: ">=1.21.x-0"
 keywords:
 - Jira
@@ -31,10 +31,10 @@ annotations:
     - kind: changed
       description: Fix artifacthub annotations
   bigbang.dev/applicationVersions: |
-    - Jira: 9.4.1
+    - Jira: 9.6.0
   helm.sh/images: |
     - name: jira-node
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node:9.4.1
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node:9.6.0
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
       image: fluent/fluentd-kubernetes-daemonset:v1.11.5-debian-elasticsearch7-1.2
