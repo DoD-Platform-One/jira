@@ -121,17 +121,25 @@ spec:
               protocol: TCP
             {{- include "jira.additionalPorts" . | nindent 12 }}
           readinessProbe:
+          {{- if .Values.jira.readinessProbe.custom }}
+            {{- toYaml .Values.jira.readinessProbe.custom | nindent 12 }}
+          {{- else }}
             httpGet:
               port: {{ .Values.jira.ports.http }}
               path: {{ .Values.jira.service.contextPath }}/status
+          {{- end }}
             initialDelaySeconds: {{ .Values.jira.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.jira.readinessProbe.periodSeconds }}
             failureThreshold: {{ .Values.jira.readinessProbe.failureThreshold }}
           {{- if .Values.jira.livenessProbe.enabled }}
           livenessProbe:
+          {{- if .Values.jira.livenessProbe.custom }}
+            {{- toYaml .Values.jira.livenessProbe.custom | nindent 12 }}
+          {{- else }}
             httpGet:
               port: {{ .Values.jira.ports.http }}
               path: {{ .Values.jira.service.contextPath }}/status
+            {{- end }}  
             initialDelaySeconds: {{ .Values.jira.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.jira.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.jira.livenessProbe.failureThreshold }}
