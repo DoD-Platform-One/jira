@@ -33,6 +33,12 @@ gatekeeper:
 kyverno:
   enabled: false
 
+kyvernoPolicies:
+  enabled: false
+
+kyvernoReporter:
+  enabled: false
+
 tempo:
   enabled: false
 
@@ -42,10 +48,13 @@ promtail:
 loki:
   enabled: false
 
-eckoperator:
+neuvector:
   enabled: false
 
-logging:
+eckOperator:
+  enabled: false
+
+elasticsearchKibana:
   enabled: false
 
 fluentbit:
