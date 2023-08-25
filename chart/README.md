@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.8.1](https://img.shields.io/badge/Version-1.8.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.0](https://img.shields.io/badge/AppVersion-9.4.0-informational?style=flat-square)
+![Version: 1.15.1](https://img.shields.io/badge/Version-1.15.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.9](https://img.shields.io/badge/AppVersion-9.4.9-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -17,14 +17,16 @@ Kubernetes: `>=1.21.x-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://atlassian.github.io/data-center-helm-charts | common | 1.0.0 |
+| https://atlassian.github.io/data-center-helm-charts | common | 1.2.3 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| additionalConfigMaps | list | `[]` | Create additional ConfigMaps with given names, keys and content. Ther Helm release name will be used as a prefix for a ConfigMap name, fileName is used as subPath  |
 | additionalContainers | list | `[]` | Additional container definitions that will be added to all Jira pods  |
 | additionalFiles | list | `[]` | Additional existing ConfigMaps and Secrets not managed by Helm that should be mounted into service container. Configuration details below (camelCase is important!): 'name'      - References existing ConfigMap or secret name. 'type'      - 'configMap' or 'secret' 'key'       - The file name. 'mountPath' - The destination directory in a container. VolumeMount and Volumes are added with this name and index position, for example; custom-config-0, keystore-2  |
+| additionalHosts | list | `[]` | Additional host aliases for each pod, equivalent to adding them to the /etc/hosts file. https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/ |
 | additionalInitContainers | list | `[]` | Additional initContainer definitions that will be added to all Jira pods  |
 | additionalLabels | object | `{}` | Additional labels that should be applied to all resources  |
 | affinity | object | `{}` | Standard K8s affinities that will be applied to all Jira pods  |
@@ -72,35 +74,74 @@ Kubernetes: `>=1.21.x-0`
 | jira.clustering.enabled | bool | `false` | Set to 'true' if Data Center clustering should be enabled This will automatically configure cluster peer discovery between cluster nodes.  |
 | jira.containerSecurityContext | object | `{}` | Standard K8s field that holds security configurations that will be applied to a container. https://kubernetes.io/docs/tasks/configure-pod-container/security-context/  |
 | jira.forceConfigUpdate | bool | `false` | The Docker entrypoint.py generates application configuration on first start; not all of these files are regenerated on subsequent starts. By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true to change this behavior.  |
+| jira.livenessProbe.enabled | bool | `false` | Whether to apply the livenessProbe check to pod.  |
+| jira.livenessProbe.failureThreshold | int | `12` | The number of consecutive failures of the Jira container liveness probe before the pod fails liveness checks.  |
+| jira.livenessProbe.initialDelaySeconds | int | `60` | Time to wait before starting the first probe  |
+| jira.livenessProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container liveness probe will run  |
+| jira.livenessProbe.timeoutSeconds | int | `1` | Number of seconds after which the probe times out  |
 | jira.ports.ehcache | int | `40001` | Ehcache port  |
 | jira.ports.ehcacheobject | int | `40011` | Ehcache object port  |
 | jira.ports.http | int | `8080` | The port on which the Jira container listens for HTTP traffic  |
-| jira.readinessProbe.failureThreshold | int | `30` | The number of consecutive failures of the Jira container readiness probe before the pod fails readiness checks.  |
+| jira.readinessProbe.customProbe | object | `{}` | Custom readinessProbe to override the default /status httpGet  |
+| jira.readinessProbe.enabled | bool | `true` | Whether to apply the readinessProbe check to pod.  |
+| jira.readinessProbe.failureThreshold | int | `10` | The number of consecutive failures of the Jira container readiness probe before the pod fails readiness checks.  |
 | jira.readinessProbe.initialDelaySeconds | int | `10` | The initial delay (in seconds) for the Jira container readiness probe, after which the probe will start running.  |
 | jira.readinessProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container readiness probe will run  |
+| jira.readinessProbe.timeoutSeconds | int | `1` | Number of seconds after which the probe times out  |
 | jira.resources.container.requests.cpu | string | `"2"` | Initial CPU request by Jira pod  |
 | jira.resources.container.requests.memory | string | `"2G"` | Initial Memory request by Jira pod  |
 | jira.resources.jvm.maxHeap | string | `"768m"` | The maximum amount of heap memory that will be used by the Jira JVM  |
 | jira.resources.jvm.minHeap | string | `"384m"` | The minimum amount of heap memory that will be used by the Jira JVM  |
 | jira.resources.jvm.reservedCodeCache | string | `"512m"` | The memory reserved for the Jira JVM code cache  |
+| jira.s3Storage.avatars.bucketName | string | `nil` |  |
+| jira.s3Storage.avatars.bucketRegion | string | `nil` |  |
+| jira.s3Storage.avatars.endpointOverride | string | `nil` |  |
 | jira.securityContext.fsGroup | int | `2001` | The GID used by the Jira docker image GID will default to 2001 if not supplied and securityContextEnabled is set to true. This is intended to ensure that the shared-home volume is group-writeable by the GID used by the Jira container. However, this doesn't appear to work for NFS volumes due to a K8s bug: https://github.com/kubernetes/examples/issues/260  |
 | jira.securityContextEnabled | bool | `true` | Whether to apply security context to pod.  |
+| jira.seraphConfig | object | `{"autoLoginCookieAge":"1209600","generateByHelm":false}` | By default seraph-config.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, seraph-config.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
+| jira.seraphConfig.generateByHelm | bool | `false` | Mount seraph-config.xml as a ConfigMap. Override configuration elements if necessary  |
 | jira.service.annotations | object | `{}` | Additional annotations to apply to the Service  |
 | jira.service.contextPath | string | `nil` | The Tomcat context path that Jira will use. The ATL_TOMCAT_CONTEXTPATH will be set automatically.  |
 | jira.service.loadBalancerIP | string | `nil` | Use specific loadBalancerIP. Only applies to service type LoadBalancer.  |
 | jira.service.port | int | `80` | The port on which the Jira K8s Service will listen  |
+| jira.service.sessionAffinity | string | `"None"` | Session affinity type. If you want to make sure that connections from a particular client are passed to the same pod each time, set sessionAffinity to ClientIP. See: https://kubernetes.io/docs/reference/networking/virtual-ips/#session-affinity  |
+| jira.service.sessionAffinityConfig | object | `{"clientIP":{"timeoutSeconds":null}}` | Session affinity configuration  |
+| jira.service.sessionAffinityConfig.clientIP.timeoutSeconds | string | `nil` | Specifies the seconds of ClientIP type session sticky time. The value must be > 0 && <= 86400(for 1 day) if ServiceAffinity == "ClientIP". Default value is 10800 (for 3 hours).  |
 | jira.service.type | string | `"ClusterIP"` | The type of K8s service to use for Jira  |
 | jira.setPermissions | bool | `true` | Boolean to define whether to set local home directory permissions on startup of Jira container. Set to 'false' to disable this behaviour.  |
 | jira.shutdown.command | string | `"/shutdown-wait.sh"` | By default pods will be stopped via a [preStop hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/), using a script supplied by the Docker image. If any other shutdown behaviour is needed it can be achieved by overriding this value. Note that the shutdown command needs to wait for the application shutdown completely before exiting; see [the default command](https://bitbucket.org/atlassian-docker/docker-atlassian-jira/src/master/shutdown-wait.sh) for details.  |
 | jira.shutdown.terminationGracePeriodSeconds | int | `30` | The termination grace period for pods during shutdown. This should be set to the internal grace period, plus a small buffer to allow the JVM to fully terminate.  |
+| jira.startupProbe.enabled | bool | `true` | Whether to apply the startupProbe check to pod.  |
+| jira.startupProbe.failureThreshold | int | `120` | The number of consecutive failures of the Jira container startup probe before the pod fails startup checks.  |
+| jira.startupProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container startup probe will run  |
+| jira.tomcatConfig | object | `{"acceptCount":"10","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","scheme":null,"secure":null}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
+| jira.tomcatConfig.customServerXml | string | `""` | Custom server.xml to be mounted into /opt/atlassian/jira/conf  |
+| jira.tomcatConfig.generateByHelm | bool | `false` | Mount server.xml as a ConfigMap. Override configuration elements if necessary  |
 | jira.topologySpreadConstraints | list | `[]` | Defines topology spread constraints for Jira pods. See details: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/  |
+| monitoring.exposeJmxMetrics | bool | `false` | Expose JMX metrics with jmx_exporter https://github.com/prometheus/jmx_exporter  |
+| monitoring.fetchJmxExporterJar | bool | `true` | Fetch jmx_exporter jar from the image. If set to false make sure to manually copy the jar to shared home and provide an absolute path in jmxExporterCustomJarLocation  |
+| monitoring.grafana.createDashboards | bool | `false` | Create ConfigMaps with Grafana dashboards  |
+| monitoring.grafana.dashboardAnnotations | object | `{}` | Annotations added to Grafana dashboards ConfigMaps. See: https://github.com/kiwigrid/k8s-sidecar#usage  |
+| monitoring.grafana.dashboardLabels | object | `{}` | Label selector for Grafana dashboard importer sidecar  |
+| monitoring.jmxExporterCustomConfig | object | `{}` | Custom jmx config with the rules. Make sure to keep jmx-config key  |
+| monitoring.jmxExporterCustomJarLocation | string | `nil` | Location of jmx_exporter jar file if mounted from a secret or manually copied to shared home  |
+| monitoring.jmxExporterImageRepo | string | `"bitnami/jmx-exporter"` | Image repository with jmx_exporter jar  |
+| monitoring.jmxExporterImageTag | string | `"0.18.0"` | Image tag to be used to pull jmxExporterImageRepo  |
+| monitoring.jmxExporterPort | int | `9999` | Port number on which metrics will be available  |
+| monitoring.jmxExporterPortType | string | `"ClusterIP"` | JMX exporter port type  |
+| monitoring.serviceMonitor.create | bool | `false` | Create ServiceMonitor to start scraping metrics. ServiceMonitor CRD needs to be created in advance.  |
+| monitoring.serviceMonitor.prometheusLabelSelector | object | `{}` | ServiceMonitorSelector of the prometheus instance.  |
+| monitoring.serviceMonitor.scrapeIntervalSeconds | int | `30` | Scrape interval for the JMX service.  |
 | nodeSelector | object | `{}` | Standard K8s node-selectors that will be applied to all Jira pods  |
 | podAnnotations | object | `{}` | Custom annotations that will be applied to all Jira pods  |
+| podDisruptionBudget | object | `{"annotations":{},"enabled":false,"labels":{},"maxUnavailable":null,"minAvailable":null}` | PodDisruptionBudget: https://kubernetes.io/docs/tasks/run-application/configure-pdb/ You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget. When both minAvailable and maxUnavailable are set, maxUnavailable takes precedence.  |
 | podLabels | object | `{}` | Custom labels that will be applied to all Jira pods  |
+| priorityClassName | string | `nil` | Priority class for the application pods. The PriorityClass with this name needs to be available in the cluster. For details see https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass  |
 | replicaCount | int | `1` | The initial number of Jira pods that should be started at deployment time. Note that Jira requires manual configuration via the browser post deployment after the first pod is deployed. This configuration must be completed before scaling up additional pods. As such this value should always be kept as 1, but can be altered once manual configuration is complete.  |
 | schedulerName | string | `nil` | Standard K8s schedulerName that will be applied to all Jira pods. Check Kubernetes documentation on how to configure multiple schedulers: https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/#specify-schedulers-for-pods  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the ServiceAccount (if created)  |
 | serviceAccount.create | bool | `true` | Set to 'true' if a ServiceAccount should be created, or 'false' if it already exists.  |
+| serviceAccount.eksIrsa.roleArn | string | `nil` |  |
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
 | serviceAccount.name | string | `nil` | The name of the ServiceAccount to be used by the pods. If not specified, but the "serviceAccount.create" flag is set to 'true', then the ServiceAccount name will be auto-generated, otherwise the 'default' ServiceAccount will be used. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server  |
 | tolerations | list | `[]` | Standard K8s tolerations that will be applied to all Jira pods  |

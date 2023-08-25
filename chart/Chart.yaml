@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.10.0-bb.1
-appVersion: 9.6.0
+version: 1.15.1-bb.0
+appVersion: 9.10.0
 kubeVersion: ">=1.21.x-0"
 keywords:
 - Jira
@@ -18,25 +18,28 @@ sources:
 - https://github.com/atlassian/data-center-helm-charts
 - https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
 deprecated: false
-dependencies:
-  - name: common
-    version: 1.0.0
-    repository: https://atlassian.github.io/data-center-helm-charts
-  - name: gluon
-    version: "0.3.2"
-    repository: "oci://registry1.dso.mil/bigbang"
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
     - kind: changed
       description: Fix artifacthub annotations
   bigbang.dev/applicationVersions: |
-    - Jira: 9.6.0
+    - Jira: 9.10.0
   helm.sh/images: |
     - name: jira-node
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node:9.6.0
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node:9.10.0
     - name: nfs-permission-fixer
-      image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.5
+      image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
-      image: fluent/fluentd-kubernetes-daemonset:v1.11.5-debian-elasticsearch7-1.2
+      image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.16.2
+  artifacthub.io/changes: |-
+    - "Make startup probes optional (#646)"
+
+dependencies:
+  - name: common
+    repository: https://atlassian.github.io/data-center-helm-charts
+    version: 1.2.3
+  - name: gluon
+    repository: oci://registry1.dso.mil/bigbang
+    version: 0.3.2

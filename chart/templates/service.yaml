@@ -10,6 +10,12 @@ metadata:
     {{- end }}
 spec:
   type: {{ .Values.jira.service.type }}
+  sessionAffinity: {{ .Values.jira.service.sessionAffinity }}
+  {{- if .Values.jira.service.sessionAffinityConfig.clientIP.timeoutSeconds }}
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.jira.service.sessionAffinityConfig.clientIP.timeoutSeconds }}
+  {{- end }}
   {{- if and (eq .Values.jira.service.type "LoadBalancer") (not (empty .Values.jira.service.loadBalancerIP)) }}
   loadBalancerIP: {{ .Values.jira.service.loadBalancerIP }}
   {{- end }}
@@ -18,17 +24,5 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-    - port: {{ .Values.jira.ports.http2 }}
-      targetPort: {{ .Values.jira.ports.http2 }}
-      protocol: TCP
-      name: http2
-    - port: {{ .Values.jira.ports.ehcache }}
-      targetPort: {{ .Values.jira.ports.ehcache }}
-      protocol: TCP
-      name: ehcache
-    - port: {{ .Values.jira.ports.ehcacheobject }}
-      targetPort: {{ .Values.jira.ports.ehcacheobject }}
-      protocol: TCP
-      name: ehcache-object
   selector:
     {{- include "common.labels.selectorLabels" . | nindent 4 }}
