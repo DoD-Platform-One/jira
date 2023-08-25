@@ -47,7 +47,7 @@ Pod labels
 {{/*
 The command that should be run by the nfs-fixer init container to correct the permissions of the shared-home root directory.
 */}}
-{{- define "sharedHome.permissionFix.command" -}}
+{{- define "jira.sharedHome.permissionFix.command" -}}
 {{- $securityContext := .Values.jira.securityContext }}
 {{- with .Values.volumes.sharedHome.nfsPermissionFixer }}
     {{- if .command }}
@@ -99,6 +99,18 @@ on Tomcat's logs directory. THis ensures that Tomcat+Jira logs get captured in t
   {{- if .Values.volumes.sharedHome.subPath }}
   subPath: {{ .Values.volumes.sharedHome.subPath | quote }}
   {{- end }}
+{{- if .Values.jira.tomcatConfig.generateByHelm }}
+- name: server-xml
+  mountPath: /opt/atlassian/jira/conf/server.xml
+  subPath: server.xml
+- name: temp
+  mountPath: /opt/atlassian/jira/temp
+{{- end }}
+{{- if .Values.jira.seraphConfig.generateByHelm }}
+- name: seraph-config-xml
+  mountPath: /opt/atlassian/jira/atlassian-jira/WEB-INF/classes/seraph-config.xml
+  subPath: seraph-config.xml
+{{- end }}
 {{- end }}
 
 {{/*
@@ -193,6 +205,24 @@ For each additional plugin declared, generate a volume mount that injects that l
 {{- with .Values.volumes.additional }}
 {{- toYaml . | nindent 0 }}
 {{- end }}
+{{- if .Values.jira.tomcatConfig.generateByHelm }}
+- name: server-xml
+  configMap:
+    name: {{ include "common.names.fullname" . }}-server-config
+    items:
+      - key: server.xml
+        path: server.xml
+- name: temp
+  emptyDir: {}
+{{- end }}
+{{- if .Values.jira.seraphConfig.generateByHelm }}
+- name: seraph-config-xml
+  configMap:
+    name: {{ include "common.names.fullname" . }}-server-config
+    items:
+      - key: seraph-config.xml
+        path: seraph-config.xml
+{{- end }}
 {{- end }}
 
 {{- define "jira.volumes.localHome" -}}
@@ -217,6 +247,16 @@ For each additional plugin declared, generate a volume mount that injects that l
 {{ else }}
   emptyDir: {}
 {{- end }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Define additional hosts here to allow template overrides when used as a sub chart
+*/}}
+{{- define "jira.additionalHosts" -}}
+{{- with .Values.additionalHosts }}
+{{- toYaml . }}
 {{- end }}
 {{- end }}
 
@@ -248,6 +288,19 @@ volumeClaimTemplates:
     resources:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "jira.s3StorageEnvVars" -}}
+{{- if and .Values.jira.s3Storage.avatars.bucketName .Values.jira.s3Storage.avatars.bucketRegion }}
+- name: ATL_S3AVATARS_BUCKET_NAME
+  value: {{ .Values.jira.s3Storage.avatars.bucketName | quote }}
+- name: ATL_S3AVATARS_REGION
+  value: {{ .Values.jira.s3Storage.avatars.bucketRegion | quote }}
+{{- if .Values.jira.s3Storage.avatars.endpointOverride }}
+- name: ATL_S3AVATARS_ENDPOINT_OVERRIDE
+  value: {{ .Values.jira.s3Storage.avatars.endpointOverride | quote }}
 {{- end }}
 {{- end }}
 {{- end }}

@@ -1,11 +1,11 @@
 apiVersion: kpt.dev/v1alpha1
 kind: Kptfile
 metadata:
-  name: jira
+  name: chart
 upstream:
   type: git
   git:
-    commit: 685f4044fc864cccdd56261e08f3e2e9a15c2ddf
+    commit: 6f854ad4e7904bc2dca254f6eda2a367cefcefa4
     repo: https://github.com/atlassian/data-center-helm-charts
     directory: /src/main/charts/jira
-    ref: jira-1.10.0
+    ref: jira-1.15.1

@@ -1,5 +1,100 @@
 # Change Log
 
+## 1.15.1
+
+**Release date:** 2023-8-17
+
+![AppVersion: 9.4.9](https://img.shields.io/static/v1?label=AppVersion&message=9.4.9&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Make startup probes optional (#646)
+
+## 1.15.0
+
+**Release date:** 2023-8-7
+
+![AppVersion: 9.4.9](https://img.shields.io/static/v1?label=AppVersion&message=9.4.9&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Add PodDisruptionBudget to Atlassian DC Helm Charts (#636)
+* Add annotations to Grafana dashboards ConfigMaps (#637)
+* Add additional ConfigMaps to Helm Charts (#635)
+* Update appVersions for DC apps (#638)
+
+## 1.14.1
+
+**Release date:** 2023-7-26
+
+![AppVersion: 9.4.8](https://img.shields.io/static/v1?label=AppVersion&message=9.4.8&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Disable liveness probes by default, make timeoutSeconds configurable (#630)
+
+## 1.14.0
+
+**Release date:** 2023-7-25
+
+![AppVersion: 9.4.8](https://img.shields.io/static/v1?label=AppVersion&message=9.4.8&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Add liveness probes, make readinessProbes configurable (#626)
+* Support running Jira and Confluence containers as non root (incl running in OpenShift) (#623)
+* make sharedHome.permissionFix.command helper to be per-product (#622)
+
+## 1.13.1
+
+**Release date:** 2023-6-28
+
+![AppVersion: 9.4.7](https://img.shields.io/static/v1?label=AppVersion&message=9.4.7&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Run jmx init container as root: get fix from common chart ver 1.2.3 (#608)
+* Add s3 avatars storage support for Jira (#608)
+
+## 1.13.0
+
+**Release date:** 2023-6-13
+
+![AppVersion: 9.4.7](https://img.shields.io/static/v1?label=AppVersion&message=9.4.7&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Update appVersions for DC apps (#599)
+* Update Grafana dashboards for DC apps (#589)
+* Bamboo dashboard (#588)
+* Make sessionAffinity configurable in service spec (#582)
+* Cleanup dashboards
+* Jira Grafana Dashboards (#578)
+* Add optional ServiceMonitors to DC Helm Charts (#573)
+* Expose JMX beans on http endpoint (#562)
+
+## 1.12.0
+
+**Release date:** 2023-4-18
+
+![AppVersion: 9.4.5](https://img.shields.io/static/v1?label=AppVersion&message=9.4.5&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Add priorityClassName to pod spec (#557)
+* Update appVersions for DC apps (#558)
+
+## 1.11.0
+
+**Release date:** 2023-3-22
+
+![AppVersion: 9.4.4](https://img.shields.io/static/v1?label=AppVersion&message=9.4.4&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Update appVersions for DC apps (#533)
+* JIRA - Add livenessProbe check to monitor the health of applications for each pod (#511)
+
 ## 1.10.0
 
 **Release date:** 2023-2-20
