@@ -4,3 +4,15 @@ image:
 
 bbtests:
   enabled: true
+
+jira:
+  resources:
+    jvm:
+      maxHeap: 768M
+      minHeap: 384M
+      reservedCodeCache: 512M
+    container:
+      requests:
+        cpu: 1
+        memory: 384M
+ 

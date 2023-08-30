@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.15.1-bb.1] - 2023-08-29
+### Added
+- Validate resource and test limits
+
 ## [1.15.1-bb.0] - 2023-08-18
 ### Added
 - Upgraded chart version from 1.10.0 to 1.15.1
