@@ -1,4 +1,4 @@
-{{- if .Values.istio.enabled -}}
+{{- if and (.Values.istio.enabled) (.Values.istio.jira.enabled) -}}
 {{- $serviceName := include "common.names.fullname" . -}}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -9,13 +9,20 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/part-of: jira
+  {{- if .Values.istio.jira.labels }}
+{{ toYaml .Values.istio.jira.labels | indent 4 }}
+  {{- end }}
+  {{- if .Values.istio.jira.annotations }}
+  annotations:
+{{ toYaml .Values.istio.jira.annotations | indent 4 }}
+  {{- end }}
 spec:
   gateways:
-  {{- range .Values.istio.gateways }}
+  {{- range .Values.istio.jira.gateways }}
     - {{ . }}
   {{- end }}
   hosts:
-  {{- range .Values.istio.hosts }}
+  {{- range .Values.istio.jira.hosts }}
     - {{ tpl . $ }}
   {{- end }}
   http:
@@ -24,8 +31,7 @@ spec:
         prefix: /
     route:
     - destination:
-        host: {{ $serviceName}}
+        host: {{ $serviceName}}.{{ .Release.Namespace }}.svc.cluster.local
         port:
           number: {{ .Values.jira.service.port }}
 {{- end }}
-
