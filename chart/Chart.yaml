@@ -2,7 +2,7 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.15.1-bb.2
+version: 1.15.1-bb.3
 appVersion: 9.10.0
 kubeVersion: ">=1.21.x-0"
 keywords:

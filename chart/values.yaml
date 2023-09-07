@@ -1042,12 +1042,24 @@ additionalFiles: []
 
 # Big Bang Additions
 proxyName: jira.bigbang.dev
-hostname: bigbang.dev
+domain: bigbang.dev
+
 istio:
   enabled: false
-  gateways:
-  - istio-system/main
-  hosts:
+  jira:
+    # -- Toggle Istio VirtualService creation
+    enabled: true
+    # -- Set Annotations for VirtualService
+    annotations: {}
+    # -- Set Labels for VirtualService
+    labels: {}
+    # -- Set Gateway for VirtualService
+    gateways:
+      - istio-system/main
+    # -- Set Hosts for VirtualService
+    hosts:
+      - jira.{{ .Values.domain }}
+
 bbtests:
   enabled: false
   cypress:
@@ -1061,6 +1073,12 @@ bbtests:
       limits:
         cpu: "1"
         memory: "1Gi"
+
+networkPolicies:
+  enabled: false
+  ingressLabels:
+    app: istio-ingressgateway
+    istio: ingressgateway     
 
 helmTestImage: "registry1.dso.mil/ironbank/big-bang/base:2.0.0"
 # values to enable HPA in Jira cluster
