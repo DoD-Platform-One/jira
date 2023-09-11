@@ -5,4 +5,3 @@ describe('Basic Jira', function() {
   cy.contains("Jira setup")
   })
 })
-

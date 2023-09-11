@@ -1,0 +1,7 @@
+{{- include "gluon.tests.script-configmap.overrides" (list . "jira-test.script-configmap") }}
+{{- define "jira-test.script-configmap" }}
+{{- end }}
+---
+{{- include "gluon.tests.script-runner.overrides" (list . "jira-test.script-runner") -}}
+{{- define "jira-test.script-runner" -}}
+{{- end }}
