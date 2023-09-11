@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.15.1-bb.4](https://img.shields.io/badge/Version-1.15.1--bb.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10.0](https://img.shields.io/badge/AppVersion-9.10.0-informational?style=flat-square)
+![Version: 1.15.1-bb.5](https://img.shields.io/badge/Version-1.15.1--bb.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10.0](https://img.shields.io/badge/AppVersion-9.10.0-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -94,8 +94,6 @@ helm install jira chart/
 | jira.securityContextEnabled | bool | `true` |  |
 | jira.securityContext.fsGroup | int | `2001` | The GID used by the Jira docker image GID will default to 2001 if not supplied and securityContextEnabled is set to true. This is intended to ensure that the shared-home volume is group-writeable by the GID used by the Jira container. However, this doesn't appear to work for NFS volumes due to a K8s bug: https://github.com/kubernetes/examples/issues/260 |
 | jira.securityContext.runAsNonRoot | bool | `true` |  |
-| jira.securityContext.allowPrivilegeEscalation | bool | `false` |  |
-| jira.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | jira.securityContext.runAsUser | int | `2001` |  |
 | jira.securityContext.runAsGroup | int | `2001` |  |
 | jira.containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsGroup":2001,"runAsNonRoot":true,"runAsUser":2001}` | Standard K8s field that holds security configurations that will be applied to a container. https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
@@ -131,7 +129,7 @@ helm install jira chart/
 | jira.resources.container.requests.cpu | string | `"1"` | Initial CPU request by Jira pod |
 | jira.resources.container.requests.memory | string | `"800m"` | Initial Memory request by Jira pod |
 | jira.forceConfigUpdate | bool | `false` | The Docker entrypoint.py generates application configuration on first start; not all of these files are regenerated on subsequent starts. By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true to change this behavior. |
-| jira.additionalJvmArgs | list | `[]` |  |
+| jira.additionalJvmArgs[0] | string | `"-Dcom.redhat.fips=false"` |  |
 | jira.tomcatConfig | object | `{"acceptCount":"10","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","scheme":null,"secure":null}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift. |
 | jira.tomcatConfig.generateByHelm | bool | `false` | Mount server.xml as a ConfigMap. Override configuration elements if necessary |
 | jira.tomcatConfig.customServerXml | string | `""` | Custom server.xml to be mounted into /opt/atlassian/jira/conf |
