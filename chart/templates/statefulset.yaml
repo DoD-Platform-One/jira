@@ -55,6 +55,7 @@ spec:
           image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
           imagePullPolicy: IfNotPresent
           securityContext:
+            runAsNonRoot: false # root is required to change file permissions
             runAsUser: 0 # make sure we run as root so we get the ability to change the volume permissions
           volumeMounts:
             - name: shared-home

@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.15.1-bb.3](https://img.shields.io/badge/Version-1.15.1--bb.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10.0](https://img.shields.io/badge/AppVersion-9.10.0-informational?style=flat-square)
+![Version: 1.15.1-bb.4](https://img.shields.io/badge/Version-1.15.1--bb.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10.0](https://img.shields.io/badge/AppVersion-9.10.0-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -93,7 +93,12 @@ helm install jira chart/
 | jira.service.annotations | object | `{}` | Additional annotations to apply to the Service |
 | jira.securityContextEnabled | bool | `true` |  |
 | jira.securityContext.fsGroup | int | `2001` | The GID used by the Jira docker image GID will default to 2001 if not supplied and securityContextEnabled is set to true. This is intended to ensure that the shared-home volume is group-writeable by the GID used by the Jira container. However, this doesn't appear to work for NFS volumes due to a K8s bug: https://github.com/kubernetes/examples/issues/260 |
-| jira.containerSecurityContext | object | `{}` | Standard K8s field that holds security configurations that will be applied to a container. https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
+| jira.securityContext.runAsNonRoot | bool | `true` |  |
+| jira.securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| jira.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| jira.securityContext.runAsUser | int | `2001` |  |
+| jira.securityContext.runAsGroup | int | `2001` |  |
+| jira.containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsGroup":2001,"runAsNonRoot":true,"runAsUser":2001}` | Standard K8s field that holds security configurations that will be applied to a container. https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
 | jira.setPermissions | bool | `true` | Boolean to define whether to set local home directory permissions on startup of Jira container. Set to 'false' to disable this behaviour. |
 | jira.ports.http | int | `8080` | The port on which the Jira container listens for HTTP traffic |
 | jira.ports.ehcache | int | `40001` | Ehcache port |
@@ -183,8 +188,6 @@ helm install jira chart/
 | istio.jira.labels | object | `{}` | Set Labels for VirtualService |
 | istio.jira.gateways | list | `["istio-system/main"]` | Set Gateway for VirtualService |
 | istio.jira.hosts | list | `["jira.{{ .Values.domain }}"]` | Set Hosts for VirtualService |
-| istio.gateways[0] | string | `"istio-system/main"` |  |
-| istio.hosts | string | `nil` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://{{ include \"common.names.fullname\" . }}:{{ .Values.jira.service.port }}"` |  |
