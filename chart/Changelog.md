@@ -1,15 +1,47 @@
 # Change Log
 
+## 1.16.0
+
+**Release date:** 2023-9-18
+
+![AppVersion: 9.4.10](https://img.shields.io/static/v1?label=AppVersion&message=9.4.10&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Allow templating of pod annotations (#662)
+* Make securityContext configurable for jmx exporter init container (#670)
+* Add user provided certificates to the default Java truststore (#663)
+
+## 1.15.3
+
+**Release date:** 2023-8-28
+
+![AppVersion: 9.4.9](https://img.shields.io/static/v1?label=AppVersion&message=9.4.9&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Decouple server and jmx annotations (#654)
+* Disable startup probes by default (#653)
+
+## 1.15.2
+
+**Release date:** 2023-8-22
+
+![AppVersion: 9.4.9](https://img.shields.io/static/v1?label=AppVersion&message=9.4.9&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Add defaultMode to additionalConfigMaps (#647)
+
 ## 1.15.1
 
-**Release date:** 2023-8-29
+**Release date:** 2023-8-17
 
 ![AppVersion: 9.4.9](https://img.shields.io/static/v1?label=AppVersion&message=9.4.9&color=success&logo=)
 ![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
 ![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
 
 * Make startup probes optional (#646)
-* Validate resource and test limits
 
 ## 1.15.0
 

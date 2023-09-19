@@ -2,7 +2,7 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.15.1-bb.5
+version: 1.16.0-bb.0
 appVersion: 9.10.0
 kubeVersion: ">=1.21.x-0"
 keywords:
@@ -20,9 +20,10 @@ sources:
 deprecated: false
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
-  artifacthub.io/changes: |
-    - kind: changed
-      description: Fix artifacthub annotations
+  artifacthub.io/changes: |-
+    - "Allow templating of pod annotations (#662)"
+    - "Make securityContext configurable for jmx exporter init container (#670)"
+    - "Add user provided certificates to the default Java truststore (#663)"
   bigbang.dev/applicationVersions: |
     - Jira: 9.10.0
   helm.sh/images: |
@@ -33,13 +34,10 @@ annotations:
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
       image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.16.2
-  artifacthub.io/changes: |-
-    - "Make startup probes optional (#646)"
-
 dependencies:
-  - name: common
-    repository: https://atlassian.github.io/data-center-helm-charts
-    version: 1.2.3
-  - name: gluon
-    repository: oci://registry1.dso.mil/bigbang
-    version: 0.4.0
+- name: common
+  version: 1.2.4
+  repository: https://atlassian.github.io/data-center-helm-charts
+- name: gluon
+  repository: oci://registry1.dso.mil/bigbang
+  version: 0.4.0
