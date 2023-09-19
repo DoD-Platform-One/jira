@@ -31,7 +31,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-
       hostAliases:
         {{- include "jira.additionalHosts" . | nindent 8 }}
       {{- if .Values.jira.securityContextEnabled }}
@@ -52,7 +51,7 @@ spec:
         {{- include "jira.additionalInitContainers" . | nindent 8 }}
         {{- if .Values.volumes.sharedHome.nfsPermissionFixer.enabled }}
         - name: nfs-permission-fixer
-          image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+          image: {{ .Values.volumes.sharedHome.nfsPermissionFixer.imageRepo }}:{{ .Values.volumes.sharedHome.nfsPermissionFixer.imageTag }}
           imagePullPolicy: IfNotPresent
           securityContext:
             runAsNonRoot: false # root is required to change file permissions
@@ -66,8 +65,20 @@ spec:
           command: ["sh", "-c", {{ include "jira.sharedHome.permissionFix.command" . | quote }}]
         {{- end }}
         {{- include "common.jmx.initContainer" . | nindent 8 }}
+        {{- if .Values.jira.additionalCertificates.secretName }}
+        - name: import-certs
+          image: {{ include "jira.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: keystore
+              mountPath: /var/ssl
+            - name: certs
+              mountPath: /tmp/crt
+          command: ["/bin/bash"]
+          args: ["-c", {{ include "jira.addCrtToKeystoreCmd" . }}]
+        {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ if .Values.jira.useHelmReleaseNameAsContainerName}}{{ include "common.names.fullname" . }}{{ else }}{{ .Chart.Name }}{{ end }}
           image: {{ include "jira.image" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
@@ -149,6 +160,7 @@ spec:
           startupProbe:
             tcpSocket:
               port: {{ .Values.jira.ports.http }}
+            initialDelaySeconds: {{ .Values.jira.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.jira.startupProbe.periodSeconds }}
             failureThreshold: {{ .Values.jira.startupProbe.failureThreshold }}
           {{- end }}
@@ -230,6 +242,9 @@ spec:
         - name: {{ .fileName | replace "_" "-" | replace "." "-" }}
           configMap:
             name: {{ include "common.names.fullname" $ }}-{{ $key.name }}
+            {{- if .defaultMode }}
+            defaultMode: {{ .defaultMode }}
+            {{- end }}
             items:
               - key: {{ .fileName }}
                 path: {{ .fileName }}

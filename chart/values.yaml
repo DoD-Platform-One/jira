@@ -36,7 +36,7 @@ image:
   # https://hub.docker.com/r/atlassian/jira-software
   #
   repository: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node
-
+  
   # -- Optional image repository pull secret
   imagePullSecrets:
     - name: private-registry
@@ -282,10 +282,10 @@ volumes:
 
       # -- Image repository for the permission fixer init container. Defaults to alpine
       #
-      imageRepo: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+      imageRepo: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
       # -- Image tag for the permission fixer init container. Defaults to latest
       #
-      imageTag: latest
+      imageTag: 8.8
 
       # -- By default, the fixer will change the group ownership of the volume's root directory
       # to match the Jira container's GID (2001), and then ensures the directory is
@@ -406,6 +406,10 @@ ingress:
 #
 jira:
 
+  # -- Whether the main container should acquire helm release name. The default, the container name is jira (Helm chart name)
+  #
+  useHelmReleaseNameAsContainerName: false
+
   # K8s Service configuration
   #
   service:
@@ -474,7 +478,6 @@ jira:
   # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   #
   containerSecurityContext:
-
     runAsNonRoot: true
     allowPrivilegeEscalation: false
     capabilities:
@@ -547,6 +550,10 @@ jira:
     # -- Whether to apply the startupProbe check to pod.
     #
     enabled: true
+
+    # -- Time to wait before starting the first probe
+    #
+    initialDelaySeconds: 60
 
     # -- How often (in seconds) the Jira container startup probe will run
     #
@@ -655,11 +662,11 @@ jira:
 
       # -- The maximum amount of heap memory that will be used by the Jira JVM
       #
-      maxHeap: "800M"
+      maxHeap: "768m"
 
       # -- The minimum amount of heap memory that will be used by the Jira JVM
       #
-      minHeap: "800M"
+      minHeap: "384m"
 
       # -- The memory reserved for the Jira JVM code cache
       #
@@ -677,11 +684,11 @@ jira:
 
         # -- Initial CPU request by Jira pod
         #
-        cpu: "1"
+        cpu: "2"
 
         # -- Initial Memory request by Jira pod
         #
-        memory: "800m"
+        memory: "2G"
 
       # limits:
       #   cpu: "2"
@@ -825,6 +832,12 @@ jira:
   #   labelSelector:
   #     matchLabels:
 
+  # -- Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates
+  #
+  additionalCertificates:
+    secretName:
+    customCmd:
+
 # Monitoring
 #
 monitoring:
@@ -832,6 +845,23 @@ monitoring:
   # -- Expose JMX metrics with jmx_exporter https://github.com/prometheus/jmx_exporter
   #
   exposeJmxMetrics: false
+
+  # --  JMX exporter init container configuration
+  #
+  jmxExporterInitContainer:
+
+    # -- Whether to run JMX exporter init container as root to copy JMX exporter binary to shared home volume.
+    # Set to false if running containers as root is not allowed in the cluster.
+    #
+    runAsRoot: false
+
+    # -- Custom SecurityContext for the jmx exporter init container
+    #
+    customSecurityContext: {}
+
+  # -- Annotations added to the jmx service
+  #
+  jmxServiceAnnotations: {}
 
   # -- Fetch jmx_exporter jar from the image. If set to false make sure to manually copy the jar
   # to shared home and provide an absolute path in jmxExporterCustomJarLocation
@@ -1128,11 +1158,13 @@ additionalConfigMaps: []
 #    keys:
 #      - fileName: hello.properties
 #        mountPath: /opt/atlassian/jira/atlassian-jira/WEB-INF/classes
+#        defaultMode:
 #        content: |
 #          foo=bar
 #          hello=world
 #      - fileName: hello.xml
 #        mountPath: /opt/atlassian/jira/atlassian-jira/WEB-INF/classes
+#        defaultMode:
 #        content: |
 #          <xml>
 #          </xml>

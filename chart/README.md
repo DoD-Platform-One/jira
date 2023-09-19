@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.15.1](https://img.shields.io/badge/Version-1.15.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.9](https://img.shields.io/badge/AppVersion-9.4.9-informational?style=flat-square)
+![Version: 1.16.0](https://img.shields.io/badge/Version-1.16.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.10](https://img.shields.io/badge/AppVersion-9.4.10-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -17,7 +17,7 @@ Kubernetes: `>=1.21.x-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://atlassian.github.io/data-center-helm-charts | common | 1.2.3 |
+| https://atlassian.github.io/data-center-helm-charts | common | 1.2.4 |
 
 ## Values
 
@@ -65,6 +65,7 @@ Kubernetes: `>=1.21.x-0`
 | jira.accessLog.localHomeSubPath | string | `"log"` | The subdirectory within the local-home volume where access logs should be stored.  |
 | jira.accessLog.mountPath | string | `"/opt/atlassian/jira/logs"` | The path within the Jira container where the local-home volume should be mounted in order to capture access logs.  |
 | jira.additionalBundledPlugins | list | `[]` | Specifies a list of additional Jira plugins that should be added to the Jira container. Note plugins installed via this method will appear as bundled plugins rather than user plugins. These should be specified in the same manner as the 'additionalLibraries' property. Additional details: https://atlassian.github.io/data-center-helm-charts/examples/external_libraries/EXTERNAL_LIBS/  NOTE: only .jar files can be loaded using this approach. OBR's can be extracted (unzipped) to access the associated .jar  An alternative to this method is to install the plugins via "Manage Apps" in the product system administration UI.  |
+| jira.additionalCertificates | object | `{"customCmd":null,"secretName":null}` | Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates  |
 | jira.additionalEnvironmentVariables | list | `[]` | Defines any additional environment variables to be passed to the Jira container. See https://hub.docker.com/r/atlassian/jira-software for supported variables.  |
 | jira.additionalJvmArgs | list | `[]` |  |
 | jira.additionalLibraries | list | `[]` | Specifies a list of additional Java libraries that should be added to the Jira container. Each item in the list should specify the name of the volume that contains the library, as well as the name of the library file within that volume's root directory. Optionally, a subDirectory field can be included to specify which directory in the volume contains the library file. Additional details: https://atlassian.github.io/data-center-helm-charts/examples/external_libraries/EXTERNAL_LIBS/  |
@@ -111,13 +112,15 @@ Kubernetes: `>=1.21.x-0`
 | jira.setPermissions | bool | `true` | Boolean to define whether to set local home directory permissions on startup of Jira container. Set to 'false' to disable this behaviour.  |
 | jira.shutdown.command | string | `"/shutdown-wait.sh"` | By default pods will be stopped via a [preStop hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/), using a script supplied by the Docker image. If any other shutdown behaviour is needed it can be achieved by overriding this value. Note that the shutdown command needs to wait for the application shutdown completely before exiting; see [the default command](https://bitbucket.org/atlassian-docker/docker-atlassian-jira/src/master/shutdown-wait.sh) for details.  |
 | jira.shutdown.terminationGracePeriodSeconds | int | `30` | The termination grace period for pods during shutdown. This should be set to the internal grace period, plus a small buffer to allow the JVM to fully terminate.  |
-| jira.startupProbe.enabled | bool | `true` | Whether to apply the startupProbe check to pod.  |
+| jira.startupProbe.enabled | bool | `false` | Whether to apply the startupProbe check to pod.  |
 | jira.startupProbe.failureThreshold | int | `120` | The number of consecutive failures of the Jira container startup probe before the pod fails startup checks.  |
+| jira.startupProbe.initialDelaySeconds | int | `60` | Time to wait before starting the first probe  |
 | jira.startupProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container startup probe will run  |
 | jira.tomcatConfig | object | `{"acceptCount":"10","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","scheme":null,"secure":null}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
 | jira.tomcatConfig.customServerXml | string | `""` | Custom server.xml to be mounted into /opt/atlassian/jira/conf  |
 | jira.tomcatConfig.generateByHelm | bool | `false` | Mount server.xml as a ConfigMap. Override configuration elements if necessary  |
 | jira.topologySpreadConstraints | list | `[]` | Defines topology spread constraints for Jira pods. See details: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/  |
+| jira.useHelmReleaseNameAsContainerName | bool | `false` | Whether the main container should acquire helm release name. The default, the container name is jira (Helm chart name)  |
 | monitoring.exposeJmxMetrics | bool | `false` | Expose JMX metrics with jmx_exporter https://github.com/prometheus/jmx_exporter  |
 | monitoring.fetchJmxExporterJar | bool | `true` | Fetch jmx_exporter jar from the image. If set to false make sure to manually copy the jar to shared home and provide an absolute path in jmxExporterCustomJarLocation  |
 | monitoring.grafana.createDashboards | bool | `false` | Create ConfigMaps with Grafana dashboards  |
@@ -127,8 +130,12 @@ Kubernetes: `>=1.21.x-0`
 | monitoring.jmxExporterCustomJarLocation | string | `nil` | Location of jmx_exporter jar file if mounted from a secret or manually copied to shared home  |
 | monitoring.jmxExporterImageRepo | string | `"bitnami/jmx-exporter"` | Image repository with jmx_exporter jar  |
 | monitoring.jmxExporterImageTag | string | `"0.18.0"` | Image tag to be used to pull jmxExporterImageRepo  |
+| monitoring.jmxExporterInitContainer | object | `{"customSecurityContext":{},"runAsRoot":true}` | JMX exporter init container configuration  |
+| monitoring.jmxExporterInitContainer.customSecurityContext | object | `{}` | Custom SecurityContext for the jmx exporter init container  |
+| monitoring.jmxExporterInitContainer.runAsRoot | bool | `true` | Whether to run JMX exporter init container as root to copy JMX exporter binary to shared home volume. Set to false if running containers as root is not allowed in the cluster.  |
 | monitoring.jmxExporterPort | int | `9999` | Port number on which metrics will be available  |
 | monitoring.jmxExporterPortType | string | `"ClusterIP"` | JMX exporter port type  |
+| monitoring.jmxServiceAnnotations | object | `{}` | Annotations added to the jmx service  |
 | monitoring.serviceMonitor.create | bool | `false` | Create ServiceMonitor to start scraping metrics. ServiceMonitor CRD needs to be created in advance.  |
 | monitoring.serviceMonitor.prometheusLabelSelector | object | `{}` | ServiceMonitorSelector of the prometheus instance.  |
 | monitoring.serviceMonitor.scrapeIntervalSeconds | int | `30` | Scrape interval for the JMX service.  |
