@@ -534,13 +534,19 @@ jira:
     #
     failureThreshold: 10
 
-    # -- Custom readinessProbe to override the default /status httpGet
+    # -- Custom readiness probe configuration.
+    # if custom is {}, defaults to httpGet.
     #
-    customProbe: {}
-#      tcpSocket:
-#        port: 8080
-#      periodSeconds: 5
-#      failureThreshold: 120
+    custom: {}
+    #  exec:
+    #    command:
+    #    - /bin/bash 
+    #    - -c
+    #    - curl http://some/endpoint && exit 0
+
+  # Confirm that Jira is up and running with a Liveness
+  # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-a-liveness-command
+  #
 
   # Confirm that Jira is up and running with a StartupProbe
   # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes
@@ -566,7 +572,7 @@ jira:
 
   # Ensure that the server responds with a LivenessProbe
   # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-a-tcp-liveness-probe
-  #
+
   livenessProbe:
 
     # -- Whether to apply the livenessProbe check to pod.
@@ -589,6 +595,17 @@ jira:
     # before the pod fails liveness checks.
     #
     failureThreshold: 12
+
+    # -- Custom liveness probe configuration.
+    # if custom is {}, defaults to httpGet.
+    #
+    custom: {}  
+    #  exec:
+    #    command:
+    #    - /bin/bash 
+    #    - -c
+    #    - if curl http://some/endpoint && exit 0
+
 
   # Jira log configuration
   #

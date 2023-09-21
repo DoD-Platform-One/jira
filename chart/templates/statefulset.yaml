@@ -142,19 +142,17 @@ spec:
             {{- include "common.jmx.port" . | nindent 12 }}
           {{- if .Values.jira.readinessProbe.enabled }}
           readinessProbe:
-            {{- if .Values.jira.readinessProbe.customProbe}}
-            {{- with .Values.jira.readinessProbe.customProbe }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
-            {{- else }}
+          {{- if .Values.jira.readinessProbe.custom }}
+            {{- toYaml .Values.jira.readinessProbe.custom | nindent 12 }}
+          {{- else }}
             httpGet:
               port: {{ .Values.jira.ports.http }}
               path: {{ .Values.jira.service.contextPath }}/status
+          {{- end }}
             initialDelaySeconds: {{ .Values.jira.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.jira.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.jira.readinessProbe.timeoutSeconds }}
             failureThreshold: {{ .Values.jira.readinessProbe.failureThreshold }}
-            {{- end }}
           {{- end }}
           {{- if .Values.jira.startupProbe.enabled }}
           startupProbe:
@@ -168,6 +166,13 @@ spec:
           livenessProbe:
             tcpSocket:
               port: {{ .Values.jira.ports.http }}
+          {{- if .Values.jira.livenessProbe.custom }}
+            {{- toYaml .Values.jira.livenessProbe.custom | nindent 12 }}
+          {{- else }}
+            httpGet:
+              port: {{ .Values.jira.ports.http }}
+              path: {{ .Values.jira.service.contextPath }}/status
+            {{- end }}
             initialDelaySeconds: {{ .Values.jira.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.jira.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.jira.livenessProbe.timeoutSeconds }}
