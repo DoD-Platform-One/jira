@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.16.0-bb.0](https://img.shields.io/badge/Version-1.16.0--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10](https://img.shields.io/badge/AppVersion-9.10-informational?style=flat-square)
+![Version: 1.16.0-bb.1](https://img.shields.io/badge/Version-1.16.0--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10.0](https://img.shields.io/badge/AppVersion-9.10.0-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -107,7 +107,7 @@ helm install jira chart/
 | jira.readinessProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container readiness probe will run  |
 | jira.readinessProbe.timeoutSeconds | int | `1` | Number of seconds after which the probe times out  |
 | jira.readinessProbe.failureThreshold | int | `10` | The number of consecutive failures of the Jira container readiness probe before the pod fails readiness checks.  |
-| jira.readinessProbe.customProbe | object | `{}` | Custom readinessProbe to override the default /status httpGet  |
+| jira.readinessProbe.custom | object | `{}` | Custom readiness probe configuration. if custom is {}, defaults to httpGet.  |
 | jira.startupProbe.enabled | bool | `true` | Whether to apply the startupProbe check to pod.  |
 | jira.startupProbe.initialDelaySeconds | int | `60` | Time to wait before starting the first probe  |
 | jira.startupProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container startup probe will run  |
@@ -117,6 +117,7 @@ helm install jira chart/
 | jira.livenessProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container liveness probe will run  |
 | jira.livenessProbe.timeoutSeconds | int | `1` | Number of seconds after which the probe times out  |
 | jira.livenessProbe.failureThreshold | int | `12` | The number of consecutive failures of the Jira container liveness probe before the pod fails liveness checks.  |
+| jira.livenessProbe.custom | object | `{}` | Custom liveness probe configuration. if custom is {}, defaults to httpGet.  |
 | jira.accessLog.mountPath | string | `"/opt/atlassian/jira/logs"` | The path within the Jira container where the local-home volume should be mounted in order to capture access logs.  |
 | jira.accessLog.localHomeSubPath | string | `"log"` | The subdirectory within the local-home volume where access logs should be stored.  |
 | jira.s3Storage.avatars.bucketName | string | `nil` |  |
