@@ -164,10 +164,10 @@ spec:
           {{- end }}
           {{- if .Values.jira.livenessProbe.enabled }}
           livenessProbe:
-            tcpSocket:
-              port: {{ .Values.jira.ports.http }}
           {{- if .Values.jira.livenessProbe.custom }}
             {{- toYaml .Values.jira.livenessProbe.custom | nindent 12 }}
+            tcpSocket:
+              port: {{ .Values.jira.ports.http }}
           {{- else }}
             httpGet:
               port: {{ .Values.jira.ports.http }}
