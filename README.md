@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.16.0-bb.2](https://img.shields.io/badge/Version-1.16.0--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10.0](https://img.shields.io/badge/AppVersion-9.10.0-informational?style=flat-square)
+![Version: 1.16.0-bb.3](https://img.shields.io/badge/Version-1.16.0--bb.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.10.0](https://img.shields.io/badge/AppVersion-9.10.0-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -147,22 +147,22 @@ helm install jira chart/
 | jira.topologySpreadConstraints | list | `[]` | Defines topology spread constraints for Jira pods. See details: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/  |
 | jira.additionalCertificates | object | `{"customCmd":null,"secretName":null}` | Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates  |
 | monitoring.exposeJmxMetrics | bool | `false` | Expose JMX metrics with jmx_exporter https://github.com/prometheus/jmx_exporter  |
-| monitoring.jmxExporterInitContainer | object | `{"customSecurityContext":{},"runAsRoot":false}` | JMX exporter init container configuration  |
+| monitoring.jmxExporterInitContainer | object | `{"customSecurityContext":{"runAsUser":1000},"runAsRoot":false}` | JMX exporter init container configuration  |
 | monitoring.jmxExporterInitContainer.runAsRoot | bool | `false` | Whether to run JMX exporter init container as root to copy JMX exporter binary to shared home volume. Set to false if running containers as root is not allowed in the cluster.  |
-| monitoring.jmxExporterInitContainer.customSecurityContext | object | `{}` | Custom SecurityContext for the jmx exporter init container  |
+| monitoring.jmxExporterInitContainer.customSecurityContext | object | `{"runAsUser":1000}` | Custom SecurityContext for the jmx exporter init container  |
 | monitoring.jmxServiceAnnotations | object | `{}` | Annotations added to the jmx service  |
 | monitoring.fetchJmxExporterJar | bool | `true` | Fetch jmx_exporter jar from the image. If set to false make sure to manually copy the jar to shared home and provide an absolute path in jmxExporterCustomJarLocation  |
-| monitoring.jmxExporterImageRepo | string | `"registry1.dso.mil/opensource/prometheus/jmx-exporter"` | Image repository with jmx_exporter jar  |
+| monitoring.jmxExporterImageRepo | string | `"registry1.dso.mil/ironbank/opensource/prometheus/jmx-exporter"` | Image repository with jmx_exporter jar  |
 | monitoring.jmxExporterImageTag | string | `"0.18.0"` | Image tag to be used to pull jmxExporterImageRepo  |
 | monitoring.jmxExporterPort | int | `9999` | Port number on which metrics will be available  |
 | monitoring.jmxExporterPortType | string | `"ClusterIP"` | JMX exporter port type  |
-| monitoring.jmxExporterCustomJarLocation | string | `nil` | Location of jmx_exporter jar file if mounted from a secret or manually copied to shared home  |
+| monitoring.jmxExporterCustomJarLocation | string | `"/var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar"` | Location of jmx_exporter jar file if mounted from a secret or manually copied to shared home  |
 | monitoring.jmxExporterCustomConfig | object | `{}` | Custom jmx config with the rules. Make sure to keep jmx-config key  |
 | monitoring.serviceMonitor.create | bool | `false` | Create ServiceMonitor to start scraping metrics. ServiceMonitor CRD needs to be created in advance.  |
 | monitoring.serviceMonitor.prometheusLabelSelector | object | `{}` | ServiceMonitorSelector of the prometheus instance.  |
 | monitoring.serviceMonitor.scrapeIntervalSeconds | int | `30` | Scrape interval for the JMX service.  |
 | monitoring.grafana.createDashboards | bool | `false` | Create ConfigMaps with Grafana dashboards  |
-| monitoring.grafana.dashboardLabels | object | `{}` | Label selector for Grafana dashboard importer sidecar  |
+| monitoring.grafana.dashboardLabels | object | `{"grafana_dashboard":"1"}` | Label selector for Grafana dashboard importer sidecar  |
 | monitoring.grafana.dashboardAnnotations | object | `{}` | Annotations added to Grafana dashboards ConfigMaps. See: https://github.com/kiwigrid/k8s-sidecar#usage  |
 | fluentd.enabled | bool | `false` | Set to 'true' if the Fluentd sidecar (DaemonSet) should be added to each pod  |
 | fluentd.imageRepo | string | `"ironbank/opensource/fluentd/fluentd-kubernetes-daemonset"` | The Fluentd sidecar image repository  |
