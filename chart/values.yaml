@@ -874,7 +874,8 @@ monitoring:
 
     # -- Custom SecurityContext for the jmx exporter init container
     #
-    customSecurityContext: {}
+    customSecurityContext:
+      runAsUser: 1000
 
   # -- Annotations added to the jmx service
   #
@@ -887,7 +888,7 @@ monitoring:
 
   # -- Image repository with jmx_exporter jar
   #
-  jmxExporterImageRepo: registry1.dso.mil/opensource/prometheus/jmx-exporter
+  jmxExporterImageRepo: registry1.dso.mil/ironbank/opensource/prometheus/jmx-exporter
 
   # -- Image tag to be used to pull jmxExporterImageRepo
   #
@@ -903,7 +904,7 @@ monitoring:
 
   # -- Location of jmx_exporter jar file if mounted from a secret or manually copied to shared home
   #
-  jmxExporterCustomJarLocation:
+  jmxExporterCustomJarLocation: /var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar
 
   # -- Custom jmx config with the rules. Make sure to keep jmx-config key
   #
@@ -935,8 +936,9 @@ monitoring:
 
     # -- Label selector for Grafana dashboard importer sidecar
     #
-    dashboardLabels: {}
-      # grafana_dashboard: dc_monitoring
+    dashboardLabels:
+      grafana_dashboard: "1"
+
 
     # -- Annotations added to Grafana dashboards ConfigMaps. See: https://github.com/kiwigrid/k8s-sidecar#usage
     #

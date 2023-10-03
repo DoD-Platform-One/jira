@@ -26,6 +26,16 @@ spec:
     - {{ tpl . $ }}
   {{- end }}
   http:
+  {{- if .Values.monitoring.exposeJmxMetrics }}
+  - match:
+    - uri:
+        prefix: /metrics
+    route:
+    - destination:
+        host: jira-jmx.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.monitoring.jmxExporterPort }}
+  {{- end }}
   - match:
     - uri:
         prefix: /

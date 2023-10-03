@@ -385,3 +385,30 @@ volumeClaimTemplates:
 set -e; for crt in /tmp/crt/*.*; do echo "Adding $crt to keystore"; keytool -import -cacerts -storepass changeit -noprompt -alias $(echo $(basename $crt)) -file $crt; done; cp $JAVA_HOME/lib/security/cacerts /var/ssl/cacerts
 {{- end }}
 {{- end }}
+
+{{/*
+Jmx init container
+*/}}
+{{- define "common.jmx.initContainer" -}}
+{{- if and .Values.monitoring.exposeJmxMetrics .Values.monitoring.fetchJmxExporterJar }}
+- name: fetch-jmx-exporter
+  image: {{ .Values.monitoring.jmxExporterImageRepo}}:{{ .Values.monitoring.jmxExporterImageTag}}
+  command: ["cp"]
+  args: ["/opt/jmx_exporter/jmx_prometheus_javaagent-{{ .Values.monitoring.jmxExporterImageTag}}.jar", "{{ .Values.volumes.sharedHome.mountPath }}"]
+  {{- if .Values.monitoring.jmxExporterInitContainer.runAsRoot }}
+  securityContext:
+    runAsUser: 0
+  {{- else if .Values.monitoring.jmxExporterInitContainer.customSecurityContext }}
+  securityContext:
+  {{- with .Values.monitoring.jmxExporterInitContainer.customSecurityContext }}
+  {{- toYaml .  | nindent 4 }}
+  {{- end }}
+  {{- end }}
+  volumeMounts:
+    - mountPath: {{ .Values.volumes.sharedHome.mountPath | quote }}
+      name: shared-home
+      {{- if .Values.volumes.sharedHome.subPath }}
+      subPath: {{ .Values.volumes.sharedHome.subPath | quote }}
+      {{- end }}
+{{- end }}
+{{- end }}
