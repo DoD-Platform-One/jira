@@ -599,7 +599,7 @@ jira:
     # -- Custom liveness probe configuration.
     # if custom is {}, defaults to httpGet.
     #
-    custom: {}  
+    custom: {}
     #  exec:
     #    command:
     #    - /bin/bash 
