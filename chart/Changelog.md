@@ -1,5 +1,57 @@
 # Change Log
 
+## 1.16.5
+
+**Release date:** 2023-10-24
+
+![AppVersion: 9.4.11](https://img.shields.io/static/v1?label=AppVersion&message=9.4.11&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Fix custom jmx config (#699)
+* Copy cacerts first, then import certs (#696)
+
+## 1.16.4
+
+**Release date:** 2023-10-11
+
+![AppVersion: 9.4.11](https://img.shields.io/static/v1?label=AppVersion&message=9.4.11&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Update Helm chart version
+
+## 1.16.3
+
+**Release date:** 2023-10-11
+
+![AppVersion: 9.4.11](https://img.shields.io/static/v1?label=AppVersion&message=9.4.11&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Update Helm chart version
+
+## 1.16.2
+
+**Release date:** 2023-10-8
+
+![AppVersion: 9.4.11](https://img.shields.io/static/v1?label=AppVersion&message=9.4.11&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Update appVersions for DC apps (#683)
+* Add quote to podAnnotation templating (#678)
+
+## 1.16.1
+
+**Release date:** 2023-9-20
+
+![AppVersion: 9.4.10](https://img.shields.io/static/v1?label=AppVersion&message=9.4.10&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Update Helm chart version
+
 ## 1.16.0
 
 **Release date:** 2023-9-18

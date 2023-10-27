@@ -47,7 +47,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.10.0"
+  tag: "9.11.2"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -906,12 +906,11 @@ monitoring:
   #
   jmxExporterCustomJarLocation: /var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar
 
-  # -- Custom jmx config with the rules. Make sure to keep jmx-config key
+  # -- Custom JMX config with the rules
   #
   jmxExporterCustomConfig: {}
-  # jmx-config: |
-  #   rules:
-  #     - pattern: ".*"
+  #  rules:
+  #   - pattern: ".*"
 
   serviceMonitor:
 
