@@ -287,6 +287,17 @@ volumes:
       #
       imageTag: 8.8
 
+      # -- Resources requests and limits for nfsPermissionFixer init container
+      # See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+      #
+      resources: {}
+      #  requests:
+      #    cpu: "1m"
+      #    memory: "20Mi"
+      #  limits:
+      #    cpu: "1"
+      #    memory: "1G"
+
       # -- By default, the fixer will change the group ownership of the volume's root directory
       # to match the Jira container's GID (2001), and then ensures the directory is
       # group-writeable. If this is not the desired behaviour, command used can be specified
@@ -877,6 +888,17 @@ monitoring:
     customSecurityContext:
       runAsUser: 1000
 
+    # -- Resources requests and limits for the JMX exporter init container
+    # See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+    #
+    resources: {}
+    #  requests:
+    #    cpu: "1m"
+    #    memory: "20Mi"
+    #  limits:
+    #    cpu: "1"
+    #    memory: "1G"
+
   # -- Annotations added to the jmx service
   #
   jmxServiceAnnotations: {}
@@ -962,6 +984,17 @@ fluentd:
   # -- The Fluentd sidecar image tag
   #
   imageTag: 1.16.2
+
+  # -- Resources requests and limits for fluentd sidecar container
+  # See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+  #
+  resources: {}
+  #  requests:
+  #    cpu: "1m"
+  #    memory: "20Mi"
+  #  limits:
+  #    cpu: "1"
+  #    memory: "1G"
 
   # -- The command used to start Fluentd. If not supplied the default command
   # will be used: "fluentd -c /fluentd/etc/fluent.conf -v"
