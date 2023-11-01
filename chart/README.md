@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.16.5](https://img.shields.io/badge/Version-1.16.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.11](https://img.shields.io/badge/AppVersion-9.4.11-informational?style=flat-square)
+![Version: 1.16.6](https://img.shields.io/badge/Version-1.16.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.11](https://img.shields.io/badge/AppVersion-9.4.11-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -17,7 +17,7 @@ Kubernetes: `>=1.21.x-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://atlassian.github.io/data-center-helm-charts | common | 1.2.4 |
+| https://atlassian.github.io/data-center-helm-charts | common | 1.2.5 |
 
 ## Values
 
@@ -47,6 +47,7 @@ Kubernetes: `>=1.21.x-0`
 | fluentd.httpPort | int | `9880` | The port on which the Fluentd sidecar will listen  |
 | fluentd.imageRepo | string | `"fluent/fluentd-kubernetes-daemonset"` | The Fluentd sidecar image repository  |
 | fluentd.imageTag | string | `"v1.11.5-debian-elasticsearch7-1.2"` | The Fluentd sidecar image tag  |
+| fluentd.resources | object | `{}` | Resources requests and limits for fluentd sidecar container See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/  |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
 | image.repository | string | `"atlassian/jira-software"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.tag | string | `""` | The docker image tag to be used - defaults to the Chart appVersion  |
@@ -130,8 +131,9 @@ Kubernetes: `>=1.21.x-0`
 | monitoring.jmxExporterCustomJarLocation | string | `nil` | Location of jmx_exporter jar file if mounted from a secret or manually copied to shared home  |
 | monitoring.jmxExporterImageRepo | string | `"bitnami/jmx-exporter"` | Image repository with jmx_exporter jar  |
 | monitoring.jmxExporterImageTag | string | `"0.18.0"` | Image tag to be used to pull jmxExporterImageRepo  |
-| monitoring.jmxExporterInitContainer | object | `{"customSecurityContext":{},"runAsRoot":true}` | JMX exporter init container configuration  |
+| monitoring.jmxExporterInitContainer | object | `{"customSecurityContext":{},"resources":{},"runAsRoot":true}` | JMX exporter init container configuration  |
 | monitoring.jmxExporterInitContainer.customSecurityContext | object | `{}` | Custom SecurityContext for the jmx exporter init container  |
+| monitoring.jmxExporterInitContainer.resources | object | `{}` | Resources requests and limits for the JMX exporter init container See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/  |
 | monitoring.jmxExporterInitContainer.runAsRoot | bool | `true` | Whether to run JMX exporter init container as root to copy JMX exporter binary to shared home volume. Set to false if running containers as root is not allowed in the cluster.  |
 | monitoring.jmxExporterPort | int | `9999` | Port number on which metrics will be available  |
 | monitoring.jmxExporterPortType | string | `"ClusterIP"` | JMX exporter port type  |
@@ -165,6 +167,7 @@ Kubernetes: `>=1.21.x-0`
 | volumes.sharedHome.nfsPermissionFixer.imageRepo | string | `"alpine"` | Image repository for the permission fixer init container. Defaults to alpine  |
 | volumes.sharedHome.nfsPermissionFixer.imageTag | string | `"latest"` | Image tag for the permission fixer init container. Defaults to latest  |
 | volumes.sharedHome.nfsPermissionFixer.mountPath | string | `"/shared-home"` | The path in the K8s initContainer where the shared-home volume will be mounted  |
+| volumes.sharedHome.nfsPermissionFixer.resources | object | `{}` | Resources requests and limits for nfsPermissionFixer init container See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/  |
 | volumes.sharedHome.persistentVolumeClaim.create | bool | `false` | If 'true', then a 'PersistentVolumeClaim' and 'PersistentVolume' will be dynamically created for shared-home based on the 'StorageClassName' supplied below.  |
 | volumes.sharedHome.persistentVolumeClaim.resources | object | `{"requests":{"storage":"1Gi"}}` | Specifies the standard K8s resource requests and/or limits for the shared-home volume claims.  |
 | volumes.sharedHome.persistentVolumeClaim.storageClassName | string | `nil` | Specify the name of the 'StorageClass' that should be used for the 'shared-home' volume claim.  |

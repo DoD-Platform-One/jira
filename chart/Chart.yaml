@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.16.5-bb.0
-appVersion: 9.11.2
+version: 1.16.6-bb.0
+appVersion: 9.4.11
 kubeVersion: ">=1.21.x-0"
 keywords:
 - Jira
@@ -38,8 +38,8 @@ annotations:
       image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.16.2
 dependencies:
 - name: common
-  version: 1.2.4
+  version: 1.2.5
   repository: https://atlassian.github.io/data-center-helm-charts
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
-  version: 0.4.1
+  version: 0.4.4
