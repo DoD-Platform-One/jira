@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.16.6-bb.0](https://img.shields.io/badge/Version-1.16.6--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.11](https://img.shields.io/badge/AppVersion-9.4.11-informational?style=flat-square)
+![Version: 1.16.6-bb.1](https://img.shields.io/badge/Version-1.16.6--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.11](https://img.shields.io/badge/AppVersion-9.4.11-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -39,10 +39,10 @@ helm install jira chart/
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | replicaCount | int | `1` | The initial number of Jira pods that should be started at deployment time. Note that Jira requires manual configuration via the browser post deployment after the first pod is deployed. This configuration must be completed before scaling up additional pods. As such this value should always be kept as 1, but can be altered once manual configuration is complete.  |
-| image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
+| image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
-| image.tag | string | `"9.11.2"` | The docker image tag to be used - defaults to the Chart appVersion  |
+| image.tag | string | `"9.4.11"` | The docker image tag to be used - defaults to the Chart appVersion  |
 | serviceAccount.create | bool | `true` | Set to 'true' if a ServiceAccount should be created, or 'false' if it already exists.  |
 | serviceAccount.name | string | `nil` | The name of the ServiceAccount to be used by the pods. If not specified, but the "serviceAccount.create" flag is set to 'true', then the ServiceAccount name will be auto-generated, otherwise the 'default' ServiceAccount will be used. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server  |
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
