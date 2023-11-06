@@ -35,7 +35,7 @@ image:
   # -- The Jira Docker image to use
   # https://hub.docker.com/r/atlassian/jira-software
   #
-  repository: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node
+  repository: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts
   
   # -- Optional image repository pull secret
   imagePullSecrets:
@@ -47,7 +47,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.11.2"
+  tag: "9.4.11"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
