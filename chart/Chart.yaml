@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.16.6-bb.1
-appVersion: 9.4.11
+version: 1.16.6-bb.2
+appVersion: 9.4.12
 kubeVersion: ">=1.21.x-0"
 keywords:
 - Jira
@@ -30,9 +30,9 @@ annotations:
     - Jira: 9.11.2
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.4.11
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.4.12
     - name: nfs-permission-fixer
-      image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+      image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
       image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.16.2
