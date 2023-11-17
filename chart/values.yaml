@@ -47,7 +47,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.4.11"
+  tag: "9.4.12"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -285,7 +285,7 @@ volumes:
       imageRepo: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
       # -- Image tag for the permission fixer init container. Defaults to latest
       #
-      imageTag: 8.8
+      imageTag: 8.9
 
       # -- Resources requests and limits for nfsPermissionFixer init container
       # See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
@@ -1174,7 +1174,7 @@ networkPolicies:
     app: istio-ingressgateway
     istio: ingressgateway     
 
-helmTestImage: "registry1.dso.mil/ironbank/big-bang/base:2.0.0"
+helmTestImage: "registry1.dso.mil/ironbank/big-bang/base:2.1.0"
 # values to enable HPA in Jira cluster
 # Setup after your intial setup of Jira cluster and when cluster autoscaling is enabled.
 hpa:

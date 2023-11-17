@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.16.6-bb.2] - 2023-11-17
+### Added
+- Updated image jira-node-lts from v9.4.11 to v9.4.12
+- Updated image big-bang/base from 2.0.0 to 2.1.0
+- Updated image ubi8-minimal from 8.8 to 8.9
+
 ## [1.16.6-bb.1] - 2023-11-02
 ### Added
 - Converting from jira-node to jira-node-lts image, reverting image from 9.11.2 to 9.4.11

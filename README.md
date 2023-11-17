@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.16.6-bb.1](https://img.shields.io/badge/Version-1.16.6--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.11](https://img.shields.io/badge/AppVersion-9.4.11-informational?style=flat-square)
+![Version: 1.16.6-bb.2](https://img.shields.io/badge/Version-1.16.6--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.4.12](https://img.shields.io/badge/AppVersion-9.4.12-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -42,7 +42,7 @@ helm install jira chart/
 | image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
-| image.tag | string | `"9.4.11"` | The docker image tag to be used - defaults to the Chart appVersion  |
+| image.tag | string | `"9.4.12"` | The docker image tag to be used - defaults to the Chart appVersion  |
 | serviceAccount.create | bool | `true` | Set to 'true' if a ServiceAccount should be created, or 'false' if it already exists.  |
 | serviceAccount.name | string | `nil` | The name of the ServiceAccount to be used by the pods. If not specified, but the "serviceAccount.create" flag is set to 'true', then the ServiceAccount name will be auto-generated, otherwise the 'default' ServiceAccount will be used. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server  |
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
@@ -68,7 +68,7 @@ helm install jira chart/
 | volumes.sharedHome.nfsPermissionFixer.enabled | bool | `true` | If 'true', this will alter the shared-home volume's root directory so that Jira can write to it. This is a workaround for a K8s bug affecting NFS volumes: https://github.com/kubernetes/examples/issues/260  |
 | volumes.sharedHome.nfsPermissionFixer.mountPath | string | `"/shared-home"` | The path in the K8s initContainer where the shared-home volume will be mounted  |
 | volumes.sharedHome.nfsPermissionFixer.imageRepo | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal"` | Image repository for the permission fixer init container. Defaults to alpine  |
-| volumes.sharedHome.nfsPermissionFixer.imageTag | float | `8.8` | Image tag for the permission fixer init container. Defaults to latest  |
+| volumes.sharedHome.nfsPermissionFixer.imageTag | float | `8.9` | Image tag for the permission fixer init container. Defaults to latest  |
 | volumes.sharedHome.nfsPermissionFixer.resources | object | `{}` | Resources requests and limits for nfsPermissionFixer init container See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/  |
 | volumes.sharedHome.nfsPermissionFixer.command | string | `nil` | By default, the fixer will change the group ownership of the volume's root directory to match the Jira container's GID (2001), and then ensures the directory is group-writeable. If this is not the desired behaviour, command used can be specified here.  |
 | volumes.additional | list | `[{"configMap":{"defaultMode":484,"name":"server-xml-j2"},"name":"server-xml-j2"},{"configMap":{"defaultMode":484,"name":"server-xml"},"name":"server-xml"},{"configMap":{"defaultMode":484,"name":"footer-vm"},"name":"footer-vm"}]` | Defines additional volumes that should be applied to all Jira pods. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts  |
@@ -207,7 +207,7 @@ helm install jira chart/
 | networkPolicies.enabled | bool | `false` |  |
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
-| helmTestImage | string | `"registry1.dso.mil/ironbank/big-bang/base:2.0.0"` |  |
+| helmTestImage | string | `"registry1.dso.mil/ironbank/big-bang/base:2.1.0"` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `3` |  |
 | hpa.cpu | int | `80` |  |
