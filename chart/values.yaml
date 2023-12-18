@@ -983,7 +983,7 @@ fluentd:
   imageRepo: ironbank/opensource/fluentd/fluentd-kubernetes-daemonset
   # -- The Fluentd sidecar image tag
   #
-  imageTag: 1.16.2
+  imageTag: 1.16.3
 
   # -- Resources requests and limits for fluentd sidecar container
   # See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
@@ -1163,10 +1163,10 @@ bbtests:
     resources:
       requests:
         cpu: "1"
-        memory: "1Gi"
+        memory: "2Gi"
       limits:
         cpu: "1"
-        memory: "1Gi"
+        memory: "2Gi"
 
 networkPolicies:
   enabled: false
