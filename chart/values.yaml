@@ -47,7 +47,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.4.12"
+  tag: "9.12.0"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -392,8 +392,9 @@ ingress:
   #
   path:
 
-  # -- The custom annotations that should be applied to the Ingress Resource
-  # when NOT using the K8s ingress-nginx controller.
+  # -- The custom annotations that should be applied to the Ingress Resource.
+  # If using an ingress-nginx controller be sure that the annotations you add
+  # here are compatible with those already defined in the 'ingess.yaml' template
   #
   annotations: {}
 
@@ -1219,3 +1220,32 @@ additionalConfigMaps: []
 #        content: |
 #          <xml>
 #          </xml>
+
+atlassianAnalyticsAndSupport:
+
+  analytics:
+
+    # -- Mount ConfigMap with selected Helm chart values as a JSON
+    # which DC products will read and send analytics events to Atlassian data pipelines
+    #
+    enabled: true
+
+  helmValues:
+
+    # -- Mount ConfigMap with selected Helm chart values as a YAML file
+    # which can be optionally including to support.zip
+    #
+    enabled: true
+
+# -- Metadata and pod spec for pods started in Helm tests
+#
+testPods:
+  labels: {}
+  annotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  schedulerName:
+  image:
+    permissionsTestContainer: debian:stable-slim
+    statusTestContainer: alpine:latest

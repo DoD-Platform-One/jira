@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.17.0-bb.0] - 2023-12-19
+### Added
+- Update Jira to 1.17.0 
+- Update dependency jira-node-lts from 9.4.12 to 9.12.0 
+
 ## [1.16.6-bb.4] - 2023-12-15
 ### Added
 - Updated missed dependency fluentd-kubernetes-daemonset from 1.16.2 to 1.16.3
