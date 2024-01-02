@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.16.6-bb.4
-appVersion: 9.4.12
+appVersion: 9.12.0
+version: 1.17.0-bb.0
 kubeVersion: ">=1.21.x-0"
 keywords:
 - Jira
@@ -21,6 +21,9 @@ deprecated: false
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |-
+    - "Make test pod metadata and spec configurable (#727)"
+    - "Optional analytics/support ConfigMap (#721)"
+    - "Fix ingress annotations comment (#720)"
     - "Allow templating of pod annotations (#662)"
     - "Make securityContext configurable for jmx exporter init container (#670)"
     - "Add user provided certificates to the default Java truststore (#663)"
@@ -30,7 +33,7 @@ annotations:
     - Jira: 9.11.2
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.4.12
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.0
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     - name: fluentd-kubernetes-daemonset
