@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.17.2-bb.0] - 2024-1-22
+### Added
+- Update dependency jira-node-lts from 9.12.0 to 9.12.2
+- Upgraded gluon (dependency) from 0.4.4 to 0.4.7
+
 ## [1.17.0-bb.0] - 2023-12-19
 ### Added
 - Update Jira to 1.17.0 

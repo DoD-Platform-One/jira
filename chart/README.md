@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.17.0](https://img.shields.io/badge/Version-1.17.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.0](https://img.shields.io/badge/AppVersion-9.12.0-informational?style=flat-square)
+![Version: 1.17.2](https://img.shields.io/badge/Version-1.17.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.2](https://img.shields.io/badge/AppVersion-9.12.2-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -78,6 +78,7 @@ Kubernetes: `>=1.21.x-0`
 | jira.clustering.enabled | bool | `false` | Set to 'true' if Data Center clustering should be enabled This will automatically configure cluster peer discovery between cluster nodes.  |
 | jira.containerSecurityContext | object | `{}` | Standard K8s field that holds security configurations that will be applied to a container. https://kubernetes.io/docs/tasks/configure-pod-container/security-context/  |
 | jira.forceConfigUpdate | bool | `false` | The Docker entrypoint.py generates application configuration on first start; not all of these files are regenerated on subsequent starts. By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true to change this behavior.  |
+| jira.livenessProbe.customProbe | object | `{}` | Custom livenessProbe to override the default tcpSocket probe  |
 | jira.livenessProbe.enabled | bool | `false` | Whether to apply the livenessProbe check to pod.  |
 | jira.livenessProbe.failureThreshold | int | `12` | The number of consecutive failures of the Jira container liveness probe before the pod fails liveness checks.  |
 | jira.livenessProbe.initialDelaySeconds | int | `60` | Time to wait before starting the first probe  |
@@ -86,6 +87,7 @@ Kubernetes: `>=1.21.x-0`
 | jira.ports.ehcache | int | `40001` | Ehcache port  |
 | jira.ports.ehcacheobject | int | `40011` | Ehcache object port  |
 | jira.ports.http | int | `8080` | The port on which the Jira container listens for HTTP traffic  |
+| jira.postStart | object | `{"command":null}` | PostStart is executed immediately after a container is created. However, there is no guarantee that the hook will execute before the container ENTRYPOINT. See: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks  |
 | jira.readinessProbe.customProbe | object | `{}` | Custom readinessProbe to override the default /status httpGet  |
 | jira.readinessProbe.enabled | bool | `true` | Whether to apply the readinessProbe check to pod.  |
 | jira.readinessProbe.failureThreshold | int | `10` | The number of consecutive failures of the Jira container readiness probe before the pod fails readiness checks.  |
@@ -163,6 +165,8 @@ Kubernetes: `>=1.21.x-0`
 | volumes.localHome.persistentVolumeClaim.create | bool | `false` | If 'true', then a 'PersistentVolume' and 'PersistentVolumeClaim' will be dynamically created for each pod based on the 'StorageClassName' supplied below.  |
 | volumes.localHome.persistentVolumeClaim.resources | object | `{"requests":{"storage":"1Gi"}}` | Specifies the standard K8s resource requests and/or limits for the local-home volume claims.  |
 | volumes.localHome.persistentVolumeClaim.storageClassName | string | `nil` | Specify the name of the 'StorageClass' that should be used for the local-home volume claim.  |
+| volumes.localHome.persistentVolumeClaimRetentionPolicy.whenDeleted | string | `nil` | Configures the volume retention behavior that applies when the StatefulSet is deleted.  |
+| volumes.localHome.persistentVolumeClaimRetentionPolicy.whenScaled | string | `nil` | Configures the volume retention behavior that applies when the replica count of the StatefulSet is reduced.  |
 | volumes.sharedHome.customVolume | object | `{}` | Static provisioning of shared-home using K8s PVs and PVCs  When 'persistentVolumeClaim.create' is 'false', then this value can be used to define a standard K8s volume that will be used for the shared-home volume. If not defined, then an 'emptyDir' volume is utilised. Having provisioned a 'PersistentVolume', specify the bound 'persistentVolumeClaim.claimName' for the 'customVolume' object. https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static https://atlassian.github.io/data-center-helm-charts/examples/storage/aws/SHARED_STORAGE/  |
 | volumes.sharedHome.mountPath | string | `"/var/atlassian/application-data/shared-home"` | Specifies the path in the Jira container to which the shared-home volume will be mounted.  |
 | volumes.sharedHome.nfsPermissionFixer.command | string | `nil` | By default, the fixer will change the group ownership of the volume's root directory to match the Jira container's GID (2001), and then ensures the directory is group-writeable. If this is not the desired behaviour, command used can be specified here.  |
