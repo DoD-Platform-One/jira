@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-appVersion: 9.12.0
-version: 1.17.0-bb.0
+appVersion: 9.12.2
+version: 1.17.2-bb.0
 kubeVersion: ">=1.21.x-0"
 keywords:
 - Jira
@@ -29,11 +29,14 @@ annotations:
     - "Add user provided certificates to the default Java truststore (#663)"
     - "Fix custom jmx config (#699)"
     - "Copy cacerts first, then import certs (#696)"
+    - "StatefulSet PVC auto deletion (#736)"
+    - "Update appVersions for DC apps (#738)"
+    - "Add optional postStart hook (#735)"
   bigbang.dev/applicationVersions: |
-    - Jira: 9.11.2
+    - Jira: 9.12.2
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.0
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.2
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     - name: fluentd-kubernetes-daemonset
@@ -45,4 +48,4 @@ dependencies:
   repository: https://atlassian.github.io/data-center-helm-charts
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
-  version: 0.4.4
+  version: 0.4.7
