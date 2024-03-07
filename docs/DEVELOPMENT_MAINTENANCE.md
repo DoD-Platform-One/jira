@@ -4,33 +4,97 @@ The below details the steps required to update to a new version of the Jira pack
 
 1. Review the [upstream release notes](https://github.com/atlassian/data-center-helm-charts) for the update you are going to, as well as any versions skipped over between the last BB release and this one. Note any breaking changes and new features.
 
-2. Use `kpt` to pull the upstream chart via the latest tag that corresponds to the application version
+2. Use `kpt` to pull the upstream chart via the latest tag that corresponds to the application version. From the root of the repo run `kpt pkg update chart@jira-1.17.2 --strategy alpha-git-patch` replacing `jira-1.17.2` with the version tag you got in step 1.
 
 3. Based on the upstream changelog review from earlier, make any changes required to resolve breaking changes and reconcile the Big Bang modifications.
 
-4. Modify the `version` in `Chart.yaml`. Also modify the `appVersion` and the `bigbang.dev/applicationVersions` to the new upstream version of Jira.
+4. Modify the `version` in `Chart.yaml`. Also modify the `appVersion` and the `bigbang.dev/applicationVersions` to the new upstream version of Jira. 
+    ```yaml
+    dependencies:
+    - name: common
+      version: X.X.X
+      repository: https://atlassian.github.io/data-center-helm-charts
+    - name: gluon
+      repository: oci://registry1.dso.mil/bigbang
+      version: X.X.X
+    ```
 
-5. Update `CHANGELOG.md` adding an entry for the new version and noting all changes (at minimum should include `Updated Jira to x.x.x`).
+5. Update helm dependencies to latest library versions.
+    ```
+    helm dependency update ./chart
+    ```
 
-6. Generate the `README.md` updates by following the [guide in gluon](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md).
+6. Update `CHANGELOG.md` adding an entry for the new version and noting all changes (at minimum should include `Updated Jira to x.x.x`).
 
-7. Open an MR in "Draft" status and validate that CI passes. This will perform a number of smoke tests against the package, but it is good to manually deploy to test some things that CI doesn't. Follow the steps below for manual testing.
+7. Generate the `README.md` updates by following the [guide in gluon](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md).
 
-8. Once all manual testing is complete take your MR out of "Draft" status and add the review label.
+8. Open an MR in "Draft" status and validate that CI passes. This will perform a number of smoke tests against the package, but it is good to manually deploy to test some things that CI doesn't. Follow the steps below for manual testing.
+
+9. Once all manual testing is complete take your MR out of "Draft" status and add the review label.
 
 # Testing for updates
 
 NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point jira to your branch. For an upgrade do an install with jira pointing to the latest tag, then perform a helm upgrade with jira pointing to your branch.
 
-You will want to install with something similar:
-```shell
-helm upgrade -i jira ./chart --create-namespace -n jira --set registryCredentials.username=<registry1.username> --set registryCredentials.password=<registry1.password> -f ./tests/test-values.yaml -f ../bigbang/chart/ingress-certs.yaml
+To install Jira as a community package in a Big Bang Kubernetes Cluster, save the following YAML to a file (eg, jira.yaml):
+
+See https://docs-bigbang.dso.mil/latest/docs/guides/deployment-scenarios/extra-package-deployment/#Wrapper-Deployment for more details.
+
+```yaml
+packages:
+  # This will be used as the namespace for the install, as well as the name of the helm release. If this is changed, the destination service (below) needs to also be changed.
+  jira:
+    dependsOn:
+      #- name: authservice
+      #  namespace: bigbang
+    enabled: true
+    # Disabling this will bypass creating the istio VirtualService and NetworkPolicies.
+    wrapper:
+      enabled: true
+    git:
+      repo: https://repo1.dso.mil/big-bang/product/community/jira
+      # It is recommended to update this to the latest bb tag
+      tag: X.XX.XX-bb.X
+      path: chart
+    # This section is ignored if `wrapper.enabled`, above, is false. In this case, creation of an ingress for web access is left as an exercise for the reader.
+    istio:
+      enabled: true
+      hosts:
+        - names:
+            # Sub-URL for reaching the web UI; it will be reachable with this, plus your bigbang domain, eg, jira.bigbang.dev.
+            - jira
+          gateways:
+            - public
+          destination:
+            # The second portion of this URL is the namespace; if it was changed above, it needs to be changed here as well.
+            service: jira.jira.svc.cluster.local
+            port: 8080
+    # Anything in this section is passed to the jira chart directly; this allows all of your bigbang configuration to be in a single place.
+    values:
+      jira:
+        service:
+          port: 8080
+
 ```
+
+Then install/update bigbang via the standard `helm upgrade` command, adding `-f <YAML file location>` to the end. This will install Jira into the named namespace. 
+
+Example:
+  ```shell
+  helm upgrade -i bigbang ./chart -n bigbang --create-namespace --set registryCredentials.username=<registry1.username> --set registryCredentials.password=<registry1.password> -f ./tests/test-values.yaml -f ../bigbang/chart/ingress-certs.yaml -f <YAML file location>/jira.yaml
+  ```
+
+This method is recommended because it will also take care of creating private registry credentials, the istio virtual service, and network policies. Once the installation is complete, the Jira UI will be reachable via `https://jira.<your bigbang domain>`
 
 Testing Steps:
 - Ensure all resources have reconciled and are healthy
 - Ensure the application is resolvable at `jira.bigbang.dev`
 - Run the cyrpress tests to confirm functionality of adding and deleting an application via the UI
+    ```shell
+    cd ./chart/tests
+    export cypress_url=https://jira.bigbang.dev/
+    npx cypress run
+    ```
 
 When in doubt with any testing or upgrade steps ask one of the CODEOWNERS for assistance.
 
