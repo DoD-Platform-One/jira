@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.18.0-bb.0] - 2024-03-14
+### Added
+- Update dependency jira-node-lts from 9.12.4 to 9.12.5
+
 ## [1.17.2-bb.2] - 2024-02-20
 ### Added
 - Update dependency jira-node-lts from 9.12.2 to 9.12.4

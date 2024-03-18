@@ -28,6 +28,20 @@
 #
 replicaCount: 1
 
+# -- Set a custom start ordinal number for the K8s stateful set.
+# Note that this depends on the StatefulSetStartOrdinal K8s feature gate,
+# which has entered beta state with K8s version 1.27.
+#
+ordinals:
+
+  # -- Enable only if StatefulSetStartOrdinal K8s feature gate is available.
+  #
+  enabled: false
+
+  # -- Set start ordinal to a positive integer, defaulting to 0.
+  #
+  start: 0
+
 # Image configuration
 #
 image:
@@ -47,7 +61,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.12.4"
+  tag: "9.12.5"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -98,22 +112,22 @@ database:
   # -- The database type that should be used. If not specified, then it will need to be
   # provided via the browser during manual configuration post deployment. Valid values
   # include:
-   # - 'postgres72'
-   # - 'mysql57'
-   # - 'mysql8'
-   # - 'oracle10g'
-   # - 'mssql'
-   # - 'postgresaurora96'
+   # * 'postgres72'
+   # * 'mysql57'
+   # * 'mysql8'
+   # * 'oracle10g'
+   # * 'mssql'
+   # * 'postgresaurora96'
   # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype
   #
   type:
 
   # -- The jdbc URL of the database. If not specified, then it will need to be provided
   # via the browser during manual configuration post deployment. Example URLs include:
-   # - 'jdbc:postgresql://<dbhost>:5432/<dbname>'
-   # - 'jdbc:mysql://<dbhost>/<dbname>'
-   # - 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>'
-   # - 'jdbc:oracle:thin:@<dbhost>:1521:<SID>'
+   # * 'jdbc:postgresql://<dbhost>:5432/<dbname>'
+   # * 'jdbc:mysql://<dbhost>/<dbname>'
+   # * 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>'
+   # * 'jdbc:oracle:thin:@<dbhost>:1521:<SID>'
   # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl
   #
   url:
@@ -121,10 +135,10 @@ database:
   # -- The Java class name of the JDBC driver to be used. If not specified, then it will
   # need to be provided via the browser during manual configuration post deployment.
   # Valid drivers are:
-   # - 'org.postgresql.Driver'
-   # - 'com.mysql.jdbc.Driver'
-   # - 'oracle.jdbc.OracleDriver'
-   # - 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+   # * 'org.postgresql.Driver'
+   # * 'com.mysql.jdbc.Driver'
+   # * 'oracle.jdbc.OracleDriver'
+   # * 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
   # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:
   #
   driver:
@@ -354,6 +368,14 @@ ingress:
   # pre-provisioned Ingress Controller being available.
   #
   create: false
+
+  # -- Set to true if you want to create an OpenShift Route instead of an Ingress
+  #
+  openShiftRoute: false
+
+  # -- routeHttpHeaders defines policy for HTTP headers. Applicable to OpenShift Routes only
+  #
+  routeHttpHeaders: {}
 
   # -- The class name used by the ingress controller if it's being used.
   #
@@ -1258,6 +1280,7 @@ atlassianAnalyticsAndSupport:
 # -- Metadata and pod spec for pods started in Helm tests
 #
 testPods:
+  resources: {}
   labels: {}
   annotations: {}
   nodeSelector: {}
@@ -1267,3 +1290,12 @@ testPods:
   image:
     permissionsTestContainer: debian:stable-slim
     statusTestContainer: alpine:latest
+
+openshift:
+
+  # -- When set to true, the containers will run with a restricted Security Context Constraint (SCC).
+  # See: https://docs.openshift.com/container-platform/4.14/authentication/managing-security-context-constraints.html
+  # This configuration property unsets pod's SecurityContext, nfs-fixer init container (which runs as root), and mounts server
+  # configuration files as ConfigMaps.
+  #
+  runWithRestrictedSCC: false
