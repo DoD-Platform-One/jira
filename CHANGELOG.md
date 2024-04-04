@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.18.1-bb.0] - 2024-04-02
+### Updated
+- registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset from 1.16.2 to 1.16.3
+
 ## [1.18.0-bb.0] - 2024-03-14
 ### Added
 - Update dependency jira-node-lts from 9.12.4 to 9.12.5
