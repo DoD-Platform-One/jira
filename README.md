@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.18.1-bb.0](https://img.shields.io/badge/Version-1.18.1--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.5](https://img.shields.io/badge/AppVersion-9.12.5-informational?style=flat-square)
+![Version: 1.18.1-bb.1](https://img.shields.io/badge/Version-1.18.1--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.5](https://img.shields.io/badge/AppVersion-9.12.5-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -39,6 +39,9 @@ helm install jira chart/
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | replicaCount | int | `1` | The initial number of Jira pods that should be started at deployment time. Note that Jira requires manual configuration via the browser post deployment after the first pod is deployed. This configuration must be completed before scaling up additional pods. As such this value should always be kept as 1, but can be altered once manual configuration is complete.  |
+| ordinals | object | `{"enabled":false,"start":0}` | Set a custom start ordinal number for the K8s stateful set. Note that this depends on the StatefulSetStartOrdinal K8s feature gate, which has entered beta state with K8s version 1.27.  |
+| ordinals.enabled | bool | `false` | Enable only if StatefulSetStartOrdinal K8s feature gate is available.  |
+| ordinals.start | int | `0` | Set start ordinal to a positive integer, defaulting to 0.  |
 | image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
@@ -48,9 +51,9 @@ helm install jira chart/
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the ServiceAccount (if created)  |
 | serviceAccount.eksIrsa.roleArn | string | `nil` |  |
-| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: - 'postgres72' - 'mysql57' - 'mysql8' - 'oracle10g' - 'mssql' - 'postgresaurora96' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype  |
-| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: - 'jdbc:postgresql://<dbhost>:5432/<dbname>' - 'jdbc:mysql://<dbhost>/<dbname>' - 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>' - 'jdbc:oracle:thin:@<dbhost>:1521:<SID>' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl  |
-| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: - 'org.postgresql.Driver' - 'com.mysql.jdbc.Driver' - 'oracle.jdbc.OracleDriver' - 'com.microsoft.sqlserver.jdbc.SQLServerDriver' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:  |
+| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: * 'postgres72' * 'mysql57' * 'mysql8' * 'oracle10g' * 'mssql' * 'postgresaurora96' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype  |
+| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: * 'jdbc:postgresql://<dbhost>:5432/<dbname>' * 'jdbc:mysql://<dbhost>/<dbname>' * 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>' * 'jdbc:oracle:thin:@<dbhost>:1521:<SID>' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl  |
+| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: * 'org.postgresql.Driver' * 'com.mysql.jdbc.Driver' * 'oracle.jdbc.OracleDriver' * 'com.microsoft.sqlserver.jdbc.SQLServerDriver' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:  |
 | database.credentials.secretName | string | `nil` | from-literal=password=<password>' https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets  |
 | database.credentials.usernameSecretKey | string | `"username"` | The key ('username') in the Secret used to store the database login username  |
 | database.credentials.passwordSecretKey | string | `"password"` | The key ('password') in the Secret used to store the database login password  |
@@ -75,6 +78,8 @@ helm install jira chart/
 | volumes.sharedHome.nfsPermissionFixer.command | string | `nil` | By default, the fixer will change the group ownership of the volume's root directory to match the Jira container's GID (2001), and then ensures the directory is group-writeable. If this is not the desired behaviour, command used can be specified here.  |
 | volumes.additional | list | `[{"configMap":{"defaultMode":484,"name":"server-xml-j2"},"name":"server-xml-j2"},{"configMap":{"defaultMode":484,"name":"server-xml"},"name":"server-xml"},{"configMap":{"defaultMode":484,"name":"footer-vm"},"name":"footer-vm"}]` | Defines additional volumes that should be applied to all Jira pods. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts  |
 | ingress.create | bool | `false` | Set to 'true' if an Ingress Resource should be created. This depends on a pre-provisioned Ingress Controller being available.  |
+| ingress.openShiftRoute | bool | `false` | Set to true if you want to create an OpenShift Route instead of an Ingress  |
+| ingress.routeHttpHeaders | object | `{}` | routeHttpHeaders defines policy for HTTP headers. Applicable to OpenShift Routes only  |
 | ingress.className | string | `"nginx"` | The class name used by the ingress controller if it's being used.  Please follow documentation of your ingress controller. If the cluster contains multiple ingress controllers, this setting allows you to control which of them is used for Atlassian application traffic.  |
 | ingress.nginx | bool | `true` | Set to 'true' if the Ingress Resource is to use the K8s 'ingress-nginx' controller. https://kubernetes.github.io/ingress-nginx/  This will populate the Ingress Resource with annotations that are specific to the K8s ingress-nginx controller. Set to 'false' if a different controller is to be used, in which case the appropriate annotations for that controller must be specified below under 'ingress.annotations'.  |
 | ingress.maxBodySize | string | `"250m"` | The max body size to allow. Requests exceeding this size will result in an HTTP 413 error being returned to the client.  |
@@ -210,6 +215,7 @@ helm install jira chart/
 | networkPolicies.enabled | bool | `false` |  |
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
+| networkPolicies.additionalPolicies | list | `[]` |  |
 | helmTestImage | string | `"registry1.dso.mil/ironbank/big-bang/base:2.1.0"` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `3` |  |
@@ -220,7 +226,8 @@ helm install jira chart/
 | additionalConfigMaps | list | `[]` | Create additional ConfigMaps with given names, keys and content. Ther Helm release name will be used as a prefix for a ConfigMap name, fileName is used as subPath  |
 | atlassianAnalyticsAndSupport.analytics.enabled | bool | `true` | Mount ConfigMap with selected Helm chart values as a JSON which DC products will read and send analytics events to Atlassian data pipelines  |
 | atlassianAnalyticsAndSupport.helmValues.enabled | bool | `true` | Mount ConfigMap with selected Helm chart values as a YAML file which can be optionally including to support.zip  |
-| testPods | object | `{"affinity":{},"annotations":{},"image":{"permissionsTestContainer":"debian:stable-slim","statusTestContainer":"alpine:latest"},"labels":{},"nodeSelector":{},"schedulerName":null,"tolerations":[]}` | Metadata and pod spec for pods started in Helm tests  |
+| testPods | object | `{"affinity":{},"annotations":{},"image":{"permissionsTestContainer":"debian:stable-slim","statusTestContainer":"alpine:latest"},"labels":{},"nodeSelector":{},"resources":{},"schedulerName":null,"tolerations":[]}` | Metadata and pod spec for pods started in Helm tests  |
+| openshift.runWithRestrictedSCC | bool | `false` | When set to true, the containers will run with a restricted Security Context Constraint (SCC). See: https://docs.openshift.com/container-platform/4.14/authentication/managing-security-context-constraints.html This configuration property unsets pod's SecurityContext, nfs-fixer init container (which runs as root), and mounts server configuration files as ConfigMaps.  |
 
 ## Contributing
 
