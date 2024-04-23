@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.18.1-bb.1
-appVersion: 9.12.5
+version: '1.19.0-bb.0'
+appVersion: 9.12.7
 kubeVersion: ">=1.21.x-0"
 keywords:
 - Jira
@@ -38,11 +38,12 @@ annotations:
     - "Use testPods values for test images and container resources (#761)"
     - "Relabel instance name on jmx service monitor (#757)"
     - "Added pvc retention policy to Bitbucket Mesh StatefulSet (#755)"
+    - "Make cacerts writable for user and group (#790)"
   bigbang.dev/applicationVersions: |
-    - Jira: 9.12.5
+    - Jira: 9.12.7
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.5
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.7
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     - name: fluentd-kubernetes-daemonset
@@ -54,4 +55,4 @@ dependencies:
   repository: https://atlassian.github.io/data-center-helm-charts
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
-  version: 0.4.8
+  version: 0.4.9

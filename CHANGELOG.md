@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.19.0-bb.0] - 2024-04-23
+### Updated
+- Updated gluon (dependency) from 0.4.8 to 0.4.9, jira-node-lts from 9.12.5 to 9.12.7@1.19.0, cypress (dependency) to 13.7.3 (Renovate)
+
 ## [1.18.1-bb.1] - 2024-04-09
 ### Added
 - Added the ability to deploy additional custom NetworkPolicy objects via override values (see chart/templates/bigbang/additional-networkpolicies.yaml)
