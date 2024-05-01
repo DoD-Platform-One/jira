@@ -2,21 +2,21 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.19.0-bb.1
+version: 1.19.0-bb.2
 appVersion: 9.12.7
 kubeVersion: ">=1.21.x-0"
 keywords:
-- Jira
-- Jira Software
-- Jira Server
-- Jira Data Center
-- Jira DC
-- Atlassian
+  - Jira
+  - Jira Software
+  - Jira Server
+  - Jira Data Center
+  - Jira DC
+  - Atlassian
 home: https://atlassian.github.io/data-center-helm-charts/
 icon: https://atlassian.github.io/data-center-helm-charts/icons/jira-software.svg
 sources:
-- https://github.com/atlassian/data-center-helm-charts
-- https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
+  - https://github.com/atlassian/data-center-helm-charts
+  - https://bitbucket.org/atlassian-docker/docker-atlassian-jira/
 deprecated: false
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
@@ -50,9 +50,9 @@ annotations:
       condition: fluentd.enabled
       image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.16.5
 dependencies:
-- name: common
-  version: 1.2.6
-  repository: https://atlassian.github.io/data-center-helm-charts
-- name: gluon
-  repository: oci://registry1.dso.mil/bigbang
-  version: 0.4.10
+  - name: common
+    version: 1.2.6
+    repository: https://atlassian.github.io/data-center-helm-charts
+  - name: gluon
+    repository: oci://registry1.dso.mil/bigbang
+    version: 0.4.10
