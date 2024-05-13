@@ -59,16 +59,6 @@ packages:
     # This section is ignored if `wrapper.enabled`, above, is false. In this case, creation of an ingress for web access is left as an exercise for the reader.
     istio:
       enabled: true
-      hosts:
-        - names:
-            # Sub-URL for reaching the web UI; it will be reachable with this, plus your bigbang domain, eg, jira.bigbang.dev.
-            - jira
-          gateways:
-            - public
-          destination:
-            # The second portion of this URL is the namespace; if it was changed above, it needs to be changed here as well.
-            service: jira.jira.svc.cluster.local
-            port: 8080
     # Anything in this section is passed to the jira chart directly; this allows all of your bigbang configuration to be in a single place.
     values:
       jira:
@@ -88,11 +78,11 @@ This method is recommended because it will also take care of creating private re
 
 Testing Steps:
 - Ensure all resources have reconciled and are healthy
-- Ensure the application is resolvable at `jira.bigbang.dev`
+- Ensure the application is resolvable at `jira.dev.bigbang.mil`
 - Run the cyrpress tests to confirm functionality of adding and deleting an application via the UI
     ```shell
     cd ./chart/tests
-    export cypress_url=https://jira.bigbang.dev/
+    export cypress_url=https://jira.dev.bigbang.mil/
     npx cypress run
     ```
 

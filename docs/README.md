@@ -36,7 +36,7 @@ packages:
       enabled: true
       hosts:
         - names:
-            # Sub-URL for reaching the web UI; it will be reachable with this, plus your bigbang domain, eg, jira.bigbang.dev.
+            # Sub-URL for reaching the web UI; it will be reachable with this, plus your bigbang domain, eg, jira.dev.bigbang.mil
             - jira
           gateways:
             - public
