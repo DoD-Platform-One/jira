@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.19.0-bb.3] - 2024-05-07
+### Added
+- Istio Sidecar to restrict egress traffic to `REGISTRY_ONLY`, or as defined by `.Values.istio.hardened.outboundTrafficPolicyMode`
+- Istio ServiceEntry to dynamically create entries from `.Values.istio.hardened.customServiceEntries` to explicitly allow egress
+
 ## [1.19.0-bb.2] - 2024-05-01
 ### Added
 - Cypress dependency update 13.8.0 -> 13.8.1

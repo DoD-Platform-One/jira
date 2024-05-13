@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.19.0-bb.2](https://img.shields.io/badge/Version-1.19.0--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.7](https://img.shields.io/badge/AppVersion-9.12.7-informational?style=flat-square)
+![Version: 1.19.0-bb.3](https://img.shields.io/badge/Version-1.19.0--bb.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.7](https://img.shields.io/badge/AppVersion-9.12.7-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -197,14 +197,19 @@ helm install jira chart/
 | additionalInitContainers | list | `[]` | Additional initContainer definitions that will be added to all Jira pods  |
 | additionalLabels | object | `{}` | Additional labels that should be applied to all resources  |
 | additionalFiles | list | `[]` | Additional existing ConfigMaps and Secrets not managed by Helm that should be mounted into service container. Configuration details below (camelCase is important!): 'name'      - References existing ConfigMap or secret name. 'type'      - 'configMap' or 'secret' 'key'       - The file name. 'mountPath' - The destination directory in a container. VolumeMount and Volumes are added with this name and index position, for example; custom-config-0, keystore-2  |
-| proxyName | string | `"jira.bigbang.dev"` |  |
-| domain | string | `"bigbang.dev"` |  |
+| proxyName | string | `"jira.dev.bigbang.mil"` |  |
+| domain | string | `"dev.bigbang.mil"` |  |
+| sso.enabled | bool | `false` |  |
+| sso.host | string | `"login.dso.mil"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.jira.enabled | bool | `true` | Toggle Istio VirtualService creation |
 | istio.jira.annotations | object | `{}` | Set Annotations for VirtualService |
 | istio.jira.labels | object | `{}` | Set Labels for VirtualService |
-| istio.jira.gateways | list | `["istio-system/main"]` | Set Gateway for VirtualService |
+| istio.jira.gateways | list | `["istio-system/public"]` | Set Gateway for VirtualService |
 | istio.jira.hosts | list | `["jira.{{ .Values.domain }}"]` | Set Hosts for VirtualService |
+| istio.hardened.enabled | bool | `false` |  |
+| istio.hardened.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
+| istio.hardened.customServiceEntries | list | `[]` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://{{ include \"common.names.fullname\" . }}:{{ .Values.jira.service.port }}"` |  |
