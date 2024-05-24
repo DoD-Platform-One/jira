@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.19.0-bb.3] - 2024-05-24
+### Updated
+- Docs to better show how to install and test
+- Tests to run locally properly
+
 ## [1.19.0-bb.3] - 2024-05-07
 ### Added
 - Istio Sidecar to restrict egress traffic to `REGISTRY_ONLY`, or as defined by `.Values.istio.hardened.outboundTrafficPolicyMode`
