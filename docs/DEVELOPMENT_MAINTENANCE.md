@@ -41,12 +41,33 @@ To install Jira as a community package in a Big Bang Kubernetes Cluster, save th
 See https://docs-bigbang.dso.mil/latest/docs/guides/deployment-scenarios/extra-package-deployment/#Wrapper-Deployment for more details.
 
 ```yaml
+# You will need these if kyverno is enabled (which it is by default)
+kyvernoPolicies:
+  values:
+    policies:
+      require-non-root-user:
+        exclude:
+          any:
+            - resources:
+                namespaces:
+                  - jira
+                names:
+                  - jira*
+      disallow-auto-mount-service-account-token:
+        exclude:
+          any:
+            - resources:
+                namespaces:
+                  - jira
+                names:
+                  - jira*
+
 packages:
   # This will be used as the namespace for the install, as well as the name of the helm release. If this is changed, the destination service (below) needs to also be changed.
   jira:
     dependsOn:
-      #- name: authservice
-      #  namespace: bigbang
+      # - name: authservice
+      #   namespace: bigbang
     enabled: true
     # Disabling this will bypass creating the istio VirtualService and NetworkPolicies.
     wrapper:
@@ -59,12 +80,21 @@ packages:
     # This section is ignored if `wrapper.enabled`, above, is false. In this case, creation of an ingress for web access is left as an exercise for the reader.
     istio:
       enabled: true
+      # We should test with this
+      hardened:
+        enabled: true
+      hosts:
+        - names:
+            - "jira"
+          gateways:
+            - "public"
+          destination:
+            port: 8080
     # Anything in this section is passed to the jira chart directly; this allows all of your bigbang configuration to be in a single place.
     values:
       jira:
         service:
           port: 8080
-
 ```
 
 Then install/update bigbang via the standard `helm upgrade` command, adding `-f <YAML file location>` to the end. This will install Jira into the named namespace. 
@@ -79,18 +109,20 @@ This method is recommended because it will also take care of creating private re
 Testing Steps:
 - Ensure all resources have reconciled and are healthy
 - Ensure the application is resolvable at `jira.dev.bigbang.mil`
-- Run the cyrpress tests to confirm functionality of adding and deleting an application via the UI
+- Run the cypress tests to confirm functionality of adding and deleting an application via the UI
     ```shell
     cd ./chart/tests
+    cp .example.cypress.config.js cypress.config.js
     export cypress_url=https://jira.dev.bigbang.mil/
     npx cypress run
     ```
+- NOTE: the install can take 10+ minutes
 
 When in doubt with any testing or upgrade steps ask one of the CODEOWNERS for assistance.
 
 # Big Bang Chart Additions
 
-This package has a some additions to the chart inorder to facilitate Party Bus using custom liveness and readiness probes as seen below for examples, it is neccessary to keep these items intact. 
+This package has a some additions to the chart in order to facilitate Party Bus using custom liveness and readiness probes as seen below for examples, it is necessary to keep these items intact. 
 
 Here's the section of the `chart/values.yaml` file where these additions are configured:
 
