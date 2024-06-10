@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 1.19.0-bb.5
-appVersion: 9.12.7
+version: '1.20.0-bb.0'
+appVersion: 9.12.8
 kubeVersion: ">=1.21.x-0"
 keywords:
   - Jira
@@ -38,21 +38,23 @@ annotations:
     - "Use testPods values for test images and container resources (#761)"
     - "Relabel instance name on jmx service monitor (#757)"
     - "Added pvc retention policy to Bitbucket Mesh StatefulSet (#755)"
-    - "Make cacerts writable for user and group (#790)"
+    - "Update appVersions for DC apps (#803)"
+    - "Set atlassian.logging.cloud.enabled system property to false if a custom FluentD config is used (#796)"
   bigbang.dev/applicationVersions: |
-    - Jira: 9.12.7
+    - Jira: 9.12.8
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.7
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.8
     - name: nfs-permission-fixer
-      image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
+      image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
       image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.16.5
+
 dependencies:
   - name: common
     version: 1.2.6
     repository: https://atlassian.github.io/data-center-helm-charts
   - name: gluon
     repository: oci://registry1.dso.mil/bigbang
-    version: 0.4.10
+    version: 0.5.0
