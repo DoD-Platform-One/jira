@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.20.0-bb.0] - 2024-06-07
+### Updated
+- Gluon 0.4.10 -> 0.5.0
+- Update dependency jira-node-lts from 9.12.7 to 9.12.8 
+- Update dependency ubi8-minimal from 8.9 to 8.10
+- Cypress dependency update 13.10.0 -> 13.11.0
+
 ## [1.19.0-bb.5] - 2024-06-04
 ### Updated
 - Cypress dependency update 13.8.0 -> 13.10.0

@@ -61,7 +61,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.12.7"
+  tag: "9.12.8"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -317,7 +317,7 @@ volumes:
       imageRepo: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
       # -- Image tag for the permission fixer init container. Defaults to latest
       #
-      imageTag: 8.9
+      imageTag: "8.10"
 
       # -- Resources requests and limits for nfsPermissionFixer init container
       # See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
@@ -1049,7 +1049,8 @@ fluentd:
 
   # -- Set to 'true' if a custom config (see 'configmap-fluentd.yaml' for default)
   # should be used for Fluentd. If enabled this config must be supplied via the
-  # 'fluentdCustomConfig' property below.
+  # 'fluentdCustomConfig' property below. If your custom config forces fluentd to run in a server mode,
+  # add `-Datlassian.logging.cloud.enabled=true` to `jira.AdditionalJvmArgs` stanza in values file
   #
   customConfigFile: false
 
