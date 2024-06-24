@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: '1.20.0-bb.0'
-appVersion: 9.12.8
+version: '1.20.0-bb.1'
+appVersion: 9.12.10
 kubeVersion: ">=1.21.x-0"
 keywords:
   - Jira
@@ -41,16 +41,15 @@ annotations:
     - "Update appVersions for DC apps (#803)"
     - "Set atlassian.logging.cloud.enabled system property to false if a custom FluentD config is used (#796)"
   bigbang.dev/applicationVersions: |
-    - Jira: 9.12.8
+    - Jira: 9.12.10
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.8
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.10
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
       image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.16.5
-
 dependencies:
   - name: common
     version: 1.2.6
