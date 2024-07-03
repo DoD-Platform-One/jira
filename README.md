@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.20.0-bb.2](https://img.shields.io/badge/Version-1.20.0--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.10](https://img.shields.io/badge/AppVersion-9.12.10-informational?style=flat-square)
+![Version: 1.20.0-bb.3](https://img.shields.io/badge/Version-1.20.0--bb.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.10](https://img.shields.io/badge/AppVersion-9.12.10-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -179,8 +179,8 @@ helm install jira chart/
 | monitoring.grafana.dashboardAnnotations | object | `{}` | Annotations added to Grafana dashboards ConfigMaps. See: <https://github.com/kiwigrid/k8s-sidecar#usage>  |
 | fluentd.enabled | bool | `false` | Set to 'true' if the Fluentd sidecar (DaemonSet) should be added to each pod  |
 | fluentd.imageRepo | string | `"ironbank/opensource/fluentd/fluentd-kubernetes-daemonset"` | The Fluentd sidecar image repository  |
-| fluentd.imageTag | string | `"1.16.5"` | The Fluentd sidecar image tag  |
-| fluentd.resources | object | `{}` | Resources requests and limits for fluentd sidecar container See: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>  |
+| fluentd.imageTag | string | `"1.17.0"` | The Fluentd sidecar image tag  |
+| fluentd.resources | object | `{}` | Resources requests and limits for fluentd sidecar container See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/  |
 | fluentd.command | string | `nil` | The command used to start Fluentd. If not supplied the default command will be used: "fluentd -c /fluentd/etc/fluent.conf -v"  Note: The custom command can be free-form, however pay particular attention to the process that should ultimately be left running in the container. This process should be invoked with 'exec' so that signals are appropriately propagated to it, for instance SIGTERM. An example of how such a command may look is: "<command 1> && <command 2> && exec <primary command>" |
 | fluentd.customConfigFile | bool | `false` | Set to 'true' if a custom config (see 'configmap-fluentd.yaml' for default) should be used for Fluentd. If enabled this config must be supplied via the 'fluentdCustomConfig' property below. If your custom config forces fluentd to run in a server mode, add `-Datlassian.logging.cloud.enabled=true` to `jira.AdditionalJvmArgs` stanza in values file  |
 | fluentd.fluentdCustomConfig | object | `{}` | Custom fluent.conf file  |
