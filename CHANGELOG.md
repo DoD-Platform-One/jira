@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.20.0-bb.5] - 2024-07-15
+
+### Fix
+
+- Change path for keytool command
+
 ## [1.20.0-bb.4] - 2024-07-03
 
 ### Changed
