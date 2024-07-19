@@ -157,6 +157,50 @@ Here's the sections of the `chart/templates/statefulset.yaml` file where these a
               path: {{ .Values.jira.service.contextPath }}/status
             {{- end }}  
 ```
+# Big Bang Integration Testing
+
+### Files that require integration testing
+* `chart/templates/bigbang/*`
+* `chart/values.yaml` (If it changes anything in:)
+  * Monitoring
+  * Istio hardening 
+  * Network policies
+  * Kyverno policies
+  * Service definition
+  * TLS settings
+
+As part of your MR that modifies bigbang packages, you should modify the bigbang  [bigbang/tests/test-values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) against your branch for the CI/CD MR testing by enabling your packages. 
+
+    - To do this, at a minimum, you will need to follow the instructions at [bigbang/docs/developer/test-package-against-bb.md](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads) with changes for Jira enabled (the below is a reference, actual changes could be more depending on what changes where made to Jira in the pakcage MR).
+
+```
+packages:
+  jira:
+    enabled: true
+    wrapper:
+      enabled: true
+    git:
+      repo: https://repo1.dso.mil/big-bang/product/community/jira
+      tag: Null
+      branch: <Insert-branch-being-tested> 
+      path: chart
+    istio:
+      enabled: true
+      hardened:
+        enabled: true
+      hosts:
+        - names:
+            - "jira"
+          gateways:
+            - "public"
+          destination:
+            port: 8080
+    values:
+      jira:
+        service:
+          port: 8080
+```
+
 
 ### automountServiceAccountToken
 The mutating Kyverno policy named `update-automountserviceaccounttokens` is leveraged to harden all ServiceAccounts in this package with `automountServiceAccountToken: false`. This policy is configured by namespace in the Big Bang umbrella chart repository at [chart/templates/kyverno-policies/values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/chart/templates/kyverno-policies/values.yaml?ref_type=heads). 
