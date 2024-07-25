@@ -1,10 +1,11 @@
 # jira
 
-![Version: 1.20.0-bb.6](https://img.shields.io/badge/Version-1.20.0--bb.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.10](https://img.shields.io/badge/AppVersion-9.12.10-informational?style=flat-square)
+![Version: 1.20.1-bb.0](https://img.shields.io/badge/Version-1.20.1--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.11](https://img.shields.io/badge/AppVersion-9.12.11-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
 ## Upstream References
+
 * <https://atlassian.github.io/data-center-helm-charts/>
 
 * <https://github.com/atlassian/data-center-helm-charts>
@@ -15,6 +16,7 @@ A chart for installing Jira Data Center on Kubernetes
 The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
 
 ## Learn More
+
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -22,18 +24,15 @@ The [upstream Jira helm chart changelog](https://github.com/atlassian/data-cente
 
 * Kubernetes Cluster deployed
 * Kubernetes config installed in `~/.kube/config`
-* Helm installed
+* [Helm installed](https://helm.sh/docs/intro/install/)
 
 Kubernetes: `>=1.21.x-0`
-
-Install Helm
-
-https://helm.sh/docs/intro/install/
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
+
 ```bash
 helm install jira chart/
 ```
@@ -49,15 +48,15 @@ helm install jira chart/
 | image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
-| image.tag | string | `"9.12.10"` | The docker image tag to be used - defaults to the Chart appVersion  |
+| image.tag | string | `"9.12.11"` | The docker image tag to be used - defaults to the Chart appVersion  |
 | serviceAccount.create | bool | `true` | Set to 'true' if a ServiceAccount should be created, or 'false' if it already exists.  |
 | serviceAccount.name | string | `nil` | The name of the ServiceAccount to be used by the pods. If not specified, but the "serviceAccount.create" flag is set to 'true', then the ServiceAccount name will be auto-generated, otherwise the 'default' ServiceAccount will be used. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server  |
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the ServiceAccount (if created)  |
 | serviceAccount.eksIrsa.roleArn | string | `nil` |  |
-| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: * 'postgres72' * 'mysql57' * 'mysql8' * 'oracle10g' * 'mssql' * 'postgresaurora96' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype  |
-| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: * 'jdbc:postgresql://<dbhost>:5432/<dbname>' * 'jdbc:mysql://<dbhost>/<dbname>' * 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>' * 'jdbc:oracle:thin:@<dbhost>:1521:<SID>' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl  |
-| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: * 'org.postgresql.Driver' * 'com.mysql.jdbc.Driver' * 'oracle.jdbc.OracleDriver' * 'com.microsoft.sqlserver.jdbc.SQLServerDriver' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:  |
+| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: 'postgres72', 'mysql57', 'mysql8', 'oracle10g', 'mssql', 'postgresaurora96' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype  |
+| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: 'jdbc:postgresql://<dbhost>:5432/<dbname>', 'jdbc:mysql://<dbhost>/<dbname>', 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>', 'jdbc:oracle:thin:@<dbhost>:1521:<SID>' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl  |
+| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: 'org.postgresql.Driver', 'com.mysql.jdbc.Driver', 'oracle.jdbc.OracleDriver', 'com.microsoft.sqlserver.jdbc.SQLServerDriver' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:  |
 | database.credentials.secretName | string | `nil` | from-literal=password=<password>' https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets  |
 | database.credentials.usernameSecretKey | string | `"username"` | The key ('username') in the Secret used to store the database login username  |
 | database.credentials.passwordSecretKey | string | `"password"` | The key ('password') in the Secret used to store the database login password  |
