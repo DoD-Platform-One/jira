@@ -2,7 +2,7 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: '1.20.1-bb.0'
+version: '1.20.1-bb.1'
 appVersion: 9.12.11
 kubeVersion: ">=1.21.x-0"
 keywords:
@@ -44,6 +44,8 @@ annotations:
     - "Make it possible to override proxy settings (#822)"
   bigbang.dev/applicationVersions: |
     - Jira: 9.12.11
+  bigbang.dev/upstreamReleaseNotesMarkdown: |
+    The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
   helm.sh/images: |
     - name: jira-node-lts
       image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.11
