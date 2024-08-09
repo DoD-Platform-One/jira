@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.20.1-bb.2] - 2024-08-07
+
+### Changed
+
+- Update cypress dependency to 13.13.2
+
 ## [1.20.1-bb.1] - 2024-07-25
 
 ### Changed
