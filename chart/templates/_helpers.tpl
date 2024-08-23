@@ -174,7 +174,7 @@ on Tomcat's logs directory. THis ensures that Tomcat+Jira logs get captured in t
   mountPath: /opt/atlassian/jira/atlassian-jira/WEB-INF/classes/seraph-config.xml
   subPath: seraph-config.xml
 {{- end }}
-{{- if .Values.jira.additionalCertificates.secretName }}
+{{- if or .Values.jira.additionalCertificates.secretName .Values.jira.additionalCertificates.secretList }}
 - name: keystore
   mountPath: /var/ssl
 {{- end }}
@@ -296,12 +296,20 @@ For each additional plugin declared, generate a volume mount that injects that l
       - key: seraph-config.xml
         path: seraph-config.xml
 {{- end }}
-{{- if .Values.jira.additionalCertificates.secretName }}
+{{- if or .Values.jira.additionalCertificates.secretName .Values.jira.additionalCertificates.secretList }}
 - name: keystore
   emptyDir: {}
+{{- if .Values.jira.additionalCertificates.secretName }}
 - name: certs
   secret:
     secretName: {{ .Values.jira.additionalCertificates.secretName }}
+{{- else }}
+{{- range .Values.jira.additionalCertificates.secretList }}
+- name: {{ .name }}
+  secret:
+    secretName: {{ .name }}
+{{- end }}
+{{- end }}
 {{- end }}
 {{- if or .Values.atlassianAnalyticsAndSupport.analytics.enabled .Values.atlassianAnalyticsAndSupport.helmValues.enabled }}
 - name: helm-values
@@ -391,6 +399,16 @@ volumeClaimTemplates:
 {{- if .Values.jira.s3Storage.avatars.endpointOverride }}
 - name: ATL_S3AVATARS_ENDPOINT_OVERRIDE
   value: {{ .Values.jira.s3Storage.avatars.endpointOverride | quote }}
+{{- end }}
+{{- end }}
+{{- if and .Values.jira.s3Storage.attachments.bucketName .Values.jira.s3Storage.attachments.bucketRegion }}
+- name: ATL_S3ATTACHMENTS_BUCKET_NAME
+  value: {{ .Values.jira.s3Storage.attachments.bucketName | quote }}
+- name: ATL_S3ATTACHMENTS_REGION
+  value: {{ .Values.jira.s3Storage.attachments.bucketRegion | quote }}
+{{- if .Values.jira.s3Storage.attachments.endpointOverride }}
+- name: ATL_S3ATTACHMENTS_ENDPOINT_OVERRIDE
+  value: {{ .Values.jira.s3Storage.attachments.endpointOverride | quote }}
 {{- end }}
 {{- end }}
 {{- end }}

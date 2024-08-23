@@ -42,6 +42,12 @@ ordinals:
   #
   start: 0
 
+# -- StatefulSet update strategy. When unset defaults to Rolling update.
+# See: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#updating-statefulsets
+#
+updateStrategy: {}
+  # type: OnDelete
+
 # Image configuration
 #
 image:
@@ -262,6 +268,14 @@ volumes:
       # created for shared-home based on the 'StorageClassName' supplied below.
       #
       create: false
+
+      # -- Specify the access modes that should be used for the 'shared-home' volume claim.
+      # Note: 'ReadWriteOnce' (RWO) is suitable only for single-node installations.
+      # Be aware that changing the access mode of an existing PVC might be impossible, as the PVC spec is immutable.
+      # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+      #
+      accessModes:
+        - ReadWriteMany
 
       # -- Specify the name of the 'StorageClass' that should be used for the 'shared-home'
       #volume claim.
@@ -666,22 +680,37 @@ jira:
     #
     localHomeSubPath: "log"
 
-  # Use AWS S3 to store avatars. From Jira 9.9 onwards.
+  # Use AWS S3 to store avatars and attachments. From Jira 9.9 onwards.
   #
 
   s3Storage:
 
     avatars:
-      # Bucket name to store avatars. If a bucket name and region (see below) are defined, Jira will automatically
+      # -- Bucket name to store avatars. If a bucket name and region (see below) are defined, Jira will automatically
       # use AWS S3 to store avatars. Only bucket name is required, not the full arn.
       #
       bucketName:
 
-      # AWS region where the S3 bucket is located.
+      # -- AWS region where the S3 bucket is located.
       #
       bucketRegion:
 
-      # Override the default AWS API endpoint with a custom one
+      # -- Override the default AWS API endpoint with a custom one
+      #
+      endpointOverride:
+
+    attachments:
+      # -- Bucket name to store attachments. If a bucket name and region (see below) are defined, Jira will automatically
+      # use AWS S3 to store attachments. Only bucket name is required, not the full arn.
+      # If you provide the same bucket name for both avatars and attachments, they will be stored in the same bucket
+      #
+      bucketName:
+
+      # -- AWS region where the S3 bucket is located.
+      #
+      bucketRegion:
+
+      # -- Override the default AWS API endpoint with a custom one
       #
       endpointOverride:
 
@@ -793,7 +822,7 @@ jira:
     enableLookups: "false"
     protocol: "HTTP/1.1"
     redirectPort: "8443"
-    acceptCount: "10"
+    acceptCount: "100"
     # secure is retrieved from ingress.https value
     secure:
     # scheme is set depending on ingress.https value (http if false, https if true)
@@ -873,6 +902,10 @@ jira:
   #
   additionalEnvironmentVariables: []
 
+  # -- Defines additional annotations to the Jira StateFulSet. This might be required when deploying using a GitOps approach
+  additionalAnnotations: {}
+  #  argocd.argoproj.io/sync-wave: "10"
+
   # -- Defines any additional ports for the Jira container.
   #
   additionalPorts: []
@@ -904,8 +937,26 @@ jira:
   # -- Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates
   #
   additionalCertificates:
+    # -- Name of the Kubernetes secret with certificates in its data. All secret keys in the secret data
+    # will be treated as certificates to be added to Java truststore. If defined, this takes precedence over secretList.
+    #
     secretName:
+    # -- A list of secrets with their respective keys holding certificates to be added to the Java truststore.
+    # It is mandatory to specify which keys from secret data need to be mounted as files to the init container.
+    #
+    secretList: []
+    #- name: self-signed-ca
+    #  keys:
+    #    - ca.crt
+    #    - intermediate.crt
+    #- name: stg-intermediate
+    #  keys:
+    #    - stg.crt
     customCmd:
+    initContainer:
+      # -- Resources requests and limits for the import-certs init container
+      #
+      resources: {}
 
 # Monitoring
 #
@@ -918,6 +969,11 @@ monitoring:
   # --  JMX exporter init container configuration
   #
   jmxExporterInitContainer:
+
+    # -- The location of the JMX exporter jarfile in the JMX exporter image
+    # Leave blank for default bitnami image
+    #
+    jmxJarLocation:
 
     # -- Whether to run JMX exporter init container as root to copy JMX exporter binary to shared home volume.
     # Set to false if running containers as root is not allowed in the cluster.

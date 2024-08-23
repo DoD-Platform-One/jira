@@ -1,12 +1,11 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 1.20.1-bb.4](https://img.shields.io/badge/Version-1.20.1--bb.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.12](https://img.shields.io/badge/AppVersion-9.12.12-informational?style=flat-square)
+![Version: 1.21.1-bb.0](https://img.shields.io/badge/Version-1.21.1--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.12](https://img.shields.io/badge/AppVersion-9.12.12-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
 ## Upstream References
-
 * <https://atlassian.github.io/data-center-helm-charts/>
 
 * <https://github.com/atlassian/data-center-helm-charts>
@@ -17,7 +16,6 @@ A chart for installing Jira Data Center on Kubernetes
 The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
 
 ## Learn More
-
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -25,19 +23,18 @@ The [upstream Jira helm chart changelog](https://github.com/atlassian/data-cente
 
 * Kubernetes Cluster deployed
 * Kubernetes config installed in `~/.kube/config`
-* [Helm installed](https://helm.sh/docs/intro/install/)
+* Helm installed
 
 Kubernetes: `>=1.21.x-0`
 
 Install Helm
 
-<https://helm.sh/docs/intro/install/>
+https://helm.sh/docs/intro/install/
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
-
 ```bash
 helm install jira chart/
 ```
@@ -50,6 +47,7 @@ helm install jira chart/
 | ordinals | object | `{"enabled":false,"start":0}` | Set a custom start ordinal number for the K8s stateful set. Note that this depends on the StatefulSetStartOrdinal K8s feature gate, which has entered beta state with K8s version 1.27.  |
 | ordinals.enabled | bool | `false` | Enable only if StatefulSetStartOrdinal K8s feature gate is available.  |
 | ordinals.start | int | `0` | Set start ordinal to a positive integer, defaulting to 0.  |
+| updateStrategy | object | `{}` | StatefulSet update strategy. When unset defaults to Rolling update. See: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#updating-statefulsets  |
 | image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` | The Jira Docker image to use <https://hub.docker.com/r/atlassian/jira-software>  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
@@ -73,6 +71,7 @@ helm install jira chart/
 | volumes.localHome.customVolume | object | `{}` | Static provisioning of local-home using K8s PVs and PVCs  NOTE: Due to the ephemeral nature of pods this approach to provisioning volumes for pods is not recommended. Dynamic provisioning described above is the prescribed approach.  When 'persistentVolumeClaim.create' is 'false', then this value can be used to define a standard K8s volume that will be used for the local-home volume(s). If not defined, then an 'emptyDir' volume is utilised. Having provisioned a 'PersistentVolume', specify the bound 'persistentVolumeClaim.claimName' for the 'customVolume' object. <https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static>  |
 | volumes.localHome.mountPath | string | `"/var/atlassian/application-data/jira"` | Specifies the path in the Jira container to which the local-home volume will be mounted.  |
 | volumes.sharedHome.persistentVolumeClaim.create | bool | `false` | If 'true', then a 'PersistentVolumeClaim' and 'PersistentVolume' will be dynamically created for shared-home based on the 'StorageClassName' supplied below.  |
+| volumes.sharedHome.persistentVolumeClaim.accessModes | list | `["ReadWriteMany"]` | Specify the access modes that should be used for the 'shared-home' volume claim. Note: 'ReadWriteOnce' (RWO) is suitable only for single-node installations. Be aware that changing the access mode of an existing PVC might be impossible, as the PVC spec is immutable. https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes  |
 | volumes.sharedHome.persistentVolumeClaim.storageClassName | string | `nil` | Specify the name of the 'StorageClass' that should be used for the 'shared-home' volume claim.  |
 | volumes.sharedHome.persistentVolumeClaim.resources | object | `{"requests":{"storage":"1Gi"}}` | Specifies the standard K8s resource requests and/or limits for the shared-home volume claims.  |
 | volumes.sharedHome.customVolume | object | `{}` | Static provisioning of shared-home using K8s PVs and PVCs  When 'persistentVolumeClaim.create' is 'false', then this value can be used to define a standard K8s volume that will be used for the shared-home volume. If not defined, then an 'emptyDir' volume is utilised. Having provisioned a 'PersistentVolume', specify the bound 'persistentVolumeClaim.claimName' for the 'customVolume' object. <https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static> <https://atlassian.github.io/data-center-helm-charts/examples/storage/aws/SHARED_STORAGE/>  |
@@ -136,9 +135,12 @@ helm install jira chart/
 | jira.livenessProbe.customProbe | object | `{}` | Custom livenessProbe to override the default tcpSocket probe  |
 | jira.accessLog.mountPath | string | `"/opt/atlassian/jira/logs"` | The path within the Jira container where the local-home volume should be mounted in order to capture access logs.  |
 | jira.accessLog.localHomeSubPath | string | `"log"` | The subdirectory within the local-home volume where access logs should be stored.  |
-| jira.s3Storage.avatars.bucketName | string | `nil` |  |
-| jira.s3Storage.avatars.bucketRegion | string | `nil` |  |
-| jira.s3Storage.avatars.endpointOverride | string | `nil` |  |
+| jira.s3Storage.avatars.bucketName | string | `nil` | Bucket name to store avatars. If a bucket name and region (see below) are defined, Jira will automatically use AWS S3 to store avatars. Only bucket name is required, not the full arn.  |
+| jira.s3Storage.avatars.bucketRegion | string | `nil` | AWS region where the S3 bucket is located.  |
+| jira.s3Storage.avatars.endpointOverride | string | `nil` | Override the default AWS API endpoint with a custom one  |
+| jira.s3Storage.attachments.bucketName | string | `nil` | Bucket name to store attachments. If a bucket name and region (see below) are defined, Jira will automatically use AWS S3 to store attachments. Only bucket name is required, not the full arn. If you provide the same bucket name for both avatars and attachments, they will be stored in the same bucket  |
+| jira.s3Storage.attachments.bucketRegion | string | `nil` | AWS region where the S3 bucket is located.  |
+| jira.s3Storage.attachments.endpointOverride | string | `nil` | Override the default AWS API endpoint with a custom one  |
 | jira.clustering.enabled | bool | `false` | Set to 'true' if Data Center clustering should be enabled This will automatically configure cluster peer discovery between cluster nodes.  |
 | jira.shutdown.terminationGracePeriodSeconds | int | `30` | The termination grace period for pods during shutdown. This should be set to the internal grace period, plus a small buffer to allow the JVM to fully terminate.  |
 | jira.shutdown.command | string | `"/shutdown-wait.sh"` | By default pods will be stopped via a [preStop hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/), using a script supplied by the Docker image. If any other shutdown behaviour is needed it can be achieved by overriding this value. Note that the shutdown command needs to wait for the application shutdown completely before exiting; see [the default command](https://bitbucket.org/atlassian-docker/docker-atlassian-jira/src/master/shutdown-wait.sh) for details.  |
@@ -150,7 +152,7 @@ helm install jira chart/
 | jira.resources.container.requests.memory | string | `"2G"` | Initial Memory request by Jira pod  |
 | jira.forceConfigUpdate | bool | `false` | The Docker entrypoint.py generates application configuration on first start; not all of these files are regenerated on subsequent starts. By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true to change this behavior.  |
 | jira.additionalJvmArgs[0] | string | `"-Dcom.redhat.fips=false"` |  |
-| jira.tomcatConfig | object | `{"acceptCount":"10","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","scheme":null,"secure":null}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
+| jira.tomcatConfig | object | `{"acceptCount":"100","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","scheme":null,"secure":null}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
 | jira.tomcatConfig.generateByHelm | bool | `false` | Mount server.xml as a ConfigMap. Override configuration elements if necessary  |
 | jira.tomcatConfig.customServerXml | string | `""` | Custom server.xml to be mounted into /opt/atlassian/jira/conf  |
 | jira.seraphConfig | object | `{"autoLoginCookieAge":"1209600","generateByHelm":false}` | By default seraph-config.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, seraph-config.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
@@ -159,12 +161,17 @@ helm install jira chart/
 | jira.additionalBundledPlugins | list | `[]` | Specifies a list of additional Jira plugins that should be added to the Jira container. Note plugins installed via this method will appear as bundled plugins rather than user plugins. These should be specified in the same manner as the 'additionalLibraries' property. Additional details: <https://atlassian.github.io/data-center-helm-charts/examples/external_libraries/EXTERNAL_LIBS/>  NOTE: only .jar files can be loaded using this approach. OBR's can be extracted (unzipped) to access the associated .jar  An alternative to this method is to install the plugins via "Manage Apps" in the product system administration UI.  |
 | jira.additionalVolumeMounts | list | `[{"mountPath":"/opt/atlassian/etc/server.xml.j2","name":"server-xml-j2","subPath":"server.xml.j2"},{"mountPath":"/opt/atlassian/jira/conf/server.xml","name":"server-xml","subPath":"server.xml"},{"mountPath":"/opt/atlassian/jira/atlassian-jira/WEB-INF/classes/templates/plugins/footer/footer.vm","name":"footer-vm","subPath":"footer.vm"}]` | Defines any additional volumes mounts for the Jira container. These can refer to existing volumes, or new volumes can be defined via 'volumes.additional'.  |
 | jira.additionalEnvironmentVariables | list | `[]` | Defines any additional environment variables to be passed to the Jira container. See <https://hub.docker.com/r/atlassian/jira-software> for supported variables.  |
+| jira.additionalAnnotations | object | `{}` | Defines additional annotations to the Jira StateFulSet. This might be required when deploying using a GitOps approach |
 | jira.additionalPorts | list | `[]` | Defines any additional ports for the Jira container.  |
 | jira.additionalVolumeClaimTemplates | list | `[]` | Defines additional volumeClaimTemplates that should be applied to the Jira pod. Note that this will not create any corresponding volume mounts; those needs to be defined in jira.additionalVolumeMounts  |
 | jira.topologySpreadConstraints | list | `[]` | Defines topology spread constraints for Jira pods. See details: <https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/>  |
-| jira.additionalCertificates | object | `{"customCmd":null,"secretName":null}` | Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates  |
+| jira.additionalCertificates | object | `{"customCmd":null,"initContainer":{"resources":{}},"secretList":[],"secretName":null}` | Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates  |
+| jira.additionalCertificates.secretName | string | `nil` | Name of the Kubernetes secret with certificates in its data. All secret keys in the secret data will be treated as certificates to be added to Java truststore. If defined, this takes precedence over secretList.  |
+| jira.additionalCertificates.secretList | list | `[]` | A list of secrets with their respective keys holding certificates to be added to the Java truststore. It is mandatory to specify which keys from secret data need to be mounted as files to the init container.  |
+| jira.additionalCertificates.initContainer.resources | object | `{}` | Resources requests and limits for the import-certs init container  |
 | monitoring.exposeJmxMetrics | bool | `false` | Expose JMX metrics with jmx_exporter <https://github.com/prometheus/jmx_exporter>  |
-| monitoring.jmxExporterInitContainer | object | `{"customSecurityContext":{"runAsUser":1000},"resources":{},"runAsRoot":false}` | JMX exporter init container configuration  |
+| monitoring.jmxExporterInitContainer | object | `{"customSecurityContext":{"runAsUser":1000},"jmxJarLocation":null,"resources":{},"runAsRoot":false}` | JMX exporter init container configuration  |
+| monitoring.jmxExporterInitContainer.jmxJarLocation | string | `nil` | The location of the JMX exporter jarfile in the JMX exporter image Leave blank for default bitnami image  |
 | monitoring.jmxExporterInitContainer.runAsRoot | bool | `false` | Whether to run JMX exporter init container as root to copy JMX exporter binary to shared home volume. Set to false if running containers as root is not allowed in the cluster.  |
 | monitoring.jmxExporterInitContainer.customSecurityContext | object | `{"runAsUser":1000}` | Custom SecurityContext for the jmx exporter init container  |
 | monitoring.jmxExporterInitContainer.resources | object | `{}` | Resources requests and limits for the JMX exporter init container See: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>  |
