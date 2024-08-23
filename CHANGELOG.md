@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.21.1-bb.0] - 2024-08-23
+
+### Changed
+
+- Updated chart to 1.21.1
+- Updated cypress dependency 13.13.0 -> 13.13.1
+- Update registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset 1.17.0 -> 1.17.1
+
 ## [1.20.1-bb.4] - 2024-08-12
 
 ### Changed

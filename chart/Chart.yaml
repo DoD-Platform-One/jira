@@ -2,7 +2,7 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: '1.20.1-bb.4'
+version: '1.21.1-bb.0'
 appVersion: 9.12.12
 kubeVersion: ">=1.21.x-0"
 keywords:
@@ -42,8 +42,20 @@ annotations:
     - "Set atlassian.logging.cloud.enabled system property to false if a custom FluentD config is used (#796)"
     - "Update appVersions for DC apps (#825)"
     - "Make it possible to override proxy settings (#822)"
+    - "Added annotations to the StatefulSets (#857)"
+    - "Update appVersions for DC apps (#858)"
+    - "Add a dedicated helm values stanza for s3 attachments (#854)"
+    - "Make shared home pvc access mode configurable (#855)"
+    - "Allow referencing multiple secrets in additionalCertificates (#852)"
+    - "Make it possible to define resources for import-certs init container (#851)"
+    - "Move update strategy to root level (#849)"
+    - "Add helm value for custom jmx jar location when using other jmx init container images (#846)"
+    - "feat: add appProtocol for service meshes (#847)"
+    - "Make StatefulSet updateStrategy configurable (#845)"
+    - "Fix default for acceptCount (#832)"
+    - "Update appVersions for DC apps (#865)"
   bigbang.dev/applicationVersions: |
-    - Jira: 9.12.11
+    - Jira: 9.12.12
   bigbang.dev/upstreamReleaseNotesMarkdown: |
     The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
   helm.sh/images: |
@@ -53,7 +65,7 @@ annotations:
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10
     - name: fluentd-kubernetes-daemonset
       condition: fluentd.enabled
-      image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.17.0
+      image: registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset:1.17.1
 dependencies:
   - name: common
     version: 1.2.6
