@@ -8,7 +8,7 @@ The below details the steps required to update to a new version of the Jira pack
 
 3. Based on the upstream changelog review from earlier, make any changes required to resolve breaking changes and reconcile the Big Bang modifications.
 
-4. Modify the `version` in `Chart.yaml`. Also modify the `appVersion` and the `bigbang.dev/applicationVersions` to the new upstream version of Jira. 
+4. Modify the `version` in `Chart.yaml`. Also modify the `appVersion` and the `bigbang.dev/applicationVersions` to the new upstream version of Jira.
     ```yaml
     dependencies:
     - name: common
@@ -95,9 +95,14 @@ packages:
       jira:
         service:
           port: 8080
+      # Adding the following podLabels will properly label the package to be connected in Kiali (if Kiali is enabled)
+      # Other labels can be added with or without templating
+      podLabels:
+        app: "{{ \"{{ .Chart.Name }}\" }}"
+        version: "{{ \"{{ .Chart.AppVersion }}\" }}"
 ```
 
-Then install/update bigbang via the standard `helm upgrade` command, adding `-f <YAML file location>` to the end. This will install Jira into the named namespace. 
+Then install/update bigbang via the standard `helm upgrade` command, adding `-f <YAML file location>` to the end. This will install Jira into the named namespace.
 
 Example:
   ```shell
@@ -122,7 +127,7 @@ When in doubt with any testing or upgrade steps ask one of the CODEOWNERS for as
 
 # Big Bang Chart Additions
 
-This package has a some additions to the chart in order to facilitate Party Bus using custom liveness and readiness probes as seen below for examples, it is necessary to keep these items intact. 
+This package has a some additions to the chart in order to facilitate Party Bus using custom liveness and readiness probes as seen below for examples, it is necessary to keep these items intact.
 
 Here's the section of the `chart/values.yaml` file where these additions are configured:
 
@@ -132,7 +137,7 @@ Here's the section of the `chart/values.yaml` file where these additions are con
     custom: {}
     #  exec:
     #    command:
-    #    - /bin/bash 
+    #    - /bin/bash
     #    - -c
     #    - curl http://some/endpoint && exit 0
 
@@ -155,7 +160,7 @@ Here's the sections of the `chart/templates/statefulset.yaml` file where these a
             httpGet:
               port: {{ .Values.jira.ports.http }}
               path: {{ .Values.jira.service.contextPath }}/status
-            {{- end }}  
+            {{- end }}
 ```
 # Big Bang Integration Testing
 
@@ -163,13 +168,13 @@ Here's the sections of the `chart/templates/statefulset.yaml` file where these a
 * `chart/templates/bigbang/*`
 * `chart/values.yaml` (If it changes anything in:)
   * Monitoring
-  * Istio hardening 
+  * Istio hardening
   * Network policies
   * Kyverno policies
   * Service definition
   * TLS settings
 
-As part of your MR that modifies bigbang packages, you should modify the bigbang  [bigbang/tests/test-values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) against your branch for the CI/CD MR testing by enabling your packages. 
+As part of your MR that modifies bigbang packages, you should modify the bigbang  [bigbang/tests/test-values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) against your branch for the CI/CD MR testing by enabling your packages.
 
     - To do this, at a minimum, you will need to follow the instructions at [bigbang/docs/developer/test-package-against-bb.md](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads) with changes for Jira enabled (the below is a reference, actual changes could be more depending on what changes where made to Jira in the pakcage MR).
 
@@ -182,7 +187,7 @@ packages:
     git:
       repo: https://repo1.dso.mil/big-bang/product/community/jira
       tag: Null
-      branch: <Insert-branch-being-tested> 
+      branch: <Insert-branch-being-tested>
       path: chart
     istio:
       enabled: true
@@ -203,6 +208,6 @@ packages:
 
 
 ### automountServiceAccountToken
-The mutating Kyverno policy named `update-automountserviceaccounttokens` is leveraged to harden all ServiceAccounts in this package with `automountServiceAccountToken: false`. This policy is configured by namespace in the Big Bang umbrella chart repository at [chart/templates/kyverno-policies/values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/chart/templates/kyverno-policies/values.yaml?ref_type=heads). 
+The mutating Kyverno policy named `update-automountserviceaccounttokens` is leveraged to harden all ServiceAccounts in this package with `automountServiceAccountToken: false`. This policy is configured by namespace in the Big Bang umbrella chart repository at [chart/templates/kyverno-policies/values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/chart/templates/kyverno-policies/values.yaml?ref_type=heads).
 
 This policy revokes access to the K8s API for Pods utilizing said ServiceAccounts. If a Pod truly requires access to the K8s API (for app functionality), the Pod is added to the `pods:` array of the same mutating policy. This grants the Pod access to the API, and creates a Kyverno PolicyException to prevent an alert.
