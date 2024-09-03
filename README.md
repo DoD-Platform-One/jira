@@ -1,12 +1,11 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 1.21.1-bb.0](https://img.shields.io/badge/Version-1.21.1--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.12](https://img.shields.io/badge/AppVersion-9.12.12-informational?style=flat-square)
+![Version: 1.21.1-bb.1](https://img.shields.io/badge/Version-1.21.1--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.12](https://img.shields.io/badge/AppVersion-9.12.12-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
 ## Upstream References
-* <https://atlassian.github.io/data-center-helm-charts/>
 
 * <https://github.com/atlassian/data-center-helm-charts>
 * <https://bitbucket.org/atlassian-docker/docker-atlassian-jira/>
@@ -16,6 +15,7 @@ A chart for installing Jira Data Center on Kubernetes
 The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
 
 ## Learn More
+
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -29,12 +29,13 @@ Kubernetes: `>=1.21.x-0`
 
 Install Helm
 
-https://helm.sh/docs/intro/install/
+<https://helm.sh/docs/intro/install/>
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
+
 ```bash
 helm install jira chart/
 ```
@@ -47,7 +48,7 @@ helm install jira chart/
 | ordinals | object | `{"enabled":false,"start":0}` | Set a custom start ordinal number for the K8s stateful set. Note that this depends on the StatefulSetStartOrdinal K8s feature gate, which has entered beta state with K8s version 1.27.  |
 | ordinals.enabled | bool | `false` | Enable only if StatefulSetStartOrdinal K8s feature gate is available.  |
 | ordinals.start | int | `0` | Set start ordinal to a positive integer, defaulting to 0.  |
-| updateStrategy | object | `{}` | StatefulSet update strategy. When unset defaults to Rolling update. See: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#updating-statefulsets  |
+| updateStrategy | object | `{}` | StatefulSet update strategy. When unset defaults to Rolling update. See: <https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#updating-statefulsets>  |
 | image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` | The Jira Docker image to use <https://hub.docker.com/r/atlassian/jira-software>  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
@@ -57,9 +58,9 @@ helm install jira chart/
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount <https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod>  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the ServiceAccount (if created)  |
 | serviceAccount.eksIrsa.roleArn | string | `nil` |  |
-| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: *'postgres72'* 'mysql57' *'mysql8'* 'oracle10g' *'mssql'* 'postgresaurora96' <https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype>  |
-| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: *'jdbc:postgresql://<dbhost>:5432/<dbname>'* 'jdbc:mysql://<dbhost>/<dbname>' *'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>'* 'jdbc:oracle:thin:@<dbhost>:1521:<SID>' <https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl>  |
-| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: *'org.postgresql.Driver'* 'com.mysql.jdbc.Driver' *'oracle.jdbc.OracleDriver'* 'com.microsoft.sqlserver.jdbc.SQLServerDriver' <https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver>:  |
+| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: * 'postgres72' * 'mysql57' * 'mysql8' * 'oracle10g' * 'mssql' * 'postgresaurora96' <https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype>  |
+| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: * 'jdbc:postgresql://<dbhost>:5432/<dbname>' * 'jdbc:mysql://<dbhost>/<dbname>' * 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>' * 'jdbc:oracle:thin:@<dbhost>:1521:<SID>' <https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl>  |
+| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: * 'org.postgresql.Driver' * 'com.mysql.jdbc.Driver' * 'oracle.jdbc.OracleDriver' * 'com.microsoft.sqlserver.jdbc.SQLServerDriver' <https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver>:  |
 | database.credentials.secretName | string | `nil` | from-literal=password=<password>' <https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets>  |
 | database.credentials.usernameSecretKey | string | `"username"` | The key ('username') in the Secret used to store the database login username  |
 | database.credentials.passwordSecretKey | string | `"password"` | The key ('password') in the Secret used to store the database login password  |
@@ -71,7 +72,7 @@ helm install jira chart/
 | volumes.localHome.customVolume | object | `{}` | Static provisioning of local-home using K8s PVs and PVCs  NOTE: Due to the ephemeral nature of pods this approach to provisioning volumes for pods is not recommended. Dynamic provisioning described above is the prescribed approach.  When 'persistentVolumeClaim.create' is 'false', then this value can be used to define a standard K8s volume that will be used for the local-home volume(s). If not defined, then an 'emptyDir' volume is utilised. Having provisioned a 'PersistentVolume', specify the bound 'persistentVolumeClaim.claimName' for the 'customVolume' object. <https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static>  |
 | volumes.localHome.mountPath | string | `"/var/atlassian/application-data/jira"` | Specifies the path in the Jira container to which the local-home volume will be mounted.  |
 | volumes.sharedHome.persistentVolumeClaim.create | bool | `false` | If 'true', then a 'PersistentVolumeClaim' and 'PersistentVolume' will be dynamically created for shared-home based on the 'StorageClassName' supplied below.  |
-| volumes.sharedHome.persistentVolumeClaim.accessModes | list | `["ReadWriteMany"]` | Specify the access modes that should be used for the 'shared-home' volume claim. Note: 'ReadWriteOnce' (RWO) is suitable only for single-node installations. Be aware that changing the access mode of an existing PVC might be impossible, as the PVC spec is immutable. https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes  |
+| volumes.sharedHome.persistentVolumeClaim.accessModes | list | `["ReadWriteMany"]` | Specify the access modes that should be used for the 'shared-home' volume claim. Note: 'ReadWriteOnce' (RWO) is suitable only for single-node installations. Be aware that changing the access mode of an existing PVC might be impossible, as the PVC spec is immutable. <https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes>  |
 | volumes.sharedHome.persistentVolumeClaim.storageClassName | string | `nil` | Specify the name of the 'StorageClass' that should be used for the 'shared-home' volume claim.  |
 | volumes.sharedHome.persistentVolumeClaim.resources | object | `{"requests":{"storage":"1Gi"}}` | Specifies the standard K8s resource requests and/or limits for the shared-home volume claims.  |
 | volumes.sharedHome.customVolume | object | `{}` | Static provisioning of shared-home using K8s PVs and PVCs  When 'persistentVolumeClaim.create' is 'false', then this value can be used to define a standard K8s volume that will be used for the shared-home volume. If not defined, then an 'emptyDir' volume is utilised. Having provisioned a 'PersistentVolume', specify the bound 'persistentVolumeClaim.claimName' for the 'customVolume' object. <https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static> <https://atlassian.github.io/data-center-helm-charts/examples/storage/aws/SHARED_STORAGE/>  |
@@ -193,7 +194,7 @@ helm install jira chart/
 | fluentd.imageRepo | string | `"ironbank/opensource/fluentd/fluentd-kubernetes-daemonset"` | The Fluentd sidecar image repository  |
 | fluentd.imageTag | string | `"1.17.0"` | The Fluentd sidecar image tag  |
 | fluentd.resources | object | `{}` | Resources requests and limits for fluentd sidecar container See: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>  |
-| fluentd.command | string | `nil` | The command used to start Fluentd. If not supplied the default command will be used: "fluentd -c /fluentd/etc/fluent.conf -v"  Note: The custom command can be free-form, however pay particular attention to the process that should ultimately be left running in the container. This process should be invoked with 'exec' so that signals are appropriately propagated to it, for instance SIGTERM. An example of how such a command may look is: "<command 1> && <command 2> && exec <primary command>" |
+| fluentd.command | string | `nil` | The command used to start Fluentd. If not supplied the default command will be used: "fluentd -c /fluentd/etc/fluent.conf -v"  Note: The custom command can be free-form, however pay particular attention to the process that should ultimately be left running in the container. This process should be invoked with 'exec' so that signals are appropriately propagated to it, for instance SIGTERM. An example of how such a command may look is: "<command 1> && <command 2> && exec <primary_command>" |
 | fluentd.customConfigFile | bool | `false` | Set to 'true' if a custom config (see 'configmap-fluentd.yaml' for default) should be used for Fluentd. If enabled this config must be supplied via the 'fluentdCustomConfig' property below. If your custom config forces fluentd to run in a server mode, add `-Datlassian.logging.cloud.enabled=true` to `jira.AdditionalJvmArgs` stanza in values file  |
 | fluentd.fluentdCustomConfig | object | `{}` | Custom fluent.conf file  |
 | fluentd.httpPort | int | `9880` | The port on which the Fluentd sidecar will listen  |
@@ -256,3 +257,4 @@ Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in 
 ---
 
 _This file is programatically generated using `helm-docs` and some BigBang-specific templates. The `gluon` repository has [instructions for regenerating package READMEs](https://repo1.dso.mil/big-bang/product/packages/gluon/-/blob/master/docs/bb-package-readme.md)._
+

@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.21.1-bb.1] - 2024-08-30
+
+### Added
+
+- Added template evaluation of `podLabels` in `chart/templates/_helpers.tpl`
+
 ## [1.21.1-bb.0] - 2024-08-23
 
 ### Changed
