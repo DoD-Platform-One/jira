@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.21.1-bb.3] - 2024-09-11
+
+### Changed
+
+- Update Helm release common to v1.2.7
+
 ## [1.21.1-bb.2] - 2024-09-02
 
 ### Changed
