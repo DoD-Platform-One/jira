@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 1.21.3-bb.1](https://img.shields.io/badge/Version-1.21.3--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.12](https://img.shields.io/badge/AppVersion-9.12.12-informational?style=flat-square)
+![Version: 1.21.4-bb.0](https://img.shields.io/badge/Version-1.21.4--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.14](https://img.shields.io/badge/AppVersion-9.12.14-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -23,7 +23,7 @@ The [upstream Jira helm chart changelog](https://github.com/atlassian/data-cente
 
 * Kubernetes Cluster deployed
 * Kubernetes config installed in `~/.kube/config`
-* Helm installed
+* [Helm installed](https://helm.sh/docs/intro/install/)
 
 Kubernetes: `>=1.21.x-0`
 
