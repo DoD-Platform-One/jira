@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: '1.21.3-bb.1'
-appVersion: 9.12.12
+version: '1.21.4-bb.0'
+appVersion: 9.12.14
 kubeVersion: ">=1.21.x-0"
 keywords:
   - Jira
@@ -21,38 +21,6 @@ deprecated: false
 annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |-
-    - "Make test pod metadata and spec configurable (#727)"
-    - "Optional analytics/support ConfigMap (#721)"
-    - "Fix ingress annotations comment (#720)"
-    - "Allow templating of pod annotations (#662)"
-    - "Make securityContext configurable for jmx exporter init container (#670)"
-    - "Add user provided certificates to the default Java truststore (#663)"
-    - "Fix custom jmx config (#699)"
-    - "Copy cacerts first, then import certs (#696)"
-    - "StatefulSet PVC auto deletion (#736)"
-    - "Update appVersions for DC apps (#738)"
-    - "Add optional postStart hook (#735)"
-    - "Add Openshift analytics (#763)"
-    - "Update appVersions for DC apps (#765)"
-    - "OpenShift Support (#752)"
-    - "Use testPods values for test images and container resources (#761)"
-    - "Relabel instance name on jmx service monitor (#757)"
-    - "Added pvc retention policy to Bitbucket Mesh StatefulSet (#755)"
-    - "Update appVersions for DC apps (#803)"
-    - "Set atlassian.logging.cloud.enabled system property to false if a custom FluentD config is used (#796)"
-    - "Update appVersions for DC apps (#825)"
-    - "Make it possible to override proxy settings (#822)"
-    - "Added annotations to the StatefulSets (#857)"
-    - "Update appVersions for DC apps (#858)"
-    - "Add a dedicated helm values stanza for s3 attachments (#854)"
-    - "Make shared home pvc access mode configurable (#855)"
-    - "Allow referencing multiple secrets in additionalCertificates (#852)"
-    - "Make it possible to define resources for import-certs init container (#851)"
-    - "Move update strategy to root level (#849)"
-    - "Add helm value for custom jmx jar location when using other jmx init container images (#846)"
-    - "feat: add appProtocol for service meshes (#847)"
-    - "Make StatefulSet updateStrategy configurable (#845)"
-    - "Fix default for acceptCount (#832)"
     - "Update appVersions for DC apps (#865)"
   bigbang.dev/applicationVersions: |
     - Jira: 9.12.12
@@ -60,7 +28,7 @@ annotations:
     The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.13
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.14
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10
     - name: fluentd-kubernetes-daemonset
