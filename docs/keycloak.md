@@ -25,6 +25,21 @@ To integrate your OAuth/OpenID Provider with Jira, you need the following items:
 * Admin credentials are set up in Jira.
 * Valid Jira Server and Data center Licence.
 
+You may also need to include an ingress or egress network policy on port 8443 within the Jira namespace due to the tomcat config being hardcoded to 8443:
+```
+name: sso-pol
+  namespace: jira
+  spec:
+    podSelector: {}
+    egress:
+  
+    - ports:
+    - port: 8443
+      protocol: TCP
+  policyTypes:
+  - Egress 
+```
+
 ## Download And Installation
 * Log into your Jira instance as an admin.
 * Navigate to the settings menu and Click Manage Apps.

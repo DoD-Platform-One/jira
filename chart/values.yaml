@@ -1289,6 +1289,7 @@ bbtests:
         cpu: "1"
         memory: "2Gi"
 
+# If networkPolicies are enabled, you will need to pass the controlPlaneCidr as that is required by the egress-kube-api policy.
 networkPolicies:
   enabled: false
   ingressLabels:
