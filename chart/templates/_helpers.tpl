@@ -101,7 +101,7 @@ Pod labels
 */}}
 {{- define "jira.podLabels" -}}
 {{ with .Values.podLabels }}
-{{- tpl (toYaml .) $ }}
+{{- toYaml . }}
 {{- end }}
 {{- end }}
 

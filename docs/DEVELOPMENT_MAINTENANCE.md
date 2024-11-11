@@ -95,11 +95,6 @@ packages:
       jira:
         service:
           port: 8080
-      # Adding the following podLabels will properly label the package to be connected in Kiali (if Kiali is enabled)
-      # Other labels can be added with or without templating
-      podLabels:
-        app: "{{ \"{{ .Chart.Name }}\" }}"
-        version: "{{ \"{{ .Chart.AppVersion }}\" }}"
 ```
 
 Then install/update bigbang via the standard `helm upgrade` command, adding `-f <YAML file location>` to the end. This will install Jira into the named namespace.
