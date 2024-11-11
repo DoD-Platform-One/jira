@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.21.4-bb.4] - 2024-11-08
+
+### Changed
+
+- Synced from upstream chart to ensure proper labels are now added to workloads
+- Removed previous updates made to update labels for Kiali
+- Updated documentation as additional labels are no longer necessary for it to show up properly in Kiali
+
 ## [1.21.4-bb.3] - 2024-11-06
 
 ### Changed
