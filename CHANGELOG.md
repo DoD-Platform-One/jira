@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.21.4-bb.5] - 2024-11-11
+
+### Changed
+
+- registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts 9.12.14 -> 9.12.15
+- Update gluon (source) 0.5.9 -> 0.5.10
+- Update cypress (source) 13.15.1 -> 13.15.2
 
 ## [1.21.4-bb.4] - 2024-11-08
 
@@ -60,6 +67,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Update Helm release common to v1.2.7
+
+## [1.21.1-bb.2] - 2024-09-02
+
+### Changed
+
+- cypress (source) 13.13.3 -> 13.14.1
 
 ## [1.21.1-bb.2] - 2024-09-02
 

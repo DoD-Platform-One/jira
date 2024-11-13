@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: '1.21.4-bb.4'
-appVersion: 9.12.14
+version: '1.21.4-bb.5'
+appVersion: 9.12.15
 kubeVersion: ">=1.21.x-0"
 keywords:
   - Jira
@@ -28,7 +28,7 @@ annotations:
     The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.14
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:9.12.15
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10
     - name: fluentd-kubernetes-daemonset
@@ -40,4 +40,4 @@ dependencies:
     repository: https://atlassian.github.io/data-center-helm-charts
   - name: gluon
     repository: oci://registry1.dso.mil/bigbang
-    version: 0.5.9
+    version: 0.5.10
