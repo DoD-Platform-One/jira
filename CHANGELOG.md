@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Updated gluon (source) 0.5.11 -> 0.5.12
+- Added the maintenance track annotation and badge
 
 ## [1.21.4-bb.6] - 2024-11-26
 
