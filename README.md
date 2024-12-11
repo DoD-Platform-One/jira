@@ -1,15 +1,15 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 1.21.4-bb.7](https://img.shields.io/badge/Version-1.21.4--bb.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.15](https://img.shields.io/badge/AppVersion-9.12.15-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 1.21.4-bb.8](https://img.shields.io/badge/Version-1.21.4--bb.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.15](https://img.shields.io/badge/AppVersion-9.12.15-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
 ## Upstream References
 - <https://atlassian.github.io/data-center-helm-charts/>
 
-* <https://github.com/atlassian/data-center-helm-charts>
-* <https://bitbucket.org/atlassian-docker/docker-atlassian-jira/>
+- <https://github.com/atlassian/data-center-helm-charts>
+- <https://bitbucket.org/atlassian-docker/docker-atlassian-jira/>
 
 ## Upstream Release Notes
 
@@ -59,10 +59,10 @@ helm install jira chart/
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the ServiceAccount (if created)  |
 | serviceAccount.eksIrsa.roleArn | string | `nil` |  |
-| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: * 'postgres72' * 'mysql57' * 'mysql8' * 'oracle10g' * 'mssql' * 'postgresaurora96' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype  |
-| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: * 'jdbc:postgresql://<dbhost>:5432/<dbname>' * 'jdbc:mysql://<dbhost>/<dbname>' * 'jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>' * 'jdbc:oracle:thin:@<dbhost>:1521:<SID>' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl  |
-| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: * 'org.postgresql.Driver' * 'com.mysql.jdbc.Driver' * 'oracle.jdbc.OracleDriver' * 'com.microsoft.sqlserver.jdbc.SQLServerDriver' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:  |
-| database.credentials.secretName | string | `nil` | from-literal=password=<password>' https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets  |
+| database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: 'postgres72', 'mysql57', 'mysql8', 'oracle10g', 'mssql', 'postgresaurora96' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype  |
+| database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: `jdbc:postgresql://<dbhost>:5432/<dbname>`, `jdbc:mysql://<dbhost>/<dbname>`, `jdbc:sqlserver://<dbhost>:1433;databaseName=<dbname>`, `jdbc:oracle:thin:@<dbhost>:1521:<SID>` https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl  |
+| database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: 'org.postgresql.Driver', 'com.mysql.jdbc.Driver', 'oracle.jdbc.OracleDriver', 'com.microsoft.sqlserver.jdbc.SQLServerDriver' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:  |
+| database.credentials.secretName | string | `nil` | `from-literal=password=<password>` https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets  |
 | database.credentials.usernameSecretKey | string | `"username"` | The key ('username') in the Secret used to store the database login username  |
 | database.credentials.passwordSecretKey | string | `"password"` | The key ('password') in the Secret used to store the database login password  |
 | volumes.localHome.persistentVolumeClaim.create | bool | `false` | If 'true', then a 'PersistentVolume' and 'PersistentVolumeClaim' will be dynamically created for each pod based on the 'StorageClassName' supplied below.  |
@@ -195,7 +195,7 @@ helm install jira chart/
 | fluentd.imageRepo | string | `"ironbank/opensource/fluentd/fluentd-kubernetes-daemonset"` | The Fluentd sidecar image repository  |
 | fluentd.imageTag | string | `"1.17.0"` | The Fluentd sidecar image tag  |
 | fluentd.resources | object | `{}` | Resources requests and limits for fluentd sidecar container See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/  |
-| fluentd.command | string | `nil` | The command used to start Fluentd. If not supplied the default command will be used: "fluentd -c /fluentd/etc/fluent.conf -v"  Note: The custom command can be free-form, however pay particular attention to the process that should ultimately be left running in the container. This process should be invoked with 'exec' so that signals are appropriately propagated to it, for instance SIGTERM. An example of how such a command may look is: "<command 1> && <command 2> && exec <primary command>" |
+| fluentd.command | string | `nil` | The command used to start Fluentd. If not supplied the default command will be used: "fluentd -c /fluentd/etc/fluent.conf -v"  Note: The custom command can be free-form, however pay particular attention to the process that should ultimately be left running in the container. This process should be invoked with 'exec' so that signals are appropriately propagated to it, for instance SIGTERM. An example of how such a command may look is: `<command 1> && <command 2> && exec <primary command>` |
 | fluentd.customConfigFile | bool | `false` | Set to 'true' if a custom config (see 'configmap-fluentd.yaml' for default) should be used for Fluentd. If enabled this config must be supplied via the 'fluentdCustomConfig' property below. If your custom config forces fluentd to run in a server mode, add `-Datlassian.logging.cloud.enabled=true` to `jira.AdditionalJvmArgs` stanza in values file  |
 | fluentd.fluentdCustomConfig | object | `{}` | Custom fluent.conf file  |
 | fluentd.httpPort | int | `9880` | The port on which the Fluentd sidecar will listen  |
