@@ -67,7 +67,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "9.12.16"
+  tag: "10.3.0"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -714,6 +714,21 @@ jira:
       #
       endpointOverride:
 
+    backups:
+      # -- Bucket name to store backups. If a bucket name and region (see below) are defined, Jira will automatically
+      # use AWS S3 to store backups. Only bucket name is required, not the full arn.
+      # If you provide the same bucket name for both avatars and backups, they will be stored in the same bucket
+      #
+      bucketName:
+
+      # -- AWS region where the S3 bucket is located.
+      #
+      bucketRegion:
+
+      # -- Override the default AWS API endpoint with a custom one
+      #
+      endpointOverride:
+
   # Data Center clustering
   #
   clustering:
@@ -832,6 +847,7 @@ jira:
     # proxyPort is set depending on ingress.https value (80 if http, 443 if https)
     proxyPort:
     maxHttpHeaderSize: "8192"
+    stuckThreadDetectionValveThreshold: "120"
 
     # -- Custom server.xml to be mounted into /opt/atlassian/jira/conf
     #
