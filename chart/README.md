@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.22.1](https://img.shields.io/badge/Version-1.22.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.12.15](https://img.shields.io/badge/AppVersion-9.12.15-informational?style=flat-square)
+![Version: 1.22.2](https://img.shields.io/badge/Version-1.22.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.0](https://img.shields.io/badge/AppVersion-10.3.0-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -121,6 +121,7 @@ Kubernetes: `>=1.21.x-0`
 | jira.service.annotations | object | `{}` | Additional annotations to apply to the Service  |
 | jira.service.contextPath | string | `nil` | The Tomcat context path that Jira will use. The ATL_TOMCAT_CONTEXTPATH will be set automatically.  |
 | jira.service.loadBalancerIP | string | `nil` | Use specific loadBalancerIP. Only applies to service type LoadBalancer.  |
+| jira.service.nodePort | string | `nil` | Only applicable if service.type is NodePort. NodePort for Jira service  |
 | jira.service.port | int | `80` | The port on which the Jira K8s Service will listen  |
 | jira.service.sessionAffinity | string | `"None"` | Session affinity type. If you want to make sure that connections from a particular client are passed to the same pod each time, set sessionAffinity to ClientIP. See: https://kubernetes.io/docs/reference/networking/virtual-ips/#session-affinity  |
 | jira.service.sessionAffinityConfig | object | `{"clientIP":{"timeoutSeconds":null}}` | Session affinity configuration  |
@@ -133,7 +134,7 @@ Kubernetes: `>=1.21.x-0`
 | jira.startupProbe.failureThreshold | int | `120` | The number of consecutive failures of the Jira container startup probe before the pod fails startup checks.  |
 | jira.startupProbe.initialDelaySeconds | int | `60` | Time to wait before starting the first probe  |
 | jira.startupProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container startup probe will run  |
-| jira.tomcatConfig | object | `{"acceptCount":"100","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","scheme":null,"secure":null,"stuckThreadDetectionValveThreshold":"120"}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
+| jira.tomcatConfig | object | `{"acceptCount":"100","accessLogMaxDays":"-1","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","requestAttributesEnabled":"false","scheme":null,"secure":null,"stuckThreadDetectionValveThreshold":"120"}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
 | jira.tomcatConfig.customServerXml | string | `""` | Custom server.xml to be mounted into /opt/atlassian/jira/conf  |
 | jira.tomcatConfig.generateByHelm | bool | `false` | Mount server.xml as a ConfigMap. Override configuration elements if necessary  |
 | jira.topologySpreadConstraints | list | `[]` | Defines topology spread constraints for Jira pods. See details: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/  |
