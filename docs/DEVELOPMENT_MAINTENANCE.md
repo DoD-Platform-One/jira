@@ -142,6 +142,15 @@ Here's the section of the `chart/values.yaml` file where these additions are con
 ```
 Here's the sections of the `chart/templates/statefulset.yaml` file where these additions are configured:
 ```yaml
+          securityContext:
+            runAsNonRoot: false # root is required to change file permissions
+            runAsUser: 0 # make sure we run as root so we get the ability to change the volume permissions
+          securityContext:
+            runAsNonRoot: false # root is required to change file permissions
+            runAsUser: 0 # make sure we run as root so we get the ability to change the volume permissions
+            capabilities:
+              drop:
+              - ALL
 
           {{- if .Values.jira.readinessProbe.custom }}
             {{- toYaml .Values.jira.readinessProbe.custom | nindent 12 }}

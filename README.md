@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 1.22.2-bb.1](https://img.shields.io/badge/Version-1.22.2--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.1](https://img.shields.io/badge/AppVersion-10.3.1-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 1.22.2-bb.2](https://img.shields.io/badge/Version-1.22.2--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.0](https://img.shields.io/badge/AppVersion-10.3.0-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -53,7 +53,7 @@ helm install jira chart/
 | image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.imagePullSecrets | list | `[{"name":"private-registry"}]` | Optional image repository pull secret |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
-| image.tag | string | `"9.12.15"` | The docker image tag to be used - defaults to the Chart appVersion  |
+| image.tag | string | `"10.3.1"` | The docker image tag to be used - defaults to the Chart appVersion  |
 | serviceAccount.create | bool | `true` | Set to 'true' if a ServiceAccount should be created, or 'false' if it already exists.  |
 | serviceAccount.name | string | `nil` | The name of the ServiceAccount to be used by the pods. If not specified, but the "serviceAccount.create" flag is set to 'true', then the ServiceAccount name will be auto-generated, otherwise the 'default' ServiceAccount will be used. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server  |
 | serviceAccount.imagePullSecrets | list | `[]` | For Docker images hosted in private registries, define the list of image pull secrets that should be utilized by the created ServiceAccount https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod  |
@@ -103,6 +103,7 @@ helm install jira chart/
 | jira.useHelmReleaseNameAsContainerName | bool | `false` | Whether the main container should acquire helm release name. The default, the container name is jira (Helm chart name)  |
 | jira.service.port | int | `80` | The port on which the Jira K8s Service will listen  |
 | jira.service.type | string | `"ClusterIP"` | The type of K8s service to use for Jira  |
+| jira.service.nodePort | string | `nil` | Only applicable if service.type is NodePort. NodePort for Jira service  |
 | jira.service.sessionAffinity | string | `"None"` | Session affinity type. If you want to make sure that connections from a particular client are passed to the same pod each time, set sessionAffinity to ClientIP. See: https://kubernetes.io/docs/reference/networking/virtual-ips/#session-affinity  |
 | jira.service.sessionAffinityConfig | object | `{"clientIP":{"timeoutSeconds":null}}` | Session affinity configuration  |
 | jira.service.sessionAffinityConfig.clientIP.timeoutSeconds | string | `nil` | Specifies the seconds of ClientIP type session sticky time. The value must be > 0 && <= 86400(for 1 day) if ServiceAffinity == "ClientIP". Default value is 10800 (for 3 hours).  |
@@ -144,7 +145,7 @@ helm install jira chart/
 | jira.s3Storage.attachments.bucketRegion | string | `nil` | AWS region where the S3 bucket is located.  |
 | jira.s3Storage.attachments.endpointOverride | string | `nil` | Override the default AWS API endpoint with a custom one  |
 | jira.s3Storage.backups.bucketName | string | `nil` | Bucket name to store backups. If a bucket name and region (see below) are defined, Jira will automatically use AWS S3 to store backups. Only bucket name is required, not the full arn. If you provide the same bucket name for both avatars and backups, they will be stored in the same bucket  |
-| jira.s3Storage.backups.bucketRegion | string | `nil` |  AWS region where the S3 bucket is located.  |
+| jira.s3Storage.backups.bucketRegion | string | `nil` | AWS region where the S3 bucket is located.  |
 | jira.s3Storage.backups.endpointOverride | string | `nil` | Override the default AWS API endpoint with a custom one  |
 | jira.clustering.enabled | bool | `false` | Set to 'true' if Data Center clustering should be enabled This will automatically configure cluster peer discovery between cluster nodes.  |
 | jira.shutdown.terminationGracePeriodSeconds | int | `30` | The termination grace period for pods during shutdown. This should be set to the internal grace period, plus a small buffer to allow the JVM to fully terminate.  |
@@ -157,7 +158,7 @@ helm install jira chart/
 | jira.resources.container.requests.memory | string | `"2G"` | Initial Memory request by Jira pod  |
 | jira.forceConfigUpdate | bool | `false` | The Docker entrypoint.py generates application configuration on first start; not all of these files are regenerated on subsequent starts. By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true to change this behavior.  |
 | jira.additionalJvmArgs[0] | string | `"-Dcom.redhat.fips=false"` |  |
-| jira.tomcatConfig | object | `{"acceptCount":"100","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","stuckThreadDetectionValveThreshold":"120","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","scheme":null,"secure":null}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
+| jira.tomcatConfig | object | `{"acceptCount":"100","accessLogMaxDays":"-1","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","requestAttributesEnabled":"false","scheme":null,"secure":null,"stuckThreadDetectionValveThreshold":"120"}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
 | jira.tomcatConfig.generateByHelm | bool | `false` | Mount server.xml as a ConfigMap. Override configuration elements if necessary  |
 | jira.tomcatConfig.customServerXml | string | `""` | Custom server.xml to be mounted into /opt/atlassian/jira/conf  |
 | jira.seraphConfig | object | `{"autoLoginCookieAge":"1209600","generateByHelm":false}` | By default seraph-config.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, seraph-config.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
