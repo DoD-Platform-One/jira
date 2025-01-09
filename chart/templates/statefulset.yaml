@@ -79,6 +79,9 @@ spec:
           securityContext:
             runAsNonRoot: false # root is required to change file permissions
             runAsUser: 0 # make sure we run as root so we get the ability to change the volume permissions
+            capabilities:
+              drop:
+              - ALL
           volumeMounts:
             - name: shared-home
               mountPath: {{ .Values.volumes.sharedHome.nfsPermissionFixer.mountPath | quote }}
