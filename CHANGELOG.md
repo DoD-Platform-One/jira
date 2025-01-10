@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.22.2-bb.3] - 2025-01-09
+
+### Changed
+
+- Updated registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts (source) 10.3.1 -> 10.3.2
+
 ## [1.22.2-bb.2] - 2025-01-08
 
 ### Changed
