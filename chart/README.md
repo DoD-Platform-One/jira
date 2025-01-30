@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.22.2](https://img.shields.io/badge/Version-1.22.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.0](https://img.shields.io/badge/AppVersion-10.3.0-informational?style=flat-square)
+![Version: 1.22.3](https://img.shields.io/badge/Version-1.22.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.2](https://img.shields.io/badge/AppVersion-10.3.2-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -71,8 +71,10 @@ Kubernetes: `>=1.21.x-0`
 | jira.accessLog.mountPath | string | `"/opt/atlassian/jira/logs"` | The path within the Jira container where the local-home volume should be mounted in order to capture access logs.  |
 | jira.additionalAnnotations | object | `{}` | Defines additional annotations to the Jira StateFulSet. This might be required when deploying using a GitOps approach |
 | jira.additionalBundledPlugins | list | `[]` | Specifies a list of additional Jira plugins that should be added to the Jira container. Note plugins installed via this method will appear as bundled plugins rather than user plugins. These should be specified in the same manner as the 'additionalLibraries' property. Additional details: https://atlassian.github.io/data-center-helm-charts/examples/external_libraries/EXTERNAL_LIBS/  NOTE: only .jar files can be loaded using this approach. OBR's can be extracted (unzipped) to access the associated .jar  An alternative to this method is to install the plugins via "Manage Apps" in the product system administration UI.  |
-| jira.additionalCertificates | object | `{"customCmd":null,"initContainer":{"resources":{}},"secretList":[],"secretName":null}` | Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates  |
-| jira.additionalCertificates.initContainer.resources | object | `{}` | Resources requests and limits for the import-certs init container  |
+| jira.additionalCertificates | object | `{"customCmd":null,"initContainer":{"resources":{},"securityContext":{}},"secretList":[],"secretName":null}` | Certificates to be added to Java truststore. Provide reference to a secret that contains the certificates  |
+| jira.additionalCertificates.customCmd | string | `nil` | Custom command to be executed in the init container to import certificates  |
+| jira.additionalCertificates.initContainer.resources | object | `{}` | Resources allocated to the import-certs init container  |
+| jira.additionalCertificates.initContainer.securityContext | object | `{}` | Custom SecurityContext for the import-certs init container  |
 | jira.additionalCertificates.secretList | list | `[]` | A list of secrets with their respective keys holding certificates to be added to the Java truststore. It is mandatory to specify which keys from secret data need to be mounted as files to the init container.  |
 | jira.additionalCertificates.secretName | string | `nil` | Name of the Kubernetes secret with certificates in its data. All secret keys in the secret data will be treated as certificates to be added to Java truststore. If defined, this takes precedence over secretList.  |
 | jira.additionalEnvironmentVariables | list | `[]` | Defines any additional environment variables to be passed to the Jira container. See https://hub.docker.com/r/atlassian/jira-software for supported variables.  |

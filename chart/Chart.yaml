@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: '1.22.2-bb.4'
-appVersion: 10.3.0
+version: '1.22.3-bb.0'
+appVersion: 10.3.2
 kubeVersion: ">=1.21.x-0"
 keywords:
   - Jira
@@ -23,8 +23,9 @@ annotations:
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |-
     - "Update appVersions for DC apps (#865)"
+    - "Set custom securityContext for import-certs init container. Make affinity independent for Synchrony (#938)"
   bigbang.dev/applicationVersions: |
-    - Jira: 10.3.0
+    - Jira: 10.3.2
   bigbang.dev/upstreamReleaseNotesMarkdown: |
     The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
   helm.sh/images: |
