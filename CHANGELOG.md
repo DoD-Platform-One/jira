@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.22.5-bb.0] - 2025-02-19
+
+### Changed
+
+- Updated cypress (source) 14.0.2 -> 14.0.3
+- Updated chart to 1.22.5
+- Updated registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts (source) 10.3.2 -> 10.3.3
+
 ## [1.22.3-bb.1] - 2025-02-07
 
 ### Changed
@@ -106,7 +114,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Update cypress (source) 13.15.0 -> 13.15.1
 
-
 ## [1.21.4-bb.1] - 2024-10-18
 
 ### Changed
@@ -187,7 +194,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Update cypress dependency to 13.13.2
-
 
 ## [1.20.1-bb.1] - 2024-07-25
 

@@ -1,6 +1,6 @@
 # jira
 
-![Version: 1.22.3](https://img.shields.io/badge/Version-1.22.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.2](https://img.shields.io/badge/AppVersion-10.3.2-informational?style=flat-square)
+![Version: 1.22.5](https://img.shields.io/badge/Version-1.22.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.3](https://img.shields.io/badge/AppVersion-10.3.3-informational?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -50,6 +50,7 @@ Kubernetes: `>=1.21.x-0`
 | fluentd.imageRepo | string | `"fluent/fluentd-kubernetes-daemonset"` | The Fluentd sidecar image repository  |
 | fluentd.imageTag | string | `"v1.11.5-debian-elasticsearch7-1.2"` | The Fluentd sidecar image tag  |
 | fluentd.resources | object | `{}` | Resources requests and limits for fluentd sidecar container See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/  |
+| hostNamespaces | object | `{}` | Share host namespaces which may include hostNetwork, hostIPC, and hostPID  |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy  |
 | image.repository | string | `"atlassian/jira-software"` | The Jira Docker image to use https://hub.docker.com/r/atlassian/jira-software  |
 | image.tag | string | `""` | The docker image tag to be used - defaults to the Chart appVersion  |
@@ -136,10 +137,11 @@ Kubernetes: `>=1.21.x-0`
 | jira.startupProbe.failureThreshold | int | `120` | The number of consecutive failures of the Jira container startup probe before the pod fails startup checks.  |
 | jira.startupProbe.initialDelaySeconds | int | `60` | Time to wait before starting the first probe  |
 | jira.startupProbe.periodSeconds | int | `5` | How often (in seconds) the Jira container startup probe will run  |
-| jira.tomcatConfig | object | `{"acceptCount":"100","accessLogMaxDays":"-1","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","requestAttributesEnabled":"false","scheme":null,"secure":null,"stuckThreadDetectionValveThreshold":"120"}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
+| jira.tomcatConfig | object | `{"acceptCount":"100","accessLogMaxDays":"-1","accessLogPattern":"%a %{jira.request.id}r %{jira.request.username}r %t &quot;%m %U%q %H&quot; %s %b %D &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; &quot;%{jira.request.assession.id}r&quot;","connectionTimeout":"20000","customServerXml":"","enableLookups":"false","generateByHelm":false,"maxHttpHeaderSize":"8192","maxThreads":"100","mgmtPort":"8005","minSpareThreads":"10","port":"8080","protocol":"HTTP/1.1","proxyName":null,"proxyPort":null,"redirectPort":"8443","requestAttributesEnabled":"false","scheme":null,"secure":null,"stuckThreadDetectionValveThreshold":"120"}` | By default Tomcat's server.xml is generated in the container entrypoint from a template shipped with an official Jira image. However, server.xml generation may fail if container is not run as root, which is a common case if Jira is deployed to OpenShift.  |
 | jira.tomcatConfig.customServerXml | string | `""` | Custom server.xml to be mounted into /opt/atlassian/jira/conf  |
 | jira.tomcatConfig.generateByHelm | bool | `false` | Mount server.xml as a ConfigMap. Override configuration elements if necessary  |
 | jira.topologySpreadConstraints | list | `[]` | Defines topology spread constraints for Jira pods. See details: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/  |
+| jira.tunnel | object | `{"additionalConnector":{"URIEncoding":"UTF-8","acceptCount":"10","connectionTimeout":"20000","enableLookups":"false","maxThreads":"50","minSpareThreads":"10","port":null,"secure":false}}` | Configure additional Tomcat connector to set up tunnel. Define the connector port and optional additional attributes. When 'tunnel.additionalConnector.port' is defined, an additional connector is added to server.xml and '-Dsecure.tunnel.upstream.port=<port_number>' is added to JVM args  |
 | jira.useHelmReleaseNameAsContainerName | bool | `false` | Whether the main container should acquire helm release name. The default, the container name is jira (Helm chart name)  |
 | monitoring.exposeJmxMetrics | bool | `false` | Expose JMX metrics with jmx_exporter https://github.com/prometheus/jmx_exporter  |
 | monitoring.fetchJmxExporterJar | bool | `true` | Fetch jmx_exporter jar from the image. If set to false make sure to manually copy the jar to shared home and provide an absolute path in jmxExporterCustomJarLocation  |
@@ -191,6 +193,7 @@ Kubernetes: `>=1.21.x-0`
 | volumes.localHome.persistentVolumeClaim.storageClassName | string | `nil` | Specify the name of the 'StorageClass' that should be used for the local-home volume claim.  |
 | volumes.localHome.persistentVolumeClaimRetentionPolicy.whenDeleted | string | `nil` | Configures the volume retention behavior that applies when the StatefulSet is deleted.  |
 | volumes.localHome.persistentVolumeClaimRetentionPolicy.whenScaled | string | `nil` | Configures the volume retention behavior that applies when the replica count of the StatefulSet is reduced.  |
+| volumes.localHome.subPath | string | `nil` | Specifies the sub-directory of the local-home volume that will be mounted in to the Jira container.  |
 | volumes.sharedHome.customVolume | object | `{}` | Static provisioning of shared-home using K8s PVs and PVCs  When 'persistentVolumeClaim.create' is 'false', then this value can be used to define a standard K8s volume that will be used for the shared-home volume. If not defined, then an 'emptyDir' volume is utilised. Having provisioned a 'PersistentVolume', specify the bound 'persistentVolumeClaim.claimName' for the 'customVolume' object. https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static https://atlassian.github.io/data-center-helm-charts/examples/storage/aws/SHARED_STORAGE/  |
 | volumes.sharedHome.mountPath | string | `"/var/atlassian/application-data/shared-home"` | Specifies the path in the Jira container to which the shared-home volume will be mounted.  |
 | volumes.sharedHome.nfsPermissionFixer.command | string | `nil` | By default, the fixer will change the group ownership of the volume's root directory to match the Jira container's GID (2001), and then ensures the directory is group-writeable. If this is not the desired behaviour, command used can be specified here.  |

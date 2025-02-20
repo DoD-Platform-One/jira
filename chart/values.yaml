@@ -67,7 +67,7 @@ image:
 
   # -- The docker image tag to be used - defaults to the Chart appVersion
   #
-  tag: "10.3.2"
+  tag: "10.3.3"
 
 # K8s ServiceAccount configuration. Give fine-grained identity and authorization
 # to Pods
@@ -251,6 +251,11 @@ volumes:
     # mounted.
     #
     mountPath: "/var/atlassian/application-data/jira"
+
+    # -- Specifies the sub-directory of the local-home volume that will be mounted in to the
+    # Jira container.
+    #
+    subPath:
 
   # A volume for 'shared-home' is required by Jira to effectively operate in multi-node
   # environment
@@ -853,6 +858,7 @@ jira:
     maxHttpHeaderSize: "8192"
     stuckThreadDetectionValveThreshold: "120"
     accessLogMaxDays: "-1"
+    accessLogPattern: "%a %{jira.request.id}r %{jira.request.username}r %t &quot;%m %U%q %H&quot; %s %b %D &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; &quot;%{jira.request.assession.id}r&quot;"
     requestAttributesEnabled: "false"
 
     # -- Custom server.xml to be mounted into /opt/atlassian/jira/conf
@@ -987,6 +993,21 @@ jira:
       # -- Custom SecurityContext for the import-certs init container
       #
       securityContext: {}
+
+  # -- Configure additional Tomcat connector to set up tunnel. Define the connector port and optional additional attributes.
+  # When 'tunnel.additionalConnector.port' is defined, an additional connector is added to server.xml
+  # and '-Dsecure.tunnel.upstream.port=<port_number>' is added to JVM args
+  #
+  tunnel:
+    additionalConnector:
+      port:
+      connectionTimeout: "20000"
+      maxThreads: "50"
+      minSpareThreads: "10"
+      enableLookups: "false"
+      acceptCount: "10"
+      URIEncoding: "UTF-8"
+      secure: false
 
 # Monitoring
 #
@@ -1221,6 +1242,10 @@ schedulerName:
 # For details see https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass
 #
 priorityClassName:
+
+# -- Share host namespaces which may include hostNetwork, hostIPC, and hostPID
+#
+hostNamespaces: {}
 
 # -- Additional container definitions that will be added to all Jira pods
 #
