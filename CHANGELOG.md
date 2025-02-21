@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.22.5-bb.1] - 2025-02-20
+
+### Added
+
+- Added basic Jira cypress test
+
 ## [1.22.5-bb.0] - 2025-02-19
 
 ### Changed
