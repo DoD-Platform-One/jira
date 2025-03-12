@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.22.5-bb.2] - 2025-03-10
+
+### Added
+
+- Added cypress (source) 14.0.3 -> 14.1.0
+- Updated registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts (source) 10.3.3 -> 10.3.4
+
 ## [1.22.5-bb.1] - 2025-02-20
 
 ### Added
