@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.22.7-bb.1] - 2025-04-09
+
+### Added
+
+- Updated cypress (source) 14.2.1 -> 14.3.0
 
 ## [1.22.7-bb.0] - 2025-04-02
 
