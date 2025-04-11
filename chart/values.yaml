@@ -1354,7 +1354,8 @@ networkPolicies:
   enabled: false
   ingressLabels:
     app: istio-ingressgateway
-    istio: ingressgateway     
+    istio: ingressgateway
+  controlPlaneCidr: "0.0.0.0/0"  
 
   # Additional network policies
   # ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
