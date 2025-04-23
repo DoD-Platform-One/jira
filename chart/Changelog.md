@@ -1,19 +1,27 @@
 # Change Log
 
-## 1.18
+## 1.22.9
 
-**Release date:** 2024-2-27
+**Release date:** 2025-4-22
 
-![AppVersion: 9.12.4](https://img.shields.io/static/v1?label=AppVersion&message=9.12.4&color=success&logo=)
+![AppVersion: 10.3.5](https://img.shields.io/static/v1?label=AppVersion&message=10.3.5&color=success&logo=)
 ![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
 ![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
 
-* Add Openshift analytics (#763)
-* Update appVersions for DC apps (#765)
-* OpenShift Support (#752)
-* Use testPods values for test images and container resources (#761)
-* Relabel instance name on jmx service monitor (#757)
-* Added pvc retention policy to Bitbucket Mesh StatefulSet (#755)
+* Make session and autologin configurable for Jira and Confluence (#992)
+* Make it possible to declare additional ingress paths (#991)
+* Bring changelog in order (#990)
+
+## 1.22.8
+
+**Release date:** 2025-4-17
+
+![AppVersion: 10.3.5](https://img.shields.io/static/v1?label=AppVersion&message=10.3.5&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Configure jira session timeout (#987)
+* Set fsGroupChangePolicy to OnRootMismatch in securityContext by default (#986)
 
 ## 1.22.7
 
@@ -195,6 +203,21 @@
 ![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
 
 * Update appVersions for DC apps (#770)
+
+## 1.18.0
+
+**Release date:** 2024-2-27
+
+![AppVersion: 9.12.4](https://img.shields.io/static/v1?label=AppVersion&message=9.12.4&color=success&logo=)
+![Kubernetes: >=1.21.x-0](https://img.shields.io/static/v1?label=Kubernetes&message=>=1.21.x-0&color=informational&logo=kubernetes)
+![Helm: v3](https://img.shields.io/static/v1?label=Helm&message=v3&color=informational&logo=helm)
+
+* Add Openshift analytics (#763)
+* Update appVersions for DC apps (#765)
+* OpenShift Support (#752)
+* Use testPods values for test images and container resources (#761)
+* Relabel instance name on jmx service monitor (#757)
+* Added pvc retention policy to Bitbucket Mesh StatefulSet (#755)
 
 ## 1.17.2
 
