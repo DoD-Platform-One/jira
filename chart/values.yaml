@@ -478,6 +478,15 @@ ingress:
   #
   tlsSecretName:
 
+  # -- Additional paths to be added to the Ingress resource to point to different backend services
+  #
+  additionalPaths: []
+    #- path: /static-content
+    #  pathType: Prefix
+    #  service: static-content-svc
+    #  portNumber: 80
+
+
 # Jira configuration
 #
 jira:
@@ -550,9 +559,11 @@ jira:
     #
     fsGroup: 2001
 
-    runAsNonRoot: true
-    runAsUser: 2001
-    runAsGroup: 2001
+    # -- fsGroupChangePolicy defines behavior for changing ownership and permission of the volume before being exposed inside a Pod.
+    # This field only applies to volume types that support fsGroup controlled ownership and permissions.
+    # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#configure-volume-permission-and-ownership-change-policy-for-pods
+    #
+    fsGroupChangePolicy: "OnRootMismatch"
 
   # -- Standard K8s field that holds security configurations that will be applied to a container.
   # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
@@ -742,6 +753,16 @@ jira:
       # -- Override the default AWS API endpoint with a custom one
       #
       endpointOverride:
+
+  session:
+
+    # -- User session timeout. Set to 30 minutes in web.xml
+    #
+    timeout:
+
+    # -- The maximum time a user can remain logged-in with 'Remember Me'. Defaults to 1209600; two weeks, in seconds
+    #
+    autologinCookieAge:
 
   # Data Center clustering
   #

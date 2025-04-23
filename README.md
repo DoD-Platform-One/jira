@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 1.22.7-bb.2](https://img.shields.io/badge/Version-1.22.7--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.5](https://img.shields.io/badge/AppVersion-10.3.5-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 1.22.9-bb.0](https://img.shields.io/badge/Version-1.22.9--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.5](https://img.shields.io/badge/AppVersion-10.3.5-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -101,6 +101,7 @@ helm install jira chart/
 | ingress.annotations | object | `{}` | The custom annotations that should be applied to the Ingress Resource. If using an ingress-nginx controller be sure that the annotations you add here are compatible with those already defined in the 'ingess.yaml' template  |
 | ingress.https | bool | `true` | Set to 'true' if browser communication with the application should be TLS (HTTPS) enforced.  |
 | ingress.tlsSecretName | string | `nil` | The name of the K8s Secret that contains the TLS private key and corresponding certificate. When utilised, TLS termination occurs at the ingress point where traffic to the Service, and it's Pods is in plaintext.  Usage is optional and depends on your use case. The Ingress Controller itself can also be configured with a TLS secret for all Ingress Resources. https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets https://kubernetes.io/docs/concepts/services-networking/ingress/#tls  |
+| ingress.additionalPaths | list | `[]` | Additional paths to be added to the Ingress resource to point to different backend services  |
 | jira.useHelmReleaseNameAsContainerName | bool | `false` | Whether the main container should acquire helm release name. The default, the container name is jira (Helm chart name)  |
 | jira.service.port | int | `80` | The port on which the Jira K8s Service will listen  |
 | jira.service.type | string | `"ClusterIP"` | The type of K8s service to use for Jira  |
@@ -113,9 +114,7 @@ helm install jira chart/
 | jira.service.annotations | object | `{}` | Additional annotations to apply to the Service  |
 | jira.securityContextEnabled | bool | `true` | Whether to apply security context to pod.  |
 | jira.securityContext.fsGroup | int | `2001` | The GID used by the Jira docker image GID will default to 2001 if not supplied and securityContextEnabled is set to true. This is intended to ensure that the shared-home volume is group-writeable by the GID used by the Jira container. However, this doesn't appear to work for NFS volumes due to a K8s bug: https://github.com/kubernetes/examples/issues/260  |
-| jira.securityContext.runAsNonRoot | bool | `true` |  |
-| jira.securityContext.runAsUser | int | `2001` |  |
-| jira.securityContext.runAsGroup | int | `2001` |  |
+| jira.securityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` | fsGroupChangePolicy defines behavior for changing ownership and permission of the volume before being exposed inside a Pod. This field only applies to volume types that support fsGroup controlled ownership and permissions. https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#configure-volume-permission-and-ownership-change-policy-for-pods  |
 | jira.containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsGroup":2001,"runAsNonRoot":true,"runAsUser":2001}` | Standard K8s field that holds security configurations that will be applied to a container. https://kubernetes.io/docs/tasks/configure-pod-container/security-context/  |
 | jira.setPermissions | bool | `true` | Boolean to define whether to set local home directory permissions on startup of Jira container. Set to 'false' to disable this behaviour.  |
 | jira.ports.http | int | `8080` | The port on which the Jira container listens for HTTP traffic  |
@@ -148,6 +147,8 @@ helm install jira chart/
 | jira.s3Storage.backups.bucketName | string | `nil` | Bucket name to store backups. If a bucket name and region (see below) are defined, Jira will automatically use AWS S3 to store backups. Only bucket name is required, not the full arn. If you provide the same bucket name for both avatars and backups, they will be stored in the same bucket  |
 | jira.s3Storage.backups.bucketRegion | string | `nil` | AWS region where the S3 bucket is located.  |
 | jira.s3Storage.backups.endpointOverride | string | `nil` | Override the default AWS API endpoint with a custom one  |
+| jira.session.timeout | string | `nil` | User session timeout. Set to 30 minutes in web.xml  |
+| jira.session.autologinCookieAge | string | `nil` | The maximum time a user can remain logged-in with 'Remember Me'. Defaults to 1209600; two weeks, in seconds  |
 | jira.clustering.enabled | bool | `false` | Set to 'true' if Data Center clustering should be enabled This will automatically configure cluster peer discovery between cluster nodes.  |
 | jira.shutdown.terminationGracePeriodSeconds | int | `30` | The termination grace period for pods during shutdown. This should be set to the internal grace period, plus a small buffer to allow the JVM to fully terminate.  |
 | jira.shutdown.command | string | `"/shutdown-wait.sh"` | By default pods will be stopped via a [preStop hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/), using a script supplied by the Docker image. If any other shutdown behaviour is needed it can be achieved by overriding this value. Note that the shutdown command needs to wait for the application shutdown completely before exiting; see [the default command](https://bitbucket.org/atlassian-docker/docker-atlassian-jira/src/master/shutdown-wait.sh) for details.  |

@@ -130,6 +130,7 @@ spec:
           image: {{ include "jira.image" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            {{- include "jira.sessionVars" . | nindent 12 }}
             {{- include "jira.tunnelVars" . | nindent 12 }}
             {{ if .Values.ingress.https }}
             - name: ATL_TOMCAT_SCHEME
