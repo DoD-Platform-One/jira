@@ -66,7 +66,7 @@ packages:
   # This will be used as the namespace for the install, as well as the name of the helm release. If this is changed, the destination service (below) needs to also be changed.
   jira:
     dependsOn:
-      # - name: authservice
+      # - name: istio #<-- Set to "istiod" when  big bang values .istioGateway.enabled=true
       #   namespace: bigbang
     enabled: true
     # Disabling this will bypass creating the istio VirtualService and NetworkPolicies.
@@ -87,7 +87,7 @@ packages:
         - names:
             - "jira"
           gateways:
-            - "public"
+            - "public" #<-- Set to "pubilic-ingressgateway" when  big bang values .istioGateway.enabled=true
           destination:
             port: 8080
     # Anything in this section is passed to the jira chart directly; this allows all of your bigbang configuration to be in a single place.

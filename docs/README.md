@@ -20,7 +20,7 @@ packages:
   # This will be used as the namespace for the install, as well as the name of the helm release. If this is changed, the destination service (below) needs to also be changed.
   jira:
     dependsOn:
-      #- name: authservice
+      #- name: istio #<-- Set to "istiod" when  big bang values .istioGateway.enabled=true
       #  namespace: bigbang
     enabled: true
     # Disabling this will bypass creating the istio VirtualService and NetworkPolicies.
@@ -29,7 +29,7 @@ packages:
     git:
       repo: https://repo1.dso.mil/big-bang/product/community/jira
       # It is recommended to update this to the latest bb tag
-      tag: 1.16.0-bb.1
+      tag: 1.22.9-bb.1 #<-- Update as need to most recent release.
       path: chart
     # This section is ignored if `wrapper.enabled`, above, is false. In this case, creation of an ingress for web access is left as an exercise for the reader.
     istio:
@@ -39,7 +39,7 @@ packages:
             # Sub-URL for reaching the web UI; it will be reachable with this, plus your bigbang domain, eg, jira.dev.bigbang.mil
             - jira
           gateways:
-            - public
+            - public #<-- Set to "pubilic-ingressgateway" when  big bang
           destination:
             # The second portion of this URL is the namespace; if it was changed above, it needs to be changed here as well.
             service: jira.jira.svc.cluster.local
