@@ -15,4 +15,19 @@ jira:
       requests:
         cpu: 1
         memory: 384M
+volumes:
+  sharedHome:
+    efs:
+      enabled: true
+      driver: efs.csi.aws.com
+      efsid: fs-0a2b2dccb0752dcfd
+      persistentVolumeClaim:
+        create: true
+        accessModes:
+        - ReadWriteMany        
+        storageClassName: efs-sc      
+        resources:
+          requests:
+            storage: 1Gi        
  
+         
