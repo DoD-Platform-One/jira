@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.0.0-bb.1] - 2025-05-07
+
+### Changed
+
+- Updated shared-home-pv.yaml to generic templating
+- Updated test-values to include volumes configuration
+- Add efs.enabled bool to values.yaml
+
 ## [2.0.0-bb.0] - 2025-05-05
 
 ### Changed
