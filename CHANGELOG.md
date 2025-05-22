@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.0.1-bb.0] - 2025-05-15
+
+### Changed
+
+- Updated chart to 2.0.1
+- Updated gluon 0.5.17 -> 0.5.19
+- Updated registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts (source) 10.3.5 -> 10.3.6
+
 ## [2.0.0-bb.2] - 2025-05-08
 
 ### Changed
