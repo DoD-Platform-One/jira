@@ -106,17 +106,102 @@ Example:
 
 This method is recommended because it will also take care of creating private registry credentials, the istio virtual service, and network policies. Once the installation is complete, the Jira UI will be reachable via `https://jira.<your bigbang domain>`
 
-Testing Steps:
-- Ensure all resources have reconciled and are healthy
-- Ensure the application is resolvable at `jira.dev.bigbang.mil`
-- Run the cypress tests to confirm functionality of adding and deleting an application via the UI
-    ```shell
-    cd ./chart/tests
-    cp .example.cypress.config.js cypress.config.js
-    export cypress_url=https://jira.dev.bigbang.mil/
-    npx cypress run
-    ```
-- NOTE: the install can take 10+ minutes
+
+## Cluster setup
+
+Always make sure your local bigbang repo is current before deploying.
+
+1. Export your Ironbank/Harbor credentials (this can be done in your ~/.bashrc or ~/.zshrc file if desired). These specific variables are expected by the k3d-dev.sh script when deploying metallb, and are referenced in other commands for consistency:
+
+```
+export REGISTRY_USERNAME='<your_username>'
+export REGISTRY_PASSWORD='<your_password>'
+```
+2. xport the path to your local bigbang repo (without a trailing /):
+ Note that wrapping your file path in quotes when exporting will break expansion of ~.
+
+ ```
+ export BIGBANG_REPO_DIR=<absolute_path_to_local_bigbang_repo>
+ ```
+ e.g.
+
+ ```
+ export BIGBANG_REPO_DIR=~/repos/bigbang
+ ```
+
+ 3. Run the k3d_dev.sh script to deploy a dev cluster (-a flag required if deploying a local Keycloak):
+ For login.dso.mil Keycloak:
+
+ ```
+ "${BIGBANG_REPO_DIR}/docs/assets/scripts/developer/k3d-dev.sh"
+ ```
+ For local keycloak.dev.bigbang.mil Keycloak (-a deploys instance with a second public IP and metallb):
+
+ ```
+ "${BIGBANG_REPO_DIR}/docs/assets/scripts/developer/k3d-dev.sh -a"
+ ```
+ 4. Export your kubeconfig:
+
+ ```
+ export KUBECONFIG=~/.kube/<your_kubeconfig_file>
+ ```
+e.g.
+
+```
+export KUBECONFIG=~/.kube/Sam.Sarnowski-dev-config
+```
+5. Deploy flux to your cluster:
+
+```
+"${BIGBANG_REPO_DIR}/scripts/install_flux.sh -u ${REGISTRY_USERNAME} -p ${REGISTRY_PASSWORD}"
+```
+
+## Deploy Bigbang
+
+If you'd like to install from a specific branch or tag, then the code block under jira needs to be uncommented and used to target your changes.
+For example, this would target the renovate/ironbank branch.
+
+```
+packages:
+  jira:
+    enabled: true
+    wrapper:
+      enabled: true
+    git:
+      repo: https://repo1.dso.mil/big-bang/product/community/jira
+      tag: null
+      branch: renovate/ironbank
+      path: chart
+    istio:
+      enabled: true
+      hardened:
+        enabled: true
+      hosts:
+        - names:
+            - "jira"
+          gateways:
+            - "public"
+          destination:
+            port: 8080
+    values:
+      jira:
+        service:
+          port: 8080
+```
+
+From the root of this repo, run one of the following deploy commands depending on which Keycloak you wish to reference:
+For login.dso.mil Keycloak:
+
+```
+helm upgrade -i bigbang ${BIGBANG_REPO_DIR}/chart/ -n bigbang --create-namespace \
+--set registryCredentials.username=${REGISTRY_USERNAME} --set registryCredentials.password=${REGISTRY_PASSWORD} \
+-f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/tests/test-values.yaml \
+-f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/chart/ingress-certs.yaml \
+-f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/docs/assets/configs/example/dev-sso-values.yaml \
+-f docs/dev-overrides/minimal.yaml \
+-f docs/dev-overrides/jira-testing.yaml
+```
+This will deploy the Jira for testing:
 
 When in doubt with any testing or upgrade steps ask one of the CODEOWNERS for assistance.
 
@@ -179,36 +264,6 @@ Here's the sections of the `chart/templates/statefulset.yaml` file where these a
   * TLS settings
 
 As part of your MR that modifies bigbang packages, you should modify the bigbang  [bigbang/tests/test-values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) against your branch for the CI/CD MR testing by enabling your packages.
-
-    - To do this, at a minimum, you will need to follow the instructions at [bigbang/docs/developer/test-package-against-bb.md](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads) with changes for Jira enabled (the below is a reference, actual changes could be more depending on what changes where made to Jira in the pakcage MR).
-
-```
-packages:
-  jira:
-    enabled: true
-    wrapper:
-      enabled: true
-    git:
-      repo: https://repo1.dso.mil/big-bang/product/community/jira
-      tag: Null
-      branch: <Insert-branch-being-tested>
-      path: chart
-    istio:
-      enabled: true
-      hardened:
-        enabled: true
-      hosts:
-        - names:
-            - "jira"
-          gateways:
-            - "public"
-          destination:
-            port: 8080
-    values:
-      jira:
-        service:
-          port: 8080
-```
 
 
 ### automountServiceAccountToken
