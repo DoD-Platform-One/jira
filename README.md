@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 2.0.1-bb.1](https://img.shields.io/badge/Version-2.0.1--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.6](https://img.shields.io/badge/AppVersion-10.3.6-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 2.0.1-bb.2](https://img.shields.io/badge/Version-2.0.1--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.6](https://img.shields.io/badge/AppVersion-10.3.6-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -61,6 +61,8 @@ helm install jira chart/
 | serviceAccount.eksIrsa.roleArn | string | `nil` |  |
 | database.type | string | `nil` | The database type that should be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid values include: 'postgres72' 'mysql57' 'mysql8' 'oracle10g' 'mssql' 'postgresaurora96' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype  |
 | database.url | string | `nil` | The jdbc URL of the database. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Example URLs include: 'jdbc:postgresql://dbhost:5432/dbname' 'jdbc:mysql://dbhost/dbname' 'jdbc:sqlserver://dbhost:1433;databaseName=dbname' 'jdbc:oracle:thin:@dbhost:1521:SID' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl  |
+| database.user | string | `nil` | Username associated with the database being used. |
+| database.password | string | `nil` | Password associated with the database being used. |
 | database.driver | string | `nil` | The Java class name of the JDBC driver to be used. If not specified, then it will need to be provided via the browser during manual configuration post deployment. Valid drivers are: 'org.postgresql.Driver' 'com.mysql.jdbc.Driver' 'oracle.jdbc.OracleDriver' 'com.microsoft.sqlserver.jdbc.SQLServerDriver' https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:  |
 | database.credentials.secretName | string | `nil` | from-literal=password=<user_password>' https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets  |
 | database.credentials.usernameSecretKey | string | `"username"` | The key ('username') in the Secret used to store the database login username  |

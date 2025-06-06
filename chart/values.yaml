@@ -142,7 +142,10 @@ database:
   # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl
   #
   url:
-
+  # -- Username associated with the database being used.
+  user: 
+  # -- Password associated with the database being used.
+  password: 
   # -- The Java class name of the JDBC driver to be used. If not specified, then it will
   # need to be provided via the browser during manual configuration post deployment.
   # Valid drivers are:
