@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.0.1-bb.3] - 2025-06-06
+
+### Changed
+
+- Updated registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts (source) 10.3.6 -> 10.3.7
+- Updated cypress (source) dependency 14.4.0 -> 14.4.1
+
 ## [2.0.1-bb.2] - 2025-06-05
 
 ### Changed
@@ -48,6 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.22.9-bb.1] - 2025-04-22
 
 ### Changed
+
 - Updated cypress (source) 14.3.1 -> 14.3.2
 - Updated gluon 0.5.15 -> 0.5.16
 
@@ -140,7 +148,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Updated registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset  1.17.1 -> 1.18.0
+- Updated registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset 1.17.1 -> 1.18.0
 
 ## [1.22.2-bb.0] - 2024-12-19
 
@@ -630,7 +638,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - footer.vm file added to files section of the chart
 - footer configmap template created
-- Value.yaml  file updated with footer configmap volume mount.
+- Value.yaml file updated with footer configmap volume mount.
 
 ## [0.1.0-bb.8] - 2021-12-06
 

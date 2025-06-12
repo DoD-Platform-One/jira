@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 2.0.1-bb.2
-appVersion: 10.3.6
+version: 2.0.1-bb.3
+appVersion: 10.3.7
 kubeVersion: ">=1.21.x-0"
 keywords:
   - Jira
@@ -25,12 +25,12 @@ annotations:
     - "Update appVersions for DC apps (#865)"
     - "Set custom securityContext for import-certs init container. Make affinity independent for Synchrony (#938)"
   bigbang.dev/applicationVersions: |
-    - Jira: 10.3.6
+    - Jira: 10.3.7
   bigbang.dev/upstreamReleaseNotesMarkdown: |
     The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:10.3.6
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:10.3.7
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10
     - name: fluentd-kubernetes-daemonset
