@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.0.2-bb.1] - 2025-07-28
+
+### Updated
+
+- Updated cypress (source) 14.5.2 -> 14.5.3
+
 ## [2.0.2-bb.1] - 2025-07-18
 
 ### Added
