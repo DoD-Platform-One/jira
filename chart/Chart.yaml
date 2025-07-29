@@ -2,7 +2,7 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 2.0.2-bb.2
+version: 2.0.2-bb.3
 appVersion: 10.3.8
 kubeVersion: ">=1.21.x-0"
 keywords:
@@ -44,3 +44,9 @@ dependencies:
   - name: gluon
     repository: oci://registry1.dso.mil/bigbang
     version: 0.7.0
+  - name: jira
+    version: 2.0.2
+    repository: https://atlassian.github.io/data-center-helm-charts/
+    directory: /src/main/charts/jira
+    alias: "upstream"
+  

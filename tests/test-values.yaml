@@ -1,33 +1,43 @@
-image:
-  imagePullSecrets: 
-    - name: private-registry
-
-bbtests:
-  enabled: true
-
-jira:
-  resources:
-    jvm:
-      maxHeap: 768M
-      minHeap: 384M
-      reservedCodeCache: 512M
-    container:
-      requests:
-        cpu: 1
-        memory: 384M
-volumes:
-  sharedHome:
-    efs:
-      enabled: true
-      driver: efs.csi.aws.com
-      efsid: fs-0a2b2dccb0752dcfd
-      persistentVolumeClaim:
-        create: true
-        accessModes:
-        - ReadWriteMany        
-        storageClassName: efs-sc      
+kyverno:
+  enabled: false
+kyvernoPolicies:
+  enabled: false
+kyvernoReporter:
+  enabled: false
+packages:
+  jira:
+    namespace:
+      name: jira
+    helmRelease:
+      namespace: "bigbang"
+    enabled: true
+    sourceType: "git"
+    git:
+      repo: https://repo1.dso.mil/big-bang/product/maintained/jira.git
+    values:
+      bbtests:
+        enabled: true
+      jira:
         resources:
-          requests:
-            storage: 1Gi        
- 
-         
+          jvm:
+            maxHeap: 768M
+            minHeap: 384M
+            reservedCodeCache: 512M
+          container:
+            requests:
+              cpu: 1
+              memory: 384M
+      volumes:
+        sharedHome:
+          efs:
+            enabled: true
+            driver: efs.csi.aws.com
+            efsid: fs-0a2b2dccb0752dcfd
+            persistentVolumeClaim:
+              create: true
+              accessModes:
+              - ReadWriteMany        
+              storageClassName: efs-sc      
+              resources:
+                requests:
+                  storage: 1Gi

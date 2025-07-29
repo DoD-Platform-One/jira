@@ -26,7 +26,7 @@ spec:
     - {{ tpl . $ }}
   {{- end }}
   http:
-  {{- if .Values.monitoring.exposeJmxMetrics }}
+  {{- if .Values.upstream.monitoring.exposeJmxMetrics }}
   - match:
     - uri:
         prefix: /metrics
@@ -34,7 +34,7 @@ spec:
     - destination:
         host: jira-jmx.{{ .Release.Namespace }}.svc.cluster.local
         port:
-          number: {{ .Values.monitoring.jmxExporterPort }}
+          number: {{ .Values.upstream.monitoring.jmxExporterPort }}
   {{- end }}
   - match:
     - uri:
@@ -43,5 +43,5 @@ spec:
     - destination:
         host: {{ $serviceName}}.{{ .Release.Namespace }}.svc.cluster.local
         port:
-          number: {{ .Values.jira.service.port }}
+          number: {{ .Values.upstream.jira.service.port }}
 {{- end }}
