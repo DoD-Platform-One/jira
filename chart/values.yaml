@@ -74,7 +74,7 @@ upstream:
       - name: private-registry
     pullPolicy: IfNotPresent
 
-    tag: "10.3.8"
+    tag: "10.3.9"
 
   serviceAccount:
     create: true
@@ -175,7 +175,7 @@ upstream:
         grafana_dashboard: "1"
   fluentd:
     imageRepo: ironbank/opensource/fluentd/fluentd-kubernetes-daemonset
-    imageTag: 1.18.0
+    imageTag: 1.19.0
 
   testPods:
     resources: {}
