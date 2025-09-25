@@ -74,7 +74,7 @@ upstream:
       - name: private-registry
     pullPolicy: IfNotPresent
 
-    tag: "10.3.9"
+    tag: "10.3.10"
 
   serviceAccount:
     create: true
@@ -187,4 +187,4 @@ upstream:
     schedulerName:
     image:
       permissionsTestContainer: "registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10"
-      statusTestContainer: "registry1.dso.mil/ironbank/big-bang/base:2.1.0"  
+      statusTestContainer: "registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20" 
