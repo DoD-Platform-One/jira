@@ -4,9 +4,9 @@ dependencies:
   version: 1.2.7
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
-  version: 0.7.0
+  version: 0.9.0
 - name: jira
   repository: https://atlassian.github.io/data-center-helm-charts/
-  version: 2.0.3
-digest: sha256:13a87ec84c23abb179c450495c4990ca03dade65fc28b1d9d9f52dd08864cd8d
-generated: "2025-08-01T06:23:44.912939012Z"
+  version: 2.0.4
+digest: sha256:947725aad16bd7d0a12ce6f62f890991788026328149105b2f64cf9afe164663
+generated: "2025-09-17T11:38:10.6149022-04:00"
