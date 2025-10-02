@@ -55,7 +55,6 @@ networkPolicies:
   # ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
   additionalPolicies: []
 
-helmTestImage: "registry1.dso.mil/ironbank/big-bang/base:2.1.0"
 # values to enable HPA in Jira cluster
 # Setup after your intial setup of Jira cluster and when cluster autoscaling is enabled.
 hpa:
@@ -116,7 +115,8 @@ upstream:
           resources:
             requests:
               storage: 1Gi
-      nfsPermissionFixer: 
+      nfsPermissionFixer:
+        enabled: false
         imageRepo: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
         imageTag: "8.10"
     additional:
@@ -162,6 +162,7 @@ upstream:
         name: footer-vm
         subPath: footer.vm
   monitoring:
+    exposeJmxMetrics: false
     jmxExporterInitContainer:
       runAsRoot: false
       customSecurityContext:
@@ -178,13 +179,6 @@ upstream:
     imageTag: 1.19.0
 
   testPods:
-    resources: {}
-    labels: {}
-    annotations: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-    schedulerName:
     image:
       permissionsTestContainer: "registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10"
       statusTestContainer: "registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20" 

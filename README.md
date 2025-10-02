@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 2.0.4-bb.0](https://img.shields.io/badge/Version-2.0.4--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.10](https://img.shields.io/badge/AppVersion-10.3.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 2.0.4-bb.1](https://img.shields.io/badge/Version-2.0.4--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.10](https://img.shields.io/badge/AppVersion-10.3.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -70,7 +70,7 @@ helm install jira chart/
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
 | networkPolicies.controlPlaneCidr | string | `"0.0.0.0/0"` |  |
 | networkPolicies.additionalPolicies | list | `[]` |  |
-| helmTestImage | string | `"registry1.dso.mil/ironbank/big-bang/base:2.1.0"` |  |
+| helmTestImage | string | `"registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20"` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `3` |  |
 | hpa.cpu | int | `80` |  |
@@ -101,6 +101,7 @@ helm install jira chart/
 | upstream.volumes.sharedHome.nfs.persistentVolumeClaim.accessModes[0] | string | `"ReadWriteMany"` |  |
 | upstream.volumes.sharedHome.nfs.persistentVolumeClaim.storageClassName | string | `nil` |  |
 | upstream.volumes.sharedHome.nfs.persistentVolumeClaim.resources.requests.storage | string | `"1Gi"` |  |
+| upstream.volumes.sharedHome.nfsPermissionFixer.enabled | bool | `false` |  |
 | upstream.volumes.sharedHome.nfsPermissionFixer.imageRepo | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal"` |  |
 | upstream.volumes.sharedHome.nfsPermissionFixer.imageTag | string | `"8.10"` |  |
 | upstream.volumes.additional[0].name | string | `"server-xml-j2"` |  |
@@ -136,16 +137,9 @@ helm install jira chart/
 | upstream.monitoring.jmxExporterCustomJarLocation | string | `"/var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar"` |  |
 | upstream.monitoring.grafana.dashboardLabels.grafana_dashboard | string | `"1"` |  |
 | upstream.fluentd.imageRepo | string | `"ironbank/opensource/fluentd/fluentd-kubernetes-daemonset"` |  |
-| upstream.fluentd.imageTag | string | `"1.18.0"` |  |
-| upstream.testPods.resources | object | `{}` |  |
-| upstream.testPods.labels | object | `{}` |  |
-| upstream.testPods.annotations | object | `{}` |  |
-| upstream.testPods.nodeSelector | object | `{}` |  |
-| upstream.testPods.tolerations | list | `[]` |  |
-| upstream.testPods.affinity | object | `{}` |  |
-| upstream.testPods.schedulerName | string | `nil` |  |
+| upstream.fluentd.imageTag | string | `"1.19.0"` |  |
 | upstream.testPods.image.permissionsTestContainer | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10"` |  |
-| upstream.testPods.image.statusTestContainer | string | `"registry1.dso.mil/ironbank/big-bang/base:2.1.0"` |  |
+| upstream.testPods.image.statusTestContainer | string | `"registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20"` |  |
 
 ## Contributing
 
