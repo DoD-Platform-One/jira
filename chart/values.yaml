@@ -73,7 +73,7 @@ upstream:
       - name: private-registry
     pullPolicy: IfNotPresent
 
-    tag: "10.3.10"
+    tag: "10.3.11"
 
   serviceAccount:
     create: true
