@@ -18,6 +18,12 @@
     "commitMessagePrefix": "SKIP UPDATE CHECK",
     "packageRules": [
         {
+            "matchManagers": [
+                "helm-values",
+                "helmv3",
+                "npm",
+                "regex"
+            ],
             "matchDatasources": [
                 "docker"
             ],
