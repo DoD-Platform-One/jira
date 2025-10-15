@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 2.0.4-bb.4](https://img.shields.io/badge/Version-2.0.4--bb.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.12](https://img.shields.io/badge/AppVersion-10.3.12-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 2.0.4-bb.5](https://img.shields.io/badge/Version-2.0.4--bb.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.12](https://img.shields.io/badge/AppVersion-10.3.12-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -56,11 +56,12 @@ helm install jira chart/
 | istio.jira.gateways | list | `["istio-system/public"]` | Set Gateway for VirtualService |
 | istio.jira.hosts | list | `["jira.{{ .Values.domain }}"]` | Set Hosts for VirtualService |
 | istio.hardened.enabled | bool | `false` |  |
+| istio.hardened.customAuthorizationPolicies | list | `[]` |  |
 | istio.hardened.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
 | istio.hardened.customServiceEntries | list | `[]` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
-| bbtests.cypress.envs.cypress_url | string | `"http://{{ include \"common.names.fullname\" . }}:{{ .Values.jira.service.port }}"` |  |
+| bbtests.cypress.envs.cypress_url | string | `"http://{{ include \"common.names.fullname\" . }}:{{ .Values.upstream.jira.service.port }}"` |  |
 | bbtests.cypress.resources.requests.cpu | string | `"1"` |  |
 | bbtests.cypress.resources.requests.memory | string | `"2Gi"` |  |
 | bbtests.cypress.resources.limits.cpu | string | `"1"` |  |
@@ -74,6 +75,12 @@ helm install jira chart/
 | hpa.maxReplicas | int | `3` |  |
 | hpa.cpu | int | `80` |  |
 | hpa.memory | int | `70` |  |
+| dbSecret.enabled | bool | `false` |  |
+| dbSecret.secretName | string | `"jira-database"` |  |
+| dbSecret.databaseUser | string | `""` |  |
+| dbSecret.databasePassword | string | `""` |  |
+| dbSecret.usernameSecretKey | string | `""` |  |
+| dbSecret.passwordSecretKey | string | `""` |  |
 | upstream.nameOverride | string | `"jira"` |  |
 | upstream.image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` |  |
 | upstream.image.imagePullSecrets[0].name | string | `"private-registry"` |  |
@@ -84,8 +91,6 @@ helm install jira chart/
 | upstream.serviceAccount.imagePullSecrets[0].name | string | `"private-registry"` |  |
 | upstream.serviceAccount.annotations | object | `{}` |  |
 | upstream.serviceAccount.eksIrsa.roleArn | string | `nil` |  |
-| upstream.database.user | string | `nil` |  |
-| upstream.database.password | string | `nil` |  |
 | upstream.volumes.sharedHome.efs.enabled | bool | `false` |  |
 | upstream.volumes.sharedHome.efs.driver | string | `nil` |  |
 | upstream.volumes.sharedHome.efs.efsid | string | `nil` |  |
@@ -133,6 +138,7 @@ helm install jira chart/
 | upstream.monitoring.exposeJmxMetrics | bool | `false` |  |
 | upstream.monitoring.jmxExporterInitContainer.runAsRoot | bool | `false` |  |
 | upstream.monitoring.jmxExporterInitContainer.customSecurityContext.runAsUser | int | `1000` |  |
+| upstream.monitoring.jmxExporterInitContainer.jmxJarLocation | string | `"/opt/jmx_exporter/jmx_prometheus_javaagent-0.18.0.jar"` |  |
 | upstream.monitoring.jmxExporterImageRepo | string | `"registry1.dso.mil/ironbank/opensource/prometheus/jmx-exporter"` |  |
 | upstream.monitoring.jmxExporterCustomJarLocation | string | `"/var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar"` |  |
 | upstream.monitoring.grafana.dashboardLabels.grafana_dashboard | string | `"1"` |  |
