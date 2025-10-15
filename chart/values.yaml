@@ -25,6 +25,10 @@ istio:
 
   hardened:
     enabled: false
+    customAuthorizationPolicies: []
+      # - name: "allow-nothing"
+      #   enabled: true
+      #   spec: {}
     outboundTrafficPolicyMode: "REGISTRY_ONLY"
     customServiceEntries: []
 
@@ -33,8 +37,7 @@ bbtests:
   cypress:
     artifacts: true
     envs:
-      cypress_url: 'http://{{ include "common.names.fullname" . }}:{{ .Values.jira.service.port
-        }}'
+      cypress_url: 'http://{{ include "common.names.fullname" . }}:{{ .Values.upstream.jira.service.port }}'
     resources:
       requests:
         cpu: "1"
@@ -63,12 +66,24 @@ hpa:
   cpu: 80
   memory: 70
 
+## if dbSecret.enabled, a secret will be created with the specified values.
+#  dbSecret.secretName can be used in upstream.database.credentials.secretName
+#  dbSecret.secretName can be used in postgresql.auth.existingSecret
+#
+  
+dbSecret:
+  enabled: false
+  secretName: jira-database
+  databaseUser: "" # if defined, is stored base-64 encoded into the secret
+  databasePassword: "" # if defined, is stored base-64 encoded into the secret
+  usernameSecretKey: "" # if undefined, defaults to username
+  passwordSecretKey: "" # if undefined, defaults to password  
+
 upstream:
   nameOverride: "jira"
 
   image:
     repository: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts
-
     imagePullSecrets:
       - name: private-registry
     pullPolicy: IfNotPresent
@@ -77,16 +92,12 @@ upstream:
 
   serviceAccount:
     create: true
-
     name:
     imagePullSecrets:
       - name: private-registry
     annotations: {}
     eksIrsa:
       roleArn:
-  database:
-    user:
-    password:
   volumes:
     sharedHome:
       efs:
@@ -131,8 +142,9 @@ upstream:
       - name: footer-vm
         configMap:
           name: footer-vm
-          defaultMode: 484
-  jira:
+          defaultMode: 484 
+          
+  jira: 
     containerSecurityContext:
       runAsNonRoot: true
       allowPrivilegeEscalation: false
@@ -161,23 +173,24 @@ upstream:
           /opt/atlassian/jira/atlassian-jira/WEB-INF/classes/templates/plugins/footer/footer.vm
         name: footer-vm
         subPath: footer.vm
+        
   monitoring:
     exposeJmxMetrics: false
     jmxExporterInitContainer:
       runAsRoot: false
       customSecurityContext:
         runAsUser: 1000
-    jmxExporterImageRepo: 
+      jmxJarLocation: "/opt/jmx_exporter/jmx_prometheus_javaagent-0.18.0.jar"
+    jmxExporterImageRepo:
       registry1.dso.mil/ironbank/opensource/prometheus/jmx-exporter
-    jmxExporterCustomJarLocation: 
-      /var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar
+    jmxExporterCustomJarLocation: "/var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar"
+
     grafana:
       dashboardLabels:
         grafana_dashboard: "1"
   fluentd:
     imageRepo: ironbank/opensource/fluentd/fluentd-kubernetes-daemonset
     imageTag: 1.19.0
-
   testPods:
     image:
       permissionsTestContainer: "registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10"
