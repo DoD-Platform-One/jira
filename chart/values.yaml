@@ -65,7 +65,7 @@ hpa:
   maxReplicas: 3
   cpu: 80
   memory: 70
-
+  
 ## if dbSecret.enabled, a secret will be created with the specified values.
 #  dbSecret.secretName can be used in upstream.database.credentials.secretName
 #  dbSecret.secretName can be used in postgresql.auth.existingSecret
@@ -78,6 +78,10 @@ dbSecret:
   databasePassword: "" # if defined, is stored base-64 encoded into the secret
   usernameSecretKey: "" # if undefined, defaults to username
   passwordSecretKey: "" # if undefined, defaults to password  
+
+
+# -- Values to pass to [the upstream Jira chart](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/values.yaml)
+# @default -- Upstream chart values 
 
 upstream:
   nameOverride: "jira"
