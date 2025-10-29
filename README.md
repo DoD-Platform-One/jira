@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # jira
 
-![Version: 2.0.4-bb.6](https://img.shields.io/badge/Version-2.0.4--bb.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.12](https://img.shields.io/badge/AppVersion-10.3.12-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 2.0.4-bb.7](https://img.shields.io/badge/Version-2.0.4--bb.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.3.12](https://img.shields.io/badge/AppVersion-10.3.12-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 A chart for installing Jira Data Center on Kubernetes
 
@@ -81,71 +81,7 @@ helm install jira chart/
 | dbSecret.databasePassword | string | `""` |  |
 | dbSecret.usernameSecretKey | string | `""` |  |
 | dbSecret.passwordSecretKey | string | `""` |  |
-| upstream.nameOverride | string | `"jira"` |  |
-| upstream.image.repository | string | `"registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts"` |  |
-| upstream.image.imagePullSecrets[0].name | string | `"private-registry"` |  |
-| upstream.image.pullPolicy | string | `"IfNotPresent"` |  |
-| upstream.image.tag | string | `"10.3.12"` |  |
-| upstream.serviceAccount.create | bool | `true` |  |
-| upstream.serviceAccount.name | string | `nil` |  |
-| upstream.serviceAccount.imagePullSecrets[0].name | string | `"private-registry"` |  |
-| upstream.serviceAccount.annotations | object | `{}` |  |
-| upstream.serviceAccount.eksIrsa.roleArn | string | `nil` |  |
-| upstream.volumes.sharedHome.efs.enabled | bool | `false` |  |
-| upstream.volumes.sharedHome.efs.driver | string | `nil` |  |
-| upstream.volumes.sharedHome.efs.efsid | string | `nil` |  |
-| upstream.volumes.sharedHome.efs.persistentVolumeClaim.create | bool | `false` |  |
-| upstream.volumes.sharedHome.efs.persistentVolumeClaim.accessModes[0] | string | `"ReadWriteMany"` |  |
-| upstream.volumes.sharedHome.efs.persistentVolumeClaim.storageClassName | string | `nil` |  |
-| upstream.volumes.sharedHome.efs.persistentVolumeClaim.resources.requests.storage | string | `"1Gi"` |  |
-| upstream.volumes.sharedHome.nfs.enabled | bool | `false` |  |
-| upstream.volumes.sharedHome.nfs.server | string | `"IP"` |  |
-| upstream.volumes.sharedHome.nfs.path | string | `"/"` |  |
-| upstream.volumes.sharedHome.nfs.persistentVolumeClaim.create | bool | `false` |  |
-| upstream.volumes.sharedHome.nfs.persistentVolumeClaim.accessModes[0] | string | `"ReadWriteMany"` |  |
-| upstream.volumes.sharedHome.nfs.persistentVolumeClaim.storageClassName | string | `nil` |  |
-| upstream.volumes.sharedHome.nfs.persistentVolumeClaim.resources.requests.storage | string | `"1Gi"` |  |
-| upstream.volumes.sharedHome.nfsPermissionFixer.enabled | bool | `false` |  |
-| upstream.volumes.sharedHome.nfsPermissionFixer.imageRepo | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal"` |  |
-| upstream.volumes.sharedHome.nfsPermissionFixer.imageTag | string | `"8.10"` |  |
-| upstream.volumes.additional[0].name | string | `"server-xml-j2"` |  |
-| upstream.volumes.additional[0].configMap.name | string | `"server-xml-j2"` |  |
-| upstream.volumes.additional[0].configMap.defaultMode | int | `484` |  |
-| upstream.volumes.additional[1].name | string | `"server-xml"` |  |
-| upstream.volumes.additional[1].configMap.name | string | `"server-xml"` |  |
-| upstream.volumes.additional[1].configMap.defaultMode | int | `484` |  |
-| upstream.volumes.additional[2].name | string | `"footer-vm"` |  |
-| upstream.volumes.additional[2].configMap.name | string | `"footer-vm"` |  |
-| upstream.volumes.additional[2].configMap.defaultMode | int | `484` |  |
-| upstream.jira.containerSecurityContext.runAsNonRoot | bool | `true` |  |
-| upstream.jira.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
-| upstream.jira.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| upstream.jira.containerSecurityContext.runAsUser | int | `2001` |  |
-| upstream.jira.containerSecurityContext.runAsGroup | int | `2001` |  |
-| upstream.jira.readinessProbe.custom | object | `{}` |  |
-| upstream.jira.startupProbe.enabled | bool | `true` |  |
-| upstream.jira.livenessProbe.initialDelaySeconds | int | `300` |  |
-| upstream.jira.additionalJvmArgs[0] | string | `"-Dcom.redhat.fips=false"` |  |
-| upstream.jira.additionalVolumeMounts[0].mountPath | string | `"/opt/atlassian/etc/server.xml.j2"` |  |
-| upstream.jira.additionalVolumeMounts[0].name | string | `"server-xml-j2"` |  |
-| upstream.jira.additionalVolumeMounts[0].subPath | string | `"server.xml.j2"` |  |
-| upstream.jira.additionalVolumeMounts[1].mountPath | string | `"/opt/atlassian/jira/conf/server.xml"` |  |
-| upstream.jira.additionalVolumeMounts[1].name | string | `"server-xml"` |  |
-| upstream.jira.additionalVolumeMounts[1].subPath | string | `"server.xml"` |  |
-| upstream.jira.additionalVolumeMounts[2].mountPath | string | `"/opt/atlassian/jira/atlassian-jira/WEB-INF/classes/templates/plugins/footer/footer.vm"` |  |
-| upstream.jira.additionalVolumeMounts[2].name | string | `"footer-vm"` |  |
-| upstream.jira.additionalVolumeMounts[2].subPath | string | `"footer.vm"` |  |
-| upstream.monitoring.exposeJmxMetrics | bool | `false` |  |
-| upstream.monitoring.jmxExporterInitContainer.runAsRoot | bool | `false` |  |
-| upstream.monitoring.jmxExporterInitContainer.customSecurityContext.runAsUser | int | `1000` |  |
-| upstream.monitoring.jmxExporterInitContainer.jmxJarLocation | string | `"/opt/jmx_exporter/jmx_prometheus_javaagent-0.18.0.jar"` |  |
-| upstream.monitoring.jmxExporterImageRepo | string | `"registry1.dso.mil/ironbank/opensource/prometheus/jmx-exporter"` |  |
-| upstream.monitoring.jmxExporterCustomJarLocation | string | `"/var/atlassian/application-data/shared-home/jmx_prometheus_javaagent-0.18.0.jar"` |  |
-| upstream.monitoring.grafana.dashboardLabels.grafana_dashboard | string | `"1"` |  |
-| upstream.fluentd.imageRepo | string | `"ironbank/opensource/fluentd/fluentd-kubernetes-daemonset"` |  |
-| upstream.fluentd.imageTag | string | `"1.19.0"` |  |
-| upstream.testPods.image.permissionsTestContainer | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10"` |  |
-| upstream.testPods.image.statusTestContainer | string | `"registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20"` |  |
+| upstream | object | Upstream chart values  | Values to pass to [the upstream Jira chart](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/values.yaml) |
 
 ## Contributing
 
