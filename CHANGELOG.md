@@ -3,7 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [2.0.6-bb.0] - 2025-12-03
+## [2.0.8-bb.0] - 2026-01-06
+
+### Changed
+
+- Updated Updated jira (source) 2.0.7 -> 2.0.8
+- Updated registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts (source) 10.3.12 -> 11.3.1
+- Updated cypress (source) 15.7.1 -> 15.8.1
+- Updated gluon 0.9.6 -> 0.9.7
+
+## [2.0.7-bb.0] - 2025-12-03
 
 ### Changed
 
