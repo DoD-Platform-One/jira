@@ -22,7 +22,7 @@
                 "helm-values",
                 "helmv3",
                 "npm",
-                "regex"
+                "custom.regex"
             ],
             "matchDatasources": [
                 "docker"

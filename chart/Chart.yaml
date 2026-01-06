@@ -2,8 +2,8 @@ apiVersion: v2
 name: jira
 description: A chart for installing Jira Data Center on Kubernetes
 type: application
-version: 2.0.7-bb.0
-appVersion: 10.3.12
+version: 2.0.8-bb.0
+appVersion: 11.3.11
 kubeVersion: ">=1.21.x-0"
 keywords:
   - Jira
@@ -26,12 +26,12 @@ annotations:
     - "Update appVersions for DC apps (#865)"
     - "Set custom securityContext for import-certs init container. Make affinity independent for Synchrony (#938)"
   bigbang.dev/applicationVersions: |
-    - Jira: 10.3.12
+    - Jira: 11.3.1
   bigbang.dev/upstreamReleaseNotesMarkdown: |
     The [upstream Jira helm chart changelog](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/jira/Changelog.md) may help when reviewing this package.
   helm.sh/images: |
     - name: jira-node-lts
-      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:10.3.12
+      image: registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts:11.3.1
     - name: nfs-permission-fixer
       image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10
     - name: fluentd-kubernetes-daemonset
@@ -43,9 +43,9 @@ dependencies:
     repository: https://atlassian.github.io/data-center-helm-charts
   - name: gluon
     repository: oci://registry1.dso.mil/bigbang
-    version: 0.9.6
+    version: 0.9.7
   - name: jira
-    version: 2.0.7
+    version: 2.0.8
     repository: https://atlassian.github.io/data-center-helm-charts/
     directory: /src/main/charts/jira
     alias: "upstream"
