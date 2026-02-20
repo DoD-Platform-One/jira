@@ -92,7 +92,7 @@ upstream:
       - name: private-registry
     pullPolicy: IfNotPresent
 
-    tag: "11.3.1"
+    tag: "11.3.2"
 
   serviceAccount:
     create: true
@@ -194,8 +194,8 @@ upstream:
         grafana_dashboard: "1"
   fluentd:
     imageRepo: ironbank/opensource/fluentd/fluentd-kubernetes-daemonset
-    imageTag: 1.19.0
+    imageTag: 1.19.2
   testPods:
     image:
       permissionsTestContainer: "registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.10"
-      statusTestContainer: "registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20" 
+      statusTestContainer: "registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.23" 

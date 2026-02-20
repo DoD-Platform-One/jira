@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [2.0.9-bb.0] - 2026-02-20
+
+### Changed
+
+- Updated gluon 0.9.7 -> 0.9.8
+- Updated registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts (source) 11.3.1 -> 11.3.2
+- Updated registry1.dso.mil/ironbank/opensource/fluentd/fluentd-kubernetes-daemonset (source) 1.19.0 -> 1.19.2
+- Updated cypress (source) 15.9.0 -> 15.10.0
+- Updated jira (source) 2.0.8 -> 2.0.9
+
 ## [2.0.8-bb.2] - 2026-01-26
 
 ### Changed
