@@ -54,7 +54,34 @@
                 "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
             ],
             "datasourceTemplate": "docker"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/^chart/Chart\\.yaml$/"
+            ],
+            "matchStrings": [
+                "appVersion:[^\\S\\r\\n]+(?<currentValue>.+)"
+            ],
+            "depNameTemplate": "registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts",
+            "datasourceTemplate": "docker"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/^chart/Chart\\.yaml$/"
+            ],
+            "matchStrings": [
+                "- Jira:[^\\S\\r\\n]+(?<currentValue>.+)"
+            ],
+            "depNameTemplate": "registry1.dso.mil/ironbank/atlassian/jira-data-center/jira-node-lts",
+            "datasourceTemplate": "docker"
         }
     ],
-    "separateMajorMinor": false
+    "branchTopic": "ironbank",
+    "separateMajorMinor": false,
+    "separateMultipleMajor": false,
+    "postUpdateOptions": [
+        "helmUpdateSubChartArchives"
+    ]
 }
